@@ -1,6 +1,14 @@
+#include <stdlib.h>
+#include <algorithm>    // std::reverse
+
 #include "Parser.h"
 
 using namespace std;
+
+void pushBack(string s) {
+    for (int i = s.size() - 1; i >= 0; i--)
+        cin.putback(s[i]);
+}
 
 Parser::Parser() {
     talkToMe = false;
@@ -13,28 +21,59 @@ Parser::Parser(bool talk) {
 Parser::~Parser() {
 }
 
-void Parser::readString(string line, int from) {
+String Parser::readString(string word) {
     if (talkToMe)
         cout << "You should learn me to read strings." << endl;
-    int p = line.find('"', 1);
-    if (p == -1) {
-
+    string myWord = word;
+    int p = myWord.find('"', 1);
+    while (p == -1) { // ending " was not found, read another word and try again
+        cin >> word;
+        if (!word.empty()) {
+            myWord += " ";
+            myWord += word;
+        } else { // input is empty and string was not ended by "
+            cout << "E: Error occured while reading string.";
+        }
+        p = myWord.find('"', 1);
     }
-    line = line.substr(1);
+    // You have the full string, check what's after it
+    word = myWord;
+    if (p + 1 != word.size()) {
+        if (talkToMe)
+            cout << "W: You've probably made a mistake in command " << word << ", but I will separate the string from it." << endl;
+        word.erase(0, p + 1);
+        myWord.substr(0, p + 1);
+        pushBack(word);
+        cout << "Pushing back word: \"" << word << "\"" << endl;
+    }
+    return String(myWord);
 }
 
-void Parser::readList(string line) {
+void Parser::readList(string word) {
     if (talkToMe)
         cout << "You should learn me to read lists." << endl;
 }
 
-void Parser::readNumber(string line) {
-    if (talkToMe)
-        cout << "You should learn me to read numbers." << endl;
+Number Parser::readNumber(string word) {
+    // check each char of word and create number
+    string myWord = word;
+    for (int i = 0; i < word.size(); i++) {
+        if ((word[i] < '0') || (word[i] > '9')) { // NaN
+            if (talkToMe)
+                cout << "W: You've probably made a mistake in command " << word << ", but I will separate the number from it." << endl;
+            myWord = word.substr(0, i);
+            word.erase(0, i);
+            pushBack(word);
+            //            cout << "Pushing back word: \"" << word << "\"" << endl;
+            break;
+        }
+    }
+    return Number(atoi(myWord.c_str()));
 }
 
-void Parser::readSymbol(string line) {
-    if (talkToMe)cout << "You should learn me to read symbols." << endl;
+void Parser::readSymbol(string word) {
+    if (talkToMe)
+        cout << "You should learn me to read symbols." << endl;
 }
 
 /*
@@ -43,27 +82,27 @@ void Parser::readSymbol(string line) {
  * 2. Symbol -> could be evaluated as atom/another symbol/list
  * 3. List -> functions/atoms/symbols/...
  */
-void Parser::parse(string line) {
-    switch (line[0]) {
+void Parser::parse(string word) {
+    switch (word[0]) {
         case '"':
             if (talkToMe)
                 cout << "Parser: Hmm... It could be a string!" << endl;
-            //            readString(line, 0);
+            cout << readString(word);
             break;
         case '(':
             if (talkToMe)
                 cout << "Parser: Hmm... It could be a list!" << endl;
-            readList(line);
+            readList(word);
             break;
         default:
-            if (line[0] >= '0' && line[0] <= '9') {
+            if (word[0] >= '0' && word[0] <= '9') {
                 if (talkToMe)
                     cout << "Parser: Hmm... It could be a number!" << endl;
-                readNumber(line);
-            } else {
+                cout << readNumber(word);
+            } else { // symbol/function/true-false-nil
                 if (talkToMe)
                     cout << "Parser: Hmm... It could be a symbol!" << endl;
-                readSymbol(line);
+                readSymbol(word);
             }
             break;
     }

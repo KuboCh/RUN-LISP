@@ -1,5 +1,7 @@
 #include <string>
 #include <iostream>
+#include "Number.h"
+#include "String.h"
 
 #ifndef PARSER_H
 #define PARSER_H
@@ -13,8 +15,9 @@ public:
     Parser(const Parser& orig);
     virtual ~Parser();
     void parse(string line);
-    void readString(string line, int from);
-    void readNumber(string line);
+    
+    String readString(string line);
+    Number readNumber(string line);
     void readList(string line);
     void readSymbol(string line);
     bool talkToMe;

@@ -4,7 +4,10 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
+      <itemPath>DataType.h</itemPath>
+      <itemPath>Number.h</itemPath>
       <itemPath>Parser.h</itemPath>
+      <itemPath>String.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -13,7 +16,10 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
+      <itemPath>DataType.cpp</itemPath>
+      <itemPath>Number.cpp</itemPath>
       <itemPath>Parser.cpp</itemPath>
+      <itemPath>String.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
@@ -38,9 +44,21 @@
       </toolsSet>
       <compileType>
       </compileType>
+      <item path="DataType.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="DataType.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Number.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Number.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="Parser.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Parser.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="String.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="String.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -65,9 +83,21 @@
           <developmentMode>5</developmentMode>
         </asmTool>
       </compileType>
+      <item path="DataType.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="DataType.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Number.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Number.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="Parser.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Parser.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="String.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="String.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>
