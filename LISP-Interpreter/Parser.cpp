@@ -14,6 +14,7 @@ Parser::~Parser() {
 }
 
 string readString(string line, int from) {
+    cout << "You should learn me to read strings." << endl;
     int p = line.find('"', 1);
     if (p == -1) {
 
@@ -22,12 +23,15 @@ string readString(string line, int from) {
 }
 
 void readList(string line) {
+    cout << "You should learn me to read lists." << endl;
 }
 
 void readNumber(string line) {
+    cout << "You should learn me to read numbers." << endl;
 }
 
 void readSymbol(string line) {
+    cout << "You should learn me to read symbols." << endl;
 }
 
 /*
@@ -39,29 +43,25 @@ void readSymbol(string line) {
 void Parser::parse(string line) {
     switch (line[0]) {
         case '"':
-            if (talkToMe) {
+            if (talkToMe)
                 cout << "Parser: Hmm... It could be a string!" << endl;
-            }
             //            readString(line, 0);
             break;
         case '(':
-            if (talkToMe) {
+            if (talkToMe)
                 cout << "Parser: Hmm... It could be a list!" << endl;
-            }
             //            readList(line);
             break;
         default:
             if (line[0] >= '0' && line[0] <= '9') {
-                if (talkToMe) {
+                if (talkToMe)
                     cout << "Parser: Hmm... It could be a number!" << endl;
-                }
                 //                readNumber(line);
             } else {
-                if (talkToMe) {
+                if (talkToMe)
                     cout << "Parser: Hmm... It could be a symbol!" << endl;
-                }
+                //            readSymbol(line);
             }
-            //            readSymbol(line);
             break;
     }
 }

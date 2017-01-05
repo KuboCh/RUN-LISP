@@ -13,7 +13,6 @@ public:
     Parser(const Parser& orig);
     virtual ~Parser();
     void parse(string line);
-
     bool talkToMe;
 private:
 };
