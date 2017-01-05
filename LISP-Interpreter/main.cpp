@@ -1,6 +1,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <string>
+#include "Parser.h"
 
 using namespace std;
 
@@ -10,13 +11,15 @@ int main(int argc, char** argv) {
     cout << "Welcome to LISP interpreter" << endl;
     int lineNo = 0;
     string line;
+    Parser p(true);
 
-    while(true) {
+    while (true) {
         cout << ++lineNo << ". > ";
         getline(cin, line);
         cout << "You said: " << line << endl;
-        if(line == "bye" || line == "exit") 
+        if (line == "bye" || line == "exit")
             break;
+        p.parse(line);
     }
     cout << "Bye!";
     return 0;

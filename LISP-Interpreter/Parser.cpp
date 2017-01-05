@@ -2,20 +2,33 @@
 
 using namespace std;
 
-Parser::Parser() {}
+Parser::Parser() {
+    talkToMe = false;
+}
 
-Parser::~Parser() {}
+Parser::Parser(bool talk) {
+    talkToMe = talk;
+}
+
+Parser::~Parser() {
+}
 
 string readString(string line, int from) {
     int p = line.find('"', 1);
     if (p == -1) {
-        
+
     }
-    line = line.substr(1);  
+    line = line.substr(1);
 }
 
-void readList(string line){}
-void readNumber(string line){}
+void readList(string line) {
+}
+
+void readNumber(string line) {
+}
+
+void readSymbol(string line) {
+}
 
 /*
  * Parse content of the line as:
@@ -23,19 +36,32 @@ void readNumber(string line){}
  * 2. Symbol -> could be evaluated as atom/another symbol/list
  * 3. List -> functions/atoms/symbols/...
  */
-void parse(string line) {
+void Parser::parse(string line) {
     switch (line[0]) {
         case '"':
-            readString(line, 0);
+            if (talkToMe) {
+                cout << "Parser: Hmm... It could be a string!" << endl;
+            }
+            //            readString(line, 0);
             break;
         case '(':
-            readList(line);
+            if (talkToMe) {
+                cout << "Parser: Hmm... It could be a list!" << endl;
+            }
+            //            readList(line);
             break;
         default:
-            if (line[0] >= '0' && line[0] <= '9'){
-                readNumber(line);
+            if (line[0] >= '0' && line[0] <= '9') {
+                if (talkToMe) {
+                    cout << "Parser: Hmm... It could be a number!" << endl;
+                }
+                //                readNumber(line);
+            } else {
+                if (talkToMe) {
+                    cout << "Parser: Hmm... It could be a symbol!" << endl;
+                }
             }
-            //premenna
+            //            readSymbol(line);
             break;
     }
 }
