@@ -27,5 +27,9 @@ String::~String() {
 }
 
 void String::eval() {
-    // Number is already evaluated (atomic value)
+    // String is already evaluated (atomic value)
+}
+
+void String::print(){
+    cout << value << endl;
 }

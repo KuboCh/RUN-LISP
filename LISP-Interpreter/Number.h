@@ -15,10 +15,7 @@ public:
     virtual ~Number();
     
     void eval();
-    friend ostream& operator<<(ostream& out, const Number& number) {
-        out << number.value << endl;
-        return out;
-    }
+    virtual void print();
     int value;
 private:
 };

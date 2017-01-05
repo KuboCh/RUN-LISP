@@ -16,3 +16,7 @@ Number::~Number() {
 void Number::eval() {
     // Number is already evaluated (atomic value)
 }
+
+void Number::print(){
+    cout << value << endl;
+}

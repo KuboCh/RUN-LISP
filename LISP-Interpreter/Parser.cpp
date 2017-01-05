@@ -22,8 +22,6 @@ Parser::~Parser() {
 }
 
 String Parser::readString(string word) {
-    if (talkToMe)
-        cout << "You should learn me to read strings." << endl;
     string myWord = word;
     int p = myWord.find('"', 1);
     while (p == -1) { // ending " was not found, read another word and try again
@@ -42,9 +40,9 @@ String Parser::readString(string word) {
         if (talkToMe)
             cout << "W: You've probably made a mistake in command " << word << ", but I will separate the string from it." << endl;
         word.erase(0, p + 1);
-        myWord.substr(0, p + 1);
+        myWord = myWord.substr(0, p + 1);
         pushBack(word);
-        cout << "Pushing back word: \"" << word << "\"" << endl;
+        //        cout << "Pushing back word: \"" << word << "\"" << endl;
     }
     return String(myWord);
 }
@@ -71,9 +69,19 @@ Number Parser::readNumber(string word) {
     return Number(atoi(myWord.c_str()));
 }
 
-void Parser::readSymbol(string word) {
+DataType* Parser::readSymbol(string word) {
     if (talkToMe)
         cout << "You should learn me to read symbols." << endl;
+    if (word == "true")
+        return new True();
+    else if (word == "false")
+        return new False();
+    else if (word == "nil")
+        return new Nil();
+    else {
+        cout << "do something with symbol " << word << endl;
+        return new DataType();
+    }
 }
 
 /*
@@ -87,7 +95,7 @@ void Parser::parse(string word) {
         case '"':
             if (talkToMe)
                 cout << "Parser: Hmm... It could be a string!" << endl;
-            cout << readString(word);
+            readString(word).print();
             break;
         case '(':
             if (talkToMe)
@@ -98,11 +106,11 @@ void Parser::parse(string word) {
             if (word[0] >= '0' && word[0] <= '9') {
                 if (talkToMe)
                     cout << "Parser: Hmm... It could be a number!" << endl;
-                cout << readNumber(word);
+                readNumber(word).print();
             } else { // symbol/function/true-false-nil
                 if (talkToMe)
                     cout << "Parser: Hmm... It could be a symbol!" << endl;
-                readSymbol(word);
+                readSymbol(word)->print();
             }
             break;
     }

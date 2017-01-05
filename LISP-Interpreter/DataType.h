@@ -12,6 +12,10 @@ public:
     DataType(const DataType& orig);
     virtual ~DataType();
     void eval();
+
+    virtual void print() {
+        cout << "Abstract DataType print should be overriden." << endl;
+    }
 private:
 
 };

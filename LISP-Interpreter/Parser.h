@@ -2,6 +2,9 @@
 #include <iostream>
 #include "Number.h"
 #include "String.h"
+#include "False.h"
+#include "Nil.h"
+#include "True.h"
 
 #ifndef PARSER_H
 #define PARSER_H
@@ -19,7 +22,7 @@ public:
     String readString(string line);
     Number readNumber(string line);
     void readList(string line);
-    void readSymbol(string line);
+    DataType* readSymbol(string line);
     bool talkToMe;
 private:
 };
