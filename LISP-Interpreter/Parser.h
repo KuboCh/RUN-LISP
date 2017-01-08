@@ -17,10 +17,10 @@ public:
     Parser(bool talk);
     Parser(const Parser& orig);
     virtual ~Parser();
-    void parse(string line);
+    DataType* parse(string line);
     
-    String readString(string line);
-    Number readNumber(string line);
+    DataType* readString(string line);
+    DataType* readNumber(string line);
     void readList(string line);
     DataType* readSymbol(string line);
     bool talkToMe;

@@ -21,7 +21,7 @@ Parser::Parser(bool talk) {
 Parser::~Parser() {
 }
 
-String Parser::readString(string word) {
+DataType* Parser::readString(string word) {
     string myWord = word;
     int p = myWord.find('"', 1);
     while (p == -1) { // ending " was not found, read another word and try again
@@ -31,6 +31,7 @@ String Parser::readString(string word) {
             myWord += word;
         } else { // input is empty and string was not ended by "
             cout << "E: Error occured while reading string.";
+            return new Nil();
         }
         p = myWord.find('"', 1);
     }
@@ -44,7 +45,7 @@ String Parser::readString(string word) {
         pushBack(word);
         //        cout << "Pushing back word: \"" << word << "\"" << endl;
     }
-    return String(myWord);
+    return new String(myWord);
 }
 
 void Parser::readList(string word) {
@@ -52,7 +53,7 @@ void Parser::readList(string word) {
         cout << "You should learn me to read lists." << endl;
 }
 
-Number Parser::readNumber(string word) {
+DataType* Parser::readNumber(string word) {
     // check each char of word and create number
     string myWord = word;
     for (int i = 0; i < word.size(); i++) {
@@ -66,12 +67,10 @@ Number Parser::readNumber(string word) {
             break;
         }
     }
-    return Number(atoi(myWord.c_str()));
+    return new Number(atoi(myWord.c_str()));
 }
 
 DataType* Parser::readSymbol(string word) {
-    if (talkToMe)
-        cout << "You should learn me to read symbols." << endl;
     if (word == "true")
         return new True();
     else if (word == "false")
@@ -79,6 +78,8 @@ DataType* Parser::readSymbol(string word) {
     else if (word == "nil")
         return new Nil();
     else {
+        if (talkToMe)
+            cout << "You should learn me to read symbols." << endl;
         cout << "do something with symbol " << word << endl;
         return new DataType();
     }
@@ -90,27 +91,28 @@ DataType* Parser::readSymbol(string word) {
  * 2. Symbol -> could be evaluated as atom/another symbol/list
  * 3. List -> functions/atoms/symbols/...
  */
-void Parser::parse(string word) {
+DataType* Parser::parse(string word) {
     switch (word[0]) {
         case '"':
             if (talkToMe)
                 cout << "Parser: Hmm... It could be a string!" << endl;
-            readString(word).print();
+            return readString(word);
             break;
         case '(':
             if (talkToMe)
                 cout << "Parser: Hmm... It could be a list!" << endl;
             readList(word);
+            return new DataType();
             break;
         default:
             if (word[0] >= '0' && word[0] <= '9') {
                 if (talkToMe)
                     cout << "Parser: Hmm... It could be a number!" << endl;
-                readNumber(word).print();
+                return readNumber(word);
             } else { // symbol/function/true-false-nil
                 if (talkToMe)
                     cout << "Parser: Hmm... It could be a symbol!" << endl;
-                readSymbol(word)->print();
+                return readSymbol(word);
             }
             break;
     }
