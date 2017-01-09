@@ -9,19 +9,19 @@ CND_DISTDIR=dist
 # Debug configuration
 CND_PLATFORM_Debug=GNU-Linux
 CND_ARTIFACT_DIR_Debug=dist/Debug/GNU-Linux
-CND_ARTIFACT_NAME_Debug=run
-CND_ARTIFACT_PATH_Debug=dist/Debug/GNU-Linux/run
+CND_ARTIFACT_NAME_Debug=lisp-interpreter
+CND_ARTIFACT_PATH_Debug=dist/Debug/GNU-Linux/lisp-interpreter
 CND_PACKAGE_DIR_Debug=dist/Debug/GNU-Linux/package
-CND_PACKAGE_NAME_Debug=run.tar
-CND_PACKAGE_PATH_Debug=dist/Debug/GNU-Linux/package/run.tar
+CND_PACKAGE_NAME_Debug=lisp-interpreter.tar
+CND_PACKAGE_PATH_Debug=dist/Debug/GNU-Linux/package/lisp-interpreter.tar
 # Release configuration
 CND_PLATFORM_Release=GNU-Linux
 CND_ARTIFACT_DIR_Release=dist/Release/GNU-Linux
-CND_ARTIFACT_NAME_Release=run
-CND_ARTIFACT_PATH_Release=dist/Release/GNU-Linux/run
+CND_ARTIFACT_NAME_Release=lisp-interpreter
+CND_ARTIFACT_PATH_Release=dist/Release/GNU-Linux/lisp-interpreter
 CND_PACKAGE_DIR_Release=dist/Release/GNU-Linux/package
-CND_PACKAGE_NAME_Release=run.tar
-CND_PACKAGE_PATH_Release=dist/Release/GNU-Linux/package/run.tar
+CND_PACKAGE_NAME_Release=lisp-interpreter.tar
+CND_PACKAGE_PATH_Release=dist/Release/GNU-Linux/package/lisp-interpreter.tar
 #
 # include compiler specific variables
 #

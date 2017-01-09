@@ -4,4 +4,23 @@
         <activeConfTypeElem>1</activeConfTypeElem>
         <activeConfIndexElem>0</activeConfIndexElem>
     </data>
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/home/phil/Dokumenty/mi-run/RUN-LISP/LISP-Interpreter/Number.cpp</file>
+            <file>file:/home/phil/Dokumenty/mi-run/RUN-LISP/LISP-Interpreter/Number.h</file>
+            <file>file:/home/phil/Dokumenty/mi-run/RUN-LISP/LISP-Interpreter/False.h</file>
+            <file>file:/home/phil/Dokumenty/mi-run/RUN-LISP/LISP-Interpreter/False.cpp</file>
+            <file>file:/home/phil/Dokumenty/mi-run/RUN-LISP/LISP-Interpreter/main.cpp</file>
+            <file>file:/home/phil/Dokumenty/mi-run/RUN-LISP/LISP-Interpreter/True.h</file>
+            <file>file:/home/phil/Dokumenty/mi-run/RUN-LISP/LISP-Interpreter/Nil.cpp</file>
+            <file>file:/home/phil/Dokumenty/mi-run/RUN-LISP/LISP-Interpreter/String.h</file>
+            <file>file:/home/phil/Dokumenty/mi-run/RUN-LISP/LISP-Interpreter/Parser.h</file>
+            <file>file:/home/phil/Dokumenty/mi-run/RUN-LISP/LISP-Interpreter/Parser.cpp</file>
+            <file>file:/home/phil/Dokumenty/mi-run/RUN-LISP/LISP-Interpreter/String.cpp</file>
+            <file>file:/home/phil/Dokumenty/mi-run/RUN-LISP/LISP-Interpreter/True.cpp</file>
+            <file>file:/home/phil/Dokumenty/mi-run/RUN-LISP/LISP-Interpreter/DataType.h</file>
+            <file>file:/home/phil/Dokumenty/mi-run/RUN-LISP/LISP-Interpreter/Nil.h</file>
+        </group>
+    </open-files>
 </project-private>
