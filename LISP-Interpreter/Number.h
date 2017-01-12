@@ -1,6 +1,7 @@
 #include <string>
 #include <iostream>
 #include "DataType.h"
+#include <stdlib.h>
 
 #ifndef NUMBER_H
 #define NUMBER_H
@@ -17,6 +18,8 @@ public:
     void eval();
     virtual void print();
     int value;
+    virtual int dataType() { return TYPE_NUMBER; }
+    virtual string toString(); 
 private:
 };
 

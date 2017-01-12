@@ -19,5 +19,5 @@ void True::eval() {
 }
 
 void True::print(){
-    cout << "true" << endl;
+    cout << "true";
 }

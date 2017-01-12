@@ -17,5 +17,5 @@ void False::eval() {
 }
 
 void False::print(){
-    cout << "false" << endl;
+    cout << "false";
 }

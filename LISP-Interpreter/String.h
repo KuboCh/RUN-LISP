@@ -16,7 +16,9 @@ public:
     
     void eval();
     virtual void print();
+    virtual int dataType() { return TYPE_STRING; }
     string value;
+    string toString() { return value; }
 private:
 
 };

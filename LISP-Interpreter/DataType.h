@@ -8,13 +8,33 @@ using namespace std;
 
 class DataType {
 public:
+    static const int TYPE_NUMBER = 0;
+    static const int TYPE_STRING = 1;
+    static const int TYPE_LIST = 2;
+    static const int TYPE_FALSE = 3;
+    static const int TYPE_TRUE = 4;
+    static const int TYPE_NIL = 5;
+    static const int TYPE_ERROR = 6;
+    static const int TYPE_PARAMETR = 7;
+    static const int TYPE_FUNCTION = 8;
+    
     DataType();
     DataType(const DataType& orig);
     virtual ~DataType();
-    void eval();
+    virtual void eval() {
+        cout << "Abstract DataType eval() should be overriden." << endl;
+    }
 
     virtual void print() {
         cout << "Abstract DataType print should be overriden." << endl;
+    }
+    virtual int dataType() {
+        cout << "Abstract DataType type() should be overriden." << endl;
+        return TYPE_ERROR;
+    }
+    virtual string toString() {
+        cout << "Abstract DataType type() should be overriden." << endl;
+        return "";
     }
 private:
 

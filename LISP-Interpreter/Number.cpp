@@ -1,4 +1,5 @@
 #include "Number.h"
+#include <sstream>
 
 Number::Number() {
 }
@@ -18,5 +19,13 @@ void Number::eval() {
 }
 
 void Number::print(){
-    cout << value << endl;
+    cout << value;
+}
+
+string Number::toString(){
+    stringstream ss;
+    ss << value;
+    string str;
+    ss >> str;
+    return str;
 }

@@ -35,10 +35,16 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/BuildInFunctions.o \
 	${OBJECTDIR}/DataType.o \
+	${OBJECTDIR}/Enviroment.o \
+	${OBJECTDIR}/Error.o \
 	${OBJECTDIR}/False.o \
+	${OBJECTDIR}/Function.o \
+	${OBJECTDIR}/List.o \
 	${OBJECTDIR}/Nil.o \
 	${OBJECTDIR}/Number.o \
+	${OBJECTDIR}/Parametr.o \
 	${OBJECTDIR}/Parser.o \
 	${OBJECTDIR}/String.o \
 	${OBJECTDIR}/True.o \
@@ -69,15 +75,40 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/lisp-interpreter: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/lisp-interpreter ${OBJECTFILES} ${LDLIBSOPTIONS}
 
+${OBJECTDIR}/BuildInFunctions.o: BuildInFunctions.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/BuildInFunctions.o BuildInFunctions.cpp
+
 ${OBJECTDIR}/DataType.o: DataType.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/DataType.o DataType.cpp
 
+${OBJECTDIR}/Enviroment.o: Enviroment.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Enviroment.o Enviroment.cpp
+
+${OBJECTDIR}/Error.o: Error.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Error.o Error.cpp
+
 ${OBJECTDIR}/False.o: False.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/False.o False.cpp
+
+${OBJECTDIR}/Function.o: Function.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Function.o Function.cpp
+
+${OBJECTDIR}/List.o: List.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/List.o List.cpp
 
 ${OBJECTDIR}/Nil.o: Nil.cpp 
 	${MKDIR} -p ${OBJECTDIR}
@@ -88,6 +119,11 @@ ${OBJECTDIR}/Number.o: Number.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Number.o Number.cpp
+
+${OBJECTDIR}/Parametr.o: Parametr.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Parametr.o Parametr.cpp
 
 ${OBJECTDIR}/Parser.o: Parser.cpp 
 	${MKDIR} -p ${OBJECTDIR}

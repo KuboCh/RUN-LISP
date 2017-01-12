@@ -17,5 +17,5 @@ void Nil::eval() {
 }
 
 void Nil::print(){
-    cout << "nil" << endl;
+    cout << "nil";
 }
