@@ -13,22 +13,23 @@ Function::Function(const Function& orig) {
 Function::~Function() {
 }
 
-int Function::getArgCount(){
-    return argCount;
-}
-
-void Function::addParametr(string name) {
-    args.push_back(Parametr(name, NULL, false));
+void Function::addArgument(string name) {
+    //args.push_back(Parametr(name, NULL, false));
+    argsNames.push_back(name);
     argCount++;
 }
 
-void Function::addToBody(Function* function) {
-    body.push_back(function);
+void Function::addToBody(Function* function, list<Parametr*> parametrs) {
+    //body.push_back(function);
 }
 
 DataType* Function::eval(Enviroment* e) {
     //TODO
     return new Nil();
+}
+
+bool Function::checkArgCount(int givenArgCount) {
+    return givenArgCount == argCount;
 }
 
 

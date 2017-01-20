@@ -1,26 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/* 
- * File:   Parametr.cpp
- * Author: jakub
- * 
- * Created on Utorok, 2017, januára 10, 14:02
- */
-
 #include "Parametr.h"
+#include "Error.h"
 
-Parametr::Parametr(){
-    
-}
+using namespace std;
 
-Parametr::Parametr(string name, DataType *value, bool constant) {
-    this->name = name;
-    this->value = value;
-    this->constant = constant;
+Parametr::Parametr() {
 }
 
 Parametr::Parametr(const Parametr& orig) {
@@ -29,12 +12,45 @@ Parametr::Parametr(const Parametr& orig) {
 Parametr::~Parametr() {
 }
 
-void Parametr::eval() {
-    value->eval();
+//Parametr::Parametr(Function *function) {
+//    this->function = function;
+//    value = NULL;
+//    parametrName = "";
+//}
+//
+//Parametr::Parametr(DataType *value) {
+//    function = NULL;
+//    this->value = value;
+//    parametrName = "";
+//}
+//
+//Parametr::Parametr(string *name) {
+//    function = NULL;
+//    value = NULL;
+//    parametrName = name;
+//}
+
+DataType* Parametr::eval(Enviroment *e){
+    if (parametrName != "") {
+        Variable *v = e->getVariable(parametrName);
+        if (v == NULL)
+            return new Error("Variable " + parametrName + " not declared");
+        return v->value;
+    }
+    if (value != NULL) {
+        return value;
+    }
+    function->eval(e);
+    //TODO eval funkciu - pripravit enviroment
+    
 }
 
-void Parametr::print(){
-    value->print();
+int Parametr::getType(){
+    if (parametrName != "") {
+        return TYPE_VARIABLE_NAME;
+    }
+    if (value != NULL) {
+        return TYPE_DATA_VALUE;
+    }
+    return TYPE_VARIABLE_NAME;
 }
-
-

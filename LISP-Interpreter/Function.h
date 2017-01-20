@@ -1,5 +1,5 @@
 #include <string>
-#include "Parametr.h"
+#include "Variable.h"
 #include <list>
 #include <vector>
 #include "DataType.h"
@@ -7,6 +7,8 @@
 
 #ifndef FUNCTION_H
 #define FUNCTION_H
+
+class Parametr;
 
 using namespace std;
 
@@ -16,15 +18,17 @@ public:
     //Function(string name, int argCount, Parametr* args, List body);
     Function(const Function& orig);
     virtual ~Function();
-    int getArgCount();
+    //int getArgCount();
     void print();
     string name;
-    vector<Parametr> args;
-    list<Function*> body;
+    vector<string> argsNames;
+    list<pair<Function*, list<Parametr*> > > body;
     int argCount;
-    void addParametr(string name);
-    void addToBody(Function *function);
+    void addArgument(string name);
+    void addToBody(Function *function, list<Parametr*> parametrs);
     virtual DataType* eval(Enviroment *e);
+    Enviroment *functionEnviroment;
+    virtual bool checkArgCount(int givenArgCount);
 private:
     
 };

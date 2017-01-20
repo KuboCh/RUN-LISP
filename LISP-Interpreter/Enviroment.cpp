@@ -1,22 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/* 
- * File:   Enviroment.cpp
- * Author: jakub
- * 
- * Created on Utorok, 2017, januára 10, 13:57
- */
-
 #include "Enviroment.h"
-#include "Parametr.h"
+#include "Variable.h"
 #include "Error.h"
 #include "Function.h"
 
 Enviroment::Enviroment() {
+    numberOfVariables = 0;
 }
 
 Enviroment::Enviroment(const Enviroment& orig) {
@@ -25,16 +13,16 @@ Enviroment::Enviroment(const Enviroment& orig) {
 Enviroment::~Enviroment() {
 }
 
-Parametr* Enviroment::getParametr(string name) {
-    if (parametrs.find(name) == parametrs.end()){
+Variable* Enviroment::getVariable(string name) {
+    if (variables.find(name) == variables.end()){
         return NULL;
     }
-    return parametrs[name];
+    return variables[name];
 }
 
-DataType* Enviroment::addParametr(string name, DataType *value, bool isConstant) {
-    map<string, Parametr*>::iterator it = parametrs.find(name);
-    if (it != parametrs.end()){
+DataType* Enviroment::addVariable(string name, DataType *value, bool isConstant) {
+    map<string, Variable*>::iterator it = variables.find(name);
+    if (it != variables.end()){
         if (it->second->constant) {
             return new Error("Can't change value of constant");
         }
@@ -42,18 +30,18 @@ DataType* Enviroment::addParametr(string name, DataType *value, bool isConstant)
         it->second->constant = isConstant;
         return it->second;
     }
-    Parametr *newParametr = new Parametr(name, value, isConstant);
-    parametrs[name] = newParametr;
-    numberOfParametrs++;
-    return newParametr;
+    Variable *newVariable = new Variable(name, value, isConstant);
+    variables[name] = newVariable;
+    numberOfVariables++;
+    return newVariable;
 }
 
-map<string, Parametr*>::const_iterator Enviroment::getParametrsIterator(){ 
-    return parametrs.begin();
+map<string, Variable*>::const_iterator Enviroment::getParametrsIterator(){ 
+    return variables.begin();
 }
  
-map<string, Parametr*>::const_iterator Enviroment::getParametrsIteratorEnd() {
-    return parametrs.end();
+map<string, Variable*>::const_iterator Enviroment::getParametrsIteratorEnd() {
+    return variables.end();
 }
 
 Function* Enviroment::addFunction(Function* function) {
@@ -71,6 +59,6 @@ Function* Enviroment::getFunction(string name) {
     return NULL;
 }
 
-int Enviroment::getNumberOfParametrs() {
-    return numberOfParametrs;
+int Enviroment::getNumberOfVariables() {
+    return numberOfVariables;
 }

@@ -16,7 +16,7 @@ public:
     static const int TYPE_NIL = 5;
     static const int TYPE_ERROR = 6;
     static const int TYPE_PARAMETR = 7;
-    static const int TYPE_FUNCTION = 8;
+    static const int TYPE_VOID = 8;
     
     DataType();
     DataType(const DataType& orig);

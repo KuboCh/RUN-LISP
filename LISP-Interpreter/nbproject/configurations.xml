@@ -18,14 +18,16 @@
       <itemPath>Parser.h</itemPath>
       <itemPath>String.h</itemPath>
       <itemPath>True.h</itemPath>
-    </logicalFolder>
-    <logicalFolder name="ResourceFiles"
-                   displayName="Resource Files"
-                   projectFiles="true">
+      <itemPath>Variable.h</itemPath>
+      <itemPath>Void.h</itemPath>
     </logicalFolder>
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
+      <logicalFolder name="ResourceFiles"
+                     displayName="Resource Files"
+                     projectFiles="true">
+      </logicalFolder>
       <itemPath>BuildInFunctions.cpp</itemPath>
       <itemPath>DataType.cpp</itemPath>
       <itemPath>Enviroment.cpp</itemPath>
@@ -39,6 +41,8 @@
       <itemPath>Parser.cpp</itemPath>
       <itemPath>String.cpp</itemPath>
       <itemPath>True.cpp</itemPath>
+      <itemPath>Variable.cpp</itemPath>
+      <itemPath>Void.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
@@ -117,6 +121,14 @@
       </item>
       <item path="True.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="Variable.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Variable.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Void.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Void.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>
     </conf>
@@ -193,6 +205,14 @@
       <item path="True.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="True.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Variable.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Variable.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Void.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Void.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>

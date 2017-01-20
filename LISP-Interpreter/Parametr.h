@@ -1,37 +1,27 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/* 
- * File:   Parametr.h
- * Author: jakub
- *
- * Created on Utorok, 2017, januára 10, 14:02
- */
+#include <string>
+#include "Function.h"
+#include "Enviroment.h"
 
 #ifndef PARAMETR_H
 #define PARAMETR_H
 
-#include "DataType.h"
+using namespace std;
 
-
-class Parametr : public DataType {
+class Parametr {
 public:
+    static const int TYPE_FUNCTION = 1;
+    static const int TYPE_DATA_VALUE = 2;
+    static const int TYPE_VARIABLE_NAME = 3;
     Parametr();
-    Parametr(string name, DataType *value, bool constant);
     Parametr(const Parametr& orig);
     virtual ~Parametr();
-    void eval();
-    virtual void print();
-    virtual int dataType() { return TYPE_PARAMETR; }
+    Function *function;
     DataType *value;
-    string name;
-    bool constant;
-    string toString() { return value->toString(); }
+    string parametrName;
+    DataType* eval(Enviroment *e);
+    int getType();
 private:
-    
+
 };
 
 #endif /* PARAMETR_H */

@@ -48,6 +48,8 @@ OBJECTFILES= \
 	${OBJECTDIR}/Parser.o \
 	${OBJECTDIR}/String.o \
 	${OBJECTDIR}/True.o \
+	${OBJECTDIR}/Variable.o \
+	${OBJECTDIR}/Void.o \
 	${OBJECTDIR}/main.o
 
 
@@ -139,6 +141,16 @@ ${OBJECTDIR}/True.o: True.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/True.o True.cpp
+
+${OBJECTDIR}/Variable.o: Variable.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Variable.o Variable.cpp
+
+${OBJECTDIR}/Void.o: Void.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Void.o Void.cpp
 
 ${OBJECTDIR}/main.o: main.cpp 
 	${MKDIR} -p ${OBJECTDIR}

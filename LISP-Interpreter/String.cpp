@@ -18,5 +18,5 @@ void String::eval() {
 }
 
 void String::print() {
-    cout << value;
+    cout << '"' << value << '"';
 }

@@ -6,6 +6,7 @@
 #include "Nil.h"
 #include "True.h"
 #include "Enviroment.h"
+#include "Parametr.h"
 
 #ifndef PARSER_H
 #define PARSER_H
@@ -24,9 +25,10 @@ public:
     DataType* readNumber(string line);
     DataType* readList(string line, Enviroment *e);
     DataType* readSymbol(string line, Enviroment *e);
-    DataType* readParametr(bool constant, Enviroment *e);
+    DataType* readVariable(bool constant, Enviroment *e);
     DataType* readFunction(Enviroment *e);
-    DataType* callFunction(string functionName, Enviroment *e);
+    DataType* readFunctionCall(string functionName, Enviroment *e);
+    list<Parametr*> readParametrsOfFunction(Enviroment *e, Function *function, int *varCount);
     bool talkToMe;
 private:
 };

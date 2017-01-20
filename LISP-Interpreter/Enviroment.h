@@ -1,6 +1,6 @@
 #include<vector>
 #include<map>
-#include "Parametr.h"
+#include "Variable.h"
 #include "List.h"
 
 
@@ -17,24 +17,23 @@ public:
         const string variableNames[] = {"1var", "2var", "3var", "4var", "5var", "6var", "7var", "8var", "9var"};
         return variableNames[index];
   } 
-    static const string variableNames[];
     Enviroment();
     Enviroment(const Enviroment& orig);
     virtual ~Enviroment();
-    Parametr* getParametr(string name);
-    DataType* addParametr(string name, DataType* value, bool isConstant);
-    void removeParametr(Parametr *parametr);
+    Variable* getVariable(string name);
+    DataType* addVariable(string name, DataType* value, bool isConstant);
+    void removeVariable(Variable *parametr);
     Function* addFunction(Function *function);
-    Function* getFunction(string name, Parametr *arg);
+    Function* getFunction(string name, Variable *arg);
     Function* getFunction(string name);
     void removeFunction(Function function);
-    map<string, Parametr*>::const_iterator getParametrsIterator();
-    map<string, Parametr*>::const_iterator getParametrsIteratorEnd();
-    int getNumberOfParametrs();
+    map<string, Variable*>::const_iterator getParametrsIterator();
+    map<string, Variable*>::const_iterator getParametrsIteratorEnd();
+    int getNumberOfVariables();
 private:
-    map<string, Parametr*> parametrs;
+    map<string, Variable*> variables;
     vector<Function*> functions;
-    int numberOfParametrs;
+    int numberOfVariables;
 };
 
 #endif /* ENVIROMENT_H */
