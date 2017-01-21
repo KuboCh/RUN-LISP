@@ -9,11 +9,6 @@
 
 using namespace std;
 
-void pushBack(string s) {
-    for (int i = s.size() - 1; i >= 0; i--)
-        cin.putback(s[i]);
-}
-
 Parser::Parser() {
     talkToMe = false;
 }
@@ -25,31 +20,30 @@ Parser::Parser(bool talk) {
 Parser::~Parser() {
 }
 
+// Push back string s to (standard) input stream
+
+void pushBack(string s) {
+    for (int i = s.size() - 1; i >= 0; i--)
+        cin.putback(s[i]);
+}
+
 DataType* Parser::readString(string word) {
-    string myWord = word;
-    int p = myWord.find('"', 1);
-    while (p == -1) { // ending " was not found, read another word and try again
+    string fullString = word;
+    while (fullString.find('"', 1) == -1) { // if closing " was not found
         cin >> word;
-        if (!word.empty()) {
-            myWord += " ";
-            myWord += word;
-        } else { // input is empty and string was not ended by "
-            cout << "E: Error occured while reading string.";
-            return new Nil();
-        }
-        p = myWord.find('"', 1);
+        if (!word.empty())
+            fullString += " " + word;
+        else // input is empty and string was not ended by "
+            return new Error("E: Error occured while reading string " + fullString + " - End of input.");
+
     }
-    // You have the full string, check what's after it
-    word = myWord;
-    if (p + 1 != word.size()) {
-        if (talkToMe)
-            cout << "W: You've probably made a mistake in command " << word << ", but I will separate the string from it." << endl;
-        word.erase(0, p + 1);
-        myWord = myWord.substr(0, p + 1);
+    int pos = fullString.find('"', 1);
+    word = fullString;
+    if (pos + 1 != fullString.size()) { // there's something after " in string
+        word.erase(0, pos + 1);
         pushBack(word);
-        //        cout << "Pushing back word: \"" << word << "\"" << endl;
-    }
-    return new String(myWord.substr(1, p - 1));
+    };
+    return new String(fullString.substr(1, pos - 1));
 }
 
 DataType* Parser::readList(string word, Enviroment *e) {
@@ -79,6 +73,8 @@ DataType* Parser::readList(string word, Enviroment *e) {
     }
 }
 
+// Read a number from input stream (actually: integers only)
+
 DataType* Parser::readNumber(string word) {
     // check each char of word and create number
     string myWord = word;
@@ -97,102 +93,154 @@ DataType* Parser::readNumber(string word) {
 }
 
 DataType* Parser::readSymbol(string word, Enviroment *e) {
-    if (word == "true")
+    if (word.compare("true") == 0)
         return new True();
-    else if (word == "false")
+    else if (word.compare("false") == 0)
         return new False();
-    else if (word == "nil")
+    else if (word.compare("nil") == 0)
         return new Nil();
-    else {
-        if (talkToMe)
-            cout << "reading symbol" << endl;
-        int pos = word.find_first_of("()");
-        if (pos != -1) {
-            pushBack(word.substr(pos));
-            word = word.substr(0, pos);
-        }
-        Variable *var = e->getVariable(word);
-        if (var == NULL) {
-            return new Error("Variable " + word + " not found");
-        }
-        return var;
+    if (talkToMe)
+        cout << "reading symbol" << endl;
+    int pos = word.find_first_of("()");
+    if (pos != -1) {
+        pushBack(word.substr(pos));
+        word = word.substr(0, pos);
     }
+    Variable *var = e->getVariable(word);
+    if (var == NULL) {
+        return new Error("Variable " + word + " not found");
+    }
+    return var;
 }
 
+// nacita definovanie premennej, meno + hodnota, constant = ci je premenna konstanta
+
 DataType* Parser::readVariable(bool constant, Enviroment *e) {
-    // nacita definovanie premennej, meno + hodnota, constant = ci je premenna konstanta
     string name;
-    DataType* value;
-    cin >> name;
     string word;
+    cin >> name;
     cin >> word;
-    value = parse(word, e);
+    DataType* value = parse(word, e);
     cin >> word;
     for (int i = 0; i < word.length(); i++) {
         if (word[i] == ')') {
-            if (i + 1 != word.length()) {
+            if (i + 1 != word.length())
                 pushBack(word.substr(i));
-            }
             break;
         }
-        if (!(word[i] == ' ' || word[i] == '\t')) {
+        if (!(word[i] == ' ' || word[i] == '\t'))
             return new Error("Unexpected '" + word + "' in reading variable " + name);
-        }
     }
     return e->addVariable(name, value, constant);
 }
 
+pair<Function*, list<Parametr*> > readInBodyFunction(Enviroment* e, Function *function, int *varCount) {
+    string arg;
+    char bracket;
+    cin >> bracket; // opening bracket (
+    cin >> arg; // function name
+    Function *functionInBody = e->getFunction(arg);
+    if (functionInBody == NULL)
+        throw "Function " + arg + " not declared";
+    list<Parametr*> parameters;
+    while (cin.peek() != ')') {
+        varCount++;
+        if (cin.peek() == '(') { // param is a function
+            int vCount = 0;
+            pair<Function*, list<Parametr*> > ribf = readInBodyFunction(e, functionInBody, &vCount);
+            Parametr * p = new Parametr();
+            p->function = ribf.first;
+            parameters.push_back(p);
+        } else {
+            cin >> arg;
+            int bpos = arg.find(')');
+            if (bpos != -1) {
+                pushBack(arg.substr(bpos));
+                arg = arg.substr(0, bpos);
+            }
+            Parametr* p = new Parametr();
+            p->parametrName = arg;
+            parameters.push_back(p);
+        }
+    }
+    cin >> bracket;
+    return pair<Function*, list<Parametr*> >(functionInBody, parameters);
+}
+
+// (def func (x y) (+ x y))
+
 DataType* Parser::readFunction(Enviroment* e) {
     Function *function = new Function();
     cin >> function->name;
-    //TODO kontrola mena ci je funkcia uz definovana
-    string var;
-    cin >> var;
-    int pos = var.find(")");
-    var = var.substr(1);
-    while (pos == -1) {
-        function->addArgument(var);
-        cin >> var;
-        pos = var.find(")");
-    }
-    if (pos != 0) {
-        function->addArgument(var.substr(0, pos));
-    }
-    var = var.substr(pos + 1);
-    if (var.length() == 0) {
-        cin >> var;
-    }
-    int varCount = 0;
-    while (var != ")") {
-        if (var[0] == '(')
-            var = var.substr(1);
-        Function *functionInBody = e->getFunction(var);
-        if (functionInBody == NULL) 
-            return new Error("Function " + var + " not declared");
-        list<Parametr*> parameters = readParametrsOfFunction(e, function, &varCount);
-        function->addToBody(functionInBody, parameters);
+    if (e->getFunction(function->name))
+        return new Error("Function " + function->name + " is already defined.");
 
-        
-        cin >> var;
-        
-        
-        pos = var.find(")");
-        if (pos != -1) {
-            
-            string befor = var.substr(0, pos);
-            string after = var.substr(pos + 1);
-            if (befor != "") {
-                
-            }
-            
-        }
-        
+    // Read arg list
+    string arg;
+    char bracket;
+    cin >> bracket >> arg;
+    int pos = arg.find(')');
+    while (pos == -1) {
+        function->addArgument(arg);
+        cin >> arg;
+        pos = arg.find(')');
     }
+    // parse last argument
+    if (pos != 0) // arg == blahblah)
+        function->addArgument(arg.substr(0, arg.size() - 2));
+    if (pos + 1 != arg.size()) // push back the rest of string
+        pushBack(arg.erase(0, pos + 1));
+
+    // Now parse functions in body!
+    int varCount;
+    while (cin.peek() != ')') { // while end of list of functions: read one of them
+        pair<Function*, list<Parametr*> > ribf = readInBodyFunction(e, function, &varCount);
+        function->addToBody(ribf.first, ribf.second);
+    }
+    cin >> bracket;
+    e->addFunction(function);
+
+    //    string var;
+    //    cin >> var;
+    //    int pos = var.find(")");
+    //
+    //    var = var.substr(1); // skip opening ( of arguments
+    //    var = var.substr(pos + 1); // go to position after )
+    //    if (var.length() == 0)
+    //        cin >> var;
+    //    int varCount = 0;
+    //    while (var != ")") {
+    //        if (var[0] == '(')
+    //            var = var.substr(1);
+    //        Function *functionInBody = e->getFunction(var);
+    //        if (functionInBody == NULL)
+    //            return new Error("Function " + var + " not declared");
+    //        list<Parametr*> parameters = readParametrsOfFunction(e, function, &varCount);
+    //        function->addToBody(functionInBody, parameters);
+    //
+    //
+    //        cin >> var;
+    //
+    //
+    //        pos = var.find(")");
+    //        if (pos != -1) {
+    //
+    //            string befor = var.substr(0, pos);
+    //            string after = var.substr(pos + 1);
+    //            if (befor != "") {
+    //
+    //            }
+    //
+    //        }
+    //
+    //    }
     cout << function->name;
     return new Void();
 }
 
-list<Parametr*> Parser::readParametrsOfFunction(Enviroment* e, Function *function, int *varCount){
+// TODO, na ten throw spravit catch, ktory vrati Error("popis")...
+
+list<Parametr*> Parser::readParametrsOfFunction(Enviroment* e, Function *function, int *varCount) {
     list<Parametr*> listOfParametrs;
     string word;
     cin >> word;
@@ -212,23 +260,22 @@ list<Parametr*> Parser::readParametrsOfFunction(Enviroment* e, Function *functio
                 throw "Function " + word + " not definded";
             }
             list<Parametr*> parOfInnerFunction = readParametrsOfFunction(e, function, varCount);
-            for (list<Parametr*>::iterator it = parOfInnerFunction.begin(); it != parOfInnerFunction.begin(); it++){
+            for (list<Parametr*>::iterator it = parOfInnerFunction.begin(); it != parOfInnerFunction.begin(); it++) {
                 if ((*it)->getType() == Parametr::TYPE_FUNCTION) {
                     //vo volani funkcie je je dalsia funkcia *f a ta ma parameter dalsiu funkciu :/ fuck 
                     //treba pred volanie vlozit (defvar "meno" volanie funkcie) a hodnotu it zamenit za parameter s menon meno
                 }
             }
-            
+
         }
-        
+
     }
 }
 
 DataType* Parser::readFunctionCall(string functionName, Enviroment *e) {
     Function *function = e->getFunction(functionName);
-    if (function == NULL) {
-        return new Error("Call to undefinde function " + functionName);
-    }
+    if (function == NULL)
+        return new Error("Call to undefined function " + functionName);
     Enviroment *functionEnviroment = new Enviroment();
     string var;
     cin >> var;
@@ -257,7 +304,7 @@ DataType* Parser::readFunctionCall(string functionName, Enviroment *e) {
                 pushBack(toPush);
                 pos = -1;
             }
-            
+
         }
         i++;
     }
@@ -273,13 +320,8 @@ DataType* Parser::readFunctionCall(string functionName, Enviroment *e) {
 DataType* Parser::parse(string word, Enviroment *e) {
     switch (word[0]) {
         case '"':
-            if (talkToMe)
-                cout << "Parser: Hmm... It could be a string!" << endl;
             return readString(word);
-            break;
         case '(':
-            if (talkToMe)
-                cout << "Parser: Hmm... It could be a list!" << endl;
             if (word == "(defconst") {
                 return readVariable(true, e);
             } else if (word == "(defvar") {
@@ -288,21 +330,14 @@ DataType* Parser::parse(string word, Enviroment *e) {
                 return readFunction(e);
             } else if (word == "(list") {
                 return readList(word, e);
-            } else { // 
-                if (talkToMe)
-                    cout << "Parser: Hmm... It could be call to function!" << endl;
-                return readFunctionCall(word.substr(1), e);
+            } else {
+                return readFunctionCall(word.substr(1), e); // calling a function
             }
-            break;
         default:
             if (word[0] >= '0' && word[0] <= '9') {
-                if (talkToMe)
-                    cout << "Parser: Hmm... It could be a number!" << endl;
                 return readNumber(word);
-            } else { // symbol/function/true-false-nil
-                if (talkToMe)
-                    cout << "Parser: Hmm... It could be a symbol!" << endl;
-                return readSymbol(word, e);
+            } else {
+                return readSymbol(word, e); // symbol/function/true-false-nil
             }
             break;
     }

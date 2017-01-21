@@ -5,6 +5,13 @@
 using namespace std;
 
 Function::Function() {
+    argCount = 0;
+    functionEnviroment = new Enviroment();
+}
+
+Function::Function(Enviroment* e){
+    functionEnviroment = e;
+    argCount = 0;
 }
 
 Function::Function(const Function& orig) {

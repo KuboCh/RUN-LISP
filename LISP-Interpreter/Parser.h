@@ -1,5 +1,6 @@
 #include <string>
 #include <iostream>
+#include <list>
 #include "Number.h"
 #include "String.h"
 #include "False.h"
@@ -7,6 +8,7 @@
 #include "True.h"
 #include "Enviroment.h"
 #include "Parametr.h"
+#include "List.h"
 
 #ifndef PARSER_H
 #define PARSER_H

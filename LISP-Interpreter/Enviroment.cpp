@@ -14,15 +14,14 @@ Enviroment::~Enviroment() {
 }
 
 Variable* Enviroment::getVariable(string name) {
-    if (variables.find(name) == variables.end()){
+    if (variables.find(name) == variables.end())
         return NULL;
-    }
     return variables[name];
 }
 
 DataType* Enviroment::addVariable(string name, DataType *value, bool isConstant) {
     map<string, Variable*>::iterator it = variables.find(name);
-    if (it != variables.end()){
+    if (it != variables.end()) {
         if (it->second->constant) {
             return new Error("Can't change value of constant");
         }
@@ -36,10 +35,10 @@ DataType* Enviroment::addVariable(string name, DataType *value, bool isConstant)
     return newVariable;
 }
 
-map<string, Variable*>::const_iterator Enviroment::getParametrsIterator(){ 
+map<string, Variable*>::const_iterator Enviroment::getParametrsIterator() {
     return variables.begin();
 }
- 
+
 map<string, Variable*>::const_iterator Enviroment::getParametrsIteratorEnd() {
     return variables.end();
 }
@@ -51,8 +50,8 @@ Function* Enviroment::addFunction(Function* function) {
 }
 
 Function* Enviroment::getFunction(string name) {
-    for (vector<Function*>::iterator it = functions.begin(); it != functions.end(); it++){
-        if ((*it)->name == name){
+    for (vector<Function*>::iterator it = functions.begin(); it != functions.end(); it++) {
+        if ((*it)->name == name) {
             return (*it);
         }
     }
