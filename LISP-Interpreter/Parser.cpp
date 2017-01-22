@@ -134,6 +134,7 @@ DataType* Parser::readVariable(bool constant, Enviroment *e) {
     return e->addVariable(name, value, constant);
 }
 
+// Read 1 inBodyFunction with params
 pair<Function*, list<Parametr*> > readInBodyFunction(Enviroment* e, Function *function, int *varCount) {
     string arg;
     char bracket;
@@ -240,37 +241,37 @@ DataType* Parser::readFunction(Enviroment* e) {
 
 // TODO, na ten throw spravit catch, ktory vrati Error("popis")...
 
-list<Parametr*> Parser::readParametrsOfFunction(Enviroment* e, Function *function, int *varCount) {
-    list<Parametr*> listOfParametrs;
-    string word;
-    cin >> word;
-    while (true) {
-        if (word[0] == ')') {
-            //end of parametrs
-            if (word.length() > 1) {
-                pushBack(word.substr(1));
-            }
-            return listOfParametrs;
-        }
-        if (word[0] == '(') {
-            //function call
-            word = word.substr(1);
-            Function *f = e->getFunction(word);
-            if (f == NULL) {
-                throw "Function " + word + " not definded";
-            }
-            list<Parametr*> parOfInnerFunction = readParametrsOfFunction(e, function, varCount);
-            for (list<Parametr*>::iterator it = parOfInnerFunction.begin(); it != parOfInnerFunction.begin(); it++) {
-                if ((*it)->getType() == Parametr::TYPE_FUNCTION) {
-                    //vo volani funkcie je je dalsia funkcia *f a ta ma parameter dalsiu funkciu :/ fuck 
-                    //treba pred volanie vlozit (defvar "meno" volanie funkcie) a hodnotu it zamenit za parameter s menon meno
-                }
-            }
-
-        }
-
-    }
-}
+//list<Parametr*> Parser::readParametrsOfFunction(Enviroment* e, Function *function, int *varCount) {
+//    list<Parametr*> listOfParametrs;
+//    string word;
+//    cin >> word;
+//    while (true) {
+//        if (word[0] == ')') {
+//            //end of parametrs
+//            if (word.length() > 1) {
+//                pushBack(word.substr(1));
+//            }
+//            return listOfParametrs;
+//        }
+//        if (word[0] == '(') {
+//            //function call
+//            word = word.substr(1);
+//            Function *f = e->getFunction(word);
+//            if (f == NULL) {
+//                throw "Function " + word + " not definded";
+//            }
+//            list<Parametr*> parOfInnerFunction = readParametrsOfFunction(e, function, varCount);
+//            for (list<Parametr*>::iterator it = parOfInnerFunction.begin(); it != parOfInnerFunction.end(); ++it) {
+//                if ((*it)->getType() == Parametr::TYPE_FUNCTION) {
+//                    //vo volani funkcie je je dalsia funkcia *f a ta ma parameter dalsiu funkciu :/ fuck 
+//                    //treba pred volanie vlozit (defvar "meno" volanie funkcie) a hodnotu it zamenit za parameter s menon meno
+//                }
+//            }
+//
+//        }
+//
+//    }
+//}
 
 DataType* Parser::readFunctionCall(string functionName, Enviroment *e) {
     Function *function = e->getFunction(functionName);

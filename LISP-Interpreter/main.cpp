@@ -40,7 +40,7 @@ int main(int argc, char** argv) {
         result->print(); // Print
         cout << endl;
         //delete result; // Delete my garbage
-        if (lineNo == 5)
+        if (lineNo == 100)
             break;
     }
     cout << "Bye!" << endl;

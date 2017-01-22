@@ -29,6 +29,7 @@ public:
     string name;
     vector<string> argsNames;
     list<pair<Function*, list<Parametr*> > > body;
+//    list<Parametr*> parametrs;
     int argCount;
     Enviroment *functionEnviroment;
 private:
