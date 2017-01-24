@@ -4,45 +4,49 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
+      <logicalFolder name="f1" displayName="datatypes" projectFiles="true">
+        <itemPath>DataType.h</itemPath>
+        <itemPath>Error.h</itemPath>
+        <itemPath>False.h</itemPath>
+        <itemPath>List.h</itemPath>
+        <itemPath>Nil.h</itemPath>
+        <itemPath>Number.h</itemPath>
+        <itemPath>String.h</itemPath>
+        <itemPath>True.h</itemPath>
+        <itemPath>Variable.h</itemPath>
+        <itemPath>Void.h</itemPath>
+      </logicalFolder>
       <itemPath>BuildInFunctions.h</itemPath>
-      <itemPath>DataType.h</itemPath>
       <itemPath>Enviroment.h</itemPath>
-      <itemPath>Error.h</itemPath>
-      <itemPath>False.h</itemPath>
       <itemPath>Function.h</itemPath>
       <itemPath>LispStack.h</itemPath>
-      <itemPath>List.h</itemPath>
-      <itemPath>Nil.h</itemPath>
-      <itemPath>Number.h</itemPath>
       <itemPath>Parametr.h</itemPath>
       <itemPath>Parser.h</itemPath>
-      <itemPath>String.h</itemPath>
-      <itemPath>True.h</itemPath>
-      <itemPath>Variable.h</itemPath>
-      <itemPath>Void.h</itemPath>
     </logicalFolder>
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
+      <logicalFolder name="f1" displayName="datatypes" projectFiles="true">
+        <itemPath>DataType.cpp</itemPath>
+        <itemPath>Error.cpp</itemPath>
+        <itemPath>False.cpp</itemPath>
+        <itemPath>List.cpp</itemPath>
+        <itemPath>Nil.cpp</itemPath>
+        <itemPath>Number.cpp</itemPath>
+        <itemPath>String.cpp</itemPath>
+        <itemPath>True.cpp</itemPath>
+        <itemPath>Variable.cpp</itemPath>
+        <itemPath>Void.cpp</itemPath>
+      </logicalFolder>
       <logicalFolder name="ResourceFiles"
                      displayName="Resource Files"
                      projectFiles="true">
       </logicalFolder>
       <itemPath>BuildInFunctions.cpp</itemPath>
-      <itemPath>DataType.cpp</itemPath>
       <itemPath>Enviroment.cpp</itemPath>
-      <itemPath>Error.cpp</itemPath>
-      <itemPath>False.cpp</itemPath>
       <itemPath>Function.cpp</itemPath>
-      <itemPath>List.cpp</itemPath>
-      <itemPath>Nil.cpp</itemPath>
-      <itemPath>Number.cpp</itemPath>
       <itemPath>Parametr.cpp</itemPath>
       <itemPath>Parser.cpp</itemPath>
-      <itemPath>String.cpp</itemPath>
-      <itemPath>True.cpp</itemPath>
-      <itemPath>Variable.cpp</itemPath>
-      <itemPath>Void.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
