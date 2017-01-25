@@ -25,11 +25,12 @@ public:
     void addToBody(Function *function, list<Parametr*> parametrs);
     virtual DataType* eval(Enviroment *e);
     virtual bool checkArgCount(int givenArgCount);
+    DataType* evalFunctionInBody(list<pair<Function*, list<Parametr*> > >::iterator functionData);
+    virtual string getParametrNameAt(int position);
     
     string name;
     vector<string> argsNames;
     list<pair<Function*, list<Parametr*> > > body;
-//    list<Parametr*> parametrs;
     int argCount;
     Enviroment *functionEnviroment;
 private:

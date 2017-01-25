@@ -1,6 +1,9 @@
 #include "Function.h"
 #include <string>
 #include "Nil.h"
+#include "LispStack.h"
+#include "Error.h"
+#include "Parametr.h"
 
 using namespace std;
 
@@ -31,18 +34,50 @@ void Function::addToBody(Function* function, list<Parametr*> parametrs) {
 }
 
 DataType* Function::eval(Enviroment* e) {
+    functionEnviroment = e;
+    LispStack::getInstance().push(this); // vlozi sa na stack
+    DataType* result = new Nil();
     for (list<pair<Function*, list<Parametr*> > >::iterator it = body.begin(); it != body.end(); ++it) {
-        if(it != --body.end()){
-            (*it).first->eval(e);
-        } else { // the last evaluated value is result value (Ruby-like)
-            return (*it).first->eval(e);
+        result = evalFunctionInBody(it);
+        if (result->dataType() == DataType::TYPE_ERROR) {
+            // error pri eval funkcie v body
+            break;
         }
+//        if (it != --body.end()) {
+//            (*it).first->eval(e);
+//        } else { // the last evaluated value is result value (Ruby-like)
+//            return (*it).first->eval(e);
+//        }
     }
-    return new Nil();
+    LispStack::getInstance().pop(); // vyberie sa zo stacku
+    return result;
 }
 
 bool Function::checkArgCount(int givenArgCount) {
     return givenArgCount == argCount;
 }
 
+DataType* Function::evalFunctionInBody(list<pair<Function*,list<Parametr*> > >::iterator functionData){
+    if (!((*functionData).first->checkArgCount((*functionData).second.size()))) {
+        return new Error("Wrong number of arguments of " + (*functionData).first->name);
+    }
+    Enviroment *enviroment = new Enviroment();
+    int argPos = 0;
+    for (list<Parametr*>::iterator paramIt = (*functionData).second.begin(); paramIt != (*functionData).second.end(); paramIt++){
+        try {
+        enviroment->addVariable((*functionData).first->getParametrNameAt(argPos), (*paramIt)->eval(functionEnviroment), false);
+        } catch (const char* error) {
+            return new Error(error);
+        }
+        argPos++;
+    }
+    return (*functionData).first->eval(enviroment);
+}
+
+string Function::getParametrNameAt(int position) {
+    if (position >= argsNames.size()){
+        throw "Wrong argument count"; //TODO
+    }
+    return argsNames.at(position);
+}
 

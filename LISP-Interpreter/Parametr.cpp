@@ -33,8 +33,10 @@ Parametr::~Parametr() {
 DataType* Parametr::eval(Enviroment *e){
     if (parametrName != "") {
         Variable *v = e->getVariable(parametrName);
-        if (v == NULL)
+        if (v == NULL) {
+            //TODO ak sa nenaslo hladat v enviromentoch vyssie az potom ak sa nenajde return errror
             return new Error("Variable " + parametrName + " not declared");
+        }
         return v->value;
     }
     if (value != NULL) {

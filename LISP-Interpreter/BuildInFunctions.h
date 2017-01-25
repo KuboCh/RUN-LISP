@@ -16,6 +16,7 @@ public:
     virtual ~BuildInPlus();
     virtual DataType* eval(Enviroment *e);
     virtual bool checkArgCount(int givenArgCount);
+    virtual string getParametrNameAt(int position);
 };
 
 class BuildInDefvar : public Function {
@@ -24,6 +25,7 @@ public:
     virtual ~BuildInDefvar() {};
     DataType* eval(Enviroment *e);
     virtual bool checkArgCount(int givenArgCount);
+    virtual string getParametrNameAt(int position);
 };
 
 class BuildInMinus : public Function {
@@ -32,6 +34,7 @@ public:
     virtual ~BuildInMinus() {};
     DataType* eval(Enviroment *e);
     virtual bool checkArgCount(int givenArgCount);
+    virtual string getParametrNameAt(int position);
 };
 
 class BuildInMultiplication : public Function {
@@ -40,6 +43,7 @@ public:
     virtual ~BuildInMultiplication() {};
     DataType* eval(Enviroment *e);
     virtual bool checkArgCount(int givenArgCount);
+    virtual string getParametrNameAt(int position);
 };
 
 class BuildInDefconst : public Function {
@@ -48,6 +52,7 @@ public:
     virtual ~BuildInDefconst() {};
     DataType* eval(Enviroment *e);
     virtual bool checkArgCount(int givenArgCount);
+    virtual string getParametrNameAt(int position);
 };
 
 class BuildInList : public Function {
@@ -56,6 +61,7 @@ public:
     virtual ~BuildInList() {};
     DataType* eval(Enviroment *e);
     virtual bool checkArgCount(int givenArgCount);
+    virtual string getParametrNameAt(int position);
 };
 
 #endif /* BUILDINFUNCTIONS_H */

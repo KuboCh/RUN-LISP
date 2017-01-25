@@ -48,6 +48,10 @@ DataType* BuildInPlus::eval(Enviroment *e) {
     return sumStrings(e);
 }
 
+string BuildInPlus::getParametrNameAt(int position) {
+    return Enviroment::varNameAt(position);
+}
+
 BuildInDefvar::BuildInDefvar() {
     name = "defvar";
 }
@@ -60,9 +64,17 @@ DataType* BuildInDefvar::eval(Enviroment *e) {
     //definuje premenn v enviromente funkcie z ktorej bola volana
     Function *parentFunction = LispStack::getInstance().pop();
     if (parentFunction != NULL) {
+        Variable *v = e->getVariable(Enviroment::varNameAt(0));
+        String *s = ((String*) v);
+        string name = s->value;
+        DataType* dt = e->getVariable(Enviroment::varNameAt(1))->value;
         parentFunction->functionEnviroment->addVariable(((String*) e->getVariable(Enviroment::varNameAt(0)))->value, e->getVariable(Enviroment::varNameAt(1))->value, false);
     }
     return new Void();
+}
+
+string BuildInDefvar::getParametrNameAt(int position) {
+    return Enviroment::varNameAt(position);
 }
 
 bool BuildInDefvar::checkArgCount(int givenArgCount) {
@@ -75,6 +87,10 @@ BuildInMinus::BuildInMinus() {
 
 bool BuildInMinus::checkArgCount(int givenArgCount){
     return givenArgCount > 0;
+}
+
+string BuildInMinus::getParametrNameAt(int position) {
+    return Enviroment::varNameAt(position);
 }
 
 DataType* BuildInMinus::eval(Enviroment* e) {
@@ -105,6 +121,10 @@ bool BuildInMultiplication::checkArgCount(int givenArgCount) {
     return givenArgCount > 1;
 }
 
+string BuildInMultiplication::getParametrNameAt(int position) {
+    return Enviroment::varNameAt(position);
+}
+
 DataType* BuildInMultiplication::eval(Enviroment* e) {
     int sum = 0;
     for (int i = 0; i < e->getNumberOfVariables(); i++) {
@@ -130,6 +150,10 @@ bool BuildInDefconst::checkArgCount(int givenArgCount) {
     return givenArgCount == 2;
 }
 
+string BuildInDefconst::getParametrNameAt(int position) {
+    return Enviroment::varNameAt(position);
+}
+
 DataType* BuildInDefconst::eval(Enviroment *e) {
     if (checkArgCount(e->getNumberOfVariables())) {
         return new Error("Wrong number of arguments of defconst, requered 2");
@@ -144,6 +168,10 @@ DataType* BuildInDefconst::eval(Enviroment *e) {
 
 BuildInList::BuildInList() {
     name = "list";
+}
+
+string BuildInList::getParametrNameAt(int position) {
+    return Enviroment::varNameAt(position);
 }
 
 bool BuildInList::checkArgCount(int givenArgCount){

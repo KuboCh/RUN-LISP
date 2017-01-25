@@ -25,7 +25,8 @@ int main(int argc, char** argv) {
     Function *mainFunction = new Function(&mainEnviroment);
     LispStack::getInstance().push(mainFunction);
 
-    Parser p(true); // True = talk!
+    //Parser p(true); // True = talk!
+    Parser p(false); // True = talk!
     DataType * result;
 
     // REPL = Read Eval Print Loop

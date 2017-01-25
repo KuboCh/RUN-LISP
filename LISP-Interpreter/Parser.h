@@ -31,6 +31,7 @@ public:
     DataType* readFunction(Enviroment *e);
     DataType* readFunctionCall(string functionName, Enviroment *e);
     list<Parametr*> readParametrsOfFunction(Enviroment *e, Function *function, int *varCount);
+    pair<Function*, list<Parametr*> > readInBodyFunction(Enviroment* e, Function *function, int *varCount);
     bool talkToMe;
 private:
 };
