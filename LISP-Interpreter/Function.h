@@ -22,7 +22,7 @@ public:
     //int getArgCount();
     void print();
     void addArgument(string name);
-    void addToBody(Function *function, list<Parametr*> parametrs);
+    void addToBody(pair<Function*, list<Parametr*> > ribf);
     virtual DataType* eval(Enviroment *e);
     virtual bool checkArgCount(int givenArgCount);
     DataType* evalFunctionInBody(list<pair<Function*, list<Parametr*> > >::iterator functionData);

@@ -64,11 +64,9 @@ DataType* BuildInDefvar::eval(Enviroment *e) {
     //definuje premenn v enviromente funkcie z ktorej bola volana
     Function *parentFunction = LispStack::getInstance().pop();
     if (parentFunction != NULL) {
-        Variable *v = e->getVariable(Enviroment::varNameAt(0));
-        String *s = ((String*) v);
-        string name = s->value;
-        DataType* dt = e->getVariable(Enviroment::varNameAt(1))->value;
-        parentFunction->functionEnviroment->addVariable(((String*) e->getVariable(Enviroment::varNameAt(0)))->value, e->getVariable(Enviroment::varNameAt(1))->value, false);
+        //parentFunction->functionEnviroment->addVariable(((String*) e->getVariable(Enviroment::varNameAt(0)))->value, e->getVariable(Enviroment::varNameAt(1))->value, false);
+        parentFunction->functionEnviroment->addVariable(((String*) e->getVariable(Enviroment::varNameAt(0))->value)->value,
+                e->getVariable(Enviroment::varNameAt(1))->value, false);
     }
     return new Void();
 }
@@ -161,7 +159,8 @@ DataType* BuildInDefconst::eval(Enviroment *e) {
     //definuje premenn v enviromente funkcie z ktorej bola volana
     Function *parentFunction = LispStack::getInstance().pop();
     if (parentFunction != NULL) {
-        parentFunction->functionEnviroment->addVariable(((String*) e->getVariable(Enviroment::varNameAt(0)))->value, e->getVariable(Enviroment::varNameAt(1))->value, true);
+        parentFunction->functionEnviroment->addVariable(((String*) e->getVariable(Enviroment::varNameAt(0))->value)->value,
+                e->getVariable(Enviroment::varNameAt(1))->value, true);
     }
     return new Void();
 }

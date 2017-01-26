@@ -29,8 +29,8 @@ void Function::addArgument(string name) {
     argCount++;
 }
 
-void Function::addToBody(Function* function, list<Parametr*> parametrs) {
-    body.push_back(pair<Function*, list<Parametr*> >(function, parametrs));
+void Function::addToBody(pair<Function*, list<Parametr*> > ribf){//Function* function, list<Parametr*> parametrs) {
+    body.push_back(ribf);
 }
 
 DataType* Function::eval(Enviroment* e) {
@@ -65,6 +65,7 @@ DataType* Function::evalFunctionInBody(list<pair<Function*,list<Parametr*> > >::
     int argPos = 0;
     for (list<Parametr*>::iterator paramIt = (*functionData).second.begin(); paramIt != (*functionData).second.end(); paramIt++){
         try {
+            
         enviroment->addVariable((*functionData).first->getParametrNameAt(argPos), (*paramIt)->eval(functionEnviroment), false);
         } catch (const char* error) {
             return new Error(error);

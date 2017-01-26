@@ -233,7 +233,7 @@ DataType* Parser::readFunction(Enviroment* e) {
         } catch (const char* error) {
             return new Error(error);
         }
-        function->addToBody(ribf.first, ribf.second);
+        function->addToBody(ribf);
         skipWhiteSpaces();
     }
     cin >> bracket;

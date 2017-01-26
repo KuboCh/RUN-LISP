@@ -1,5 +1,6 @@
 #include "Parametr.h"
 #include "Error.h"
+#include "String.h"
 
 using namespace std;
 
@@ -40,6 +41,9 @@ DataType* Parametr::eval(Enviroment *e){
         return v->value;
     }
     if (value != NULL) {
+        if (value->dataType() == DataType::TYPE_STRING){
+            String *s = ((String*) value);
+        }
         return value;
     }
     function->eval(e);
