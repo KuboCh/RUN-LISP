@@ -1,6 +1,7 @@
 #include <string>
 #include "Function.h"
 #include "Enviroment.h"
+#include "LispStack.h"
 
 #ifndef PARAMETR_H
 #define PARAMETR_H

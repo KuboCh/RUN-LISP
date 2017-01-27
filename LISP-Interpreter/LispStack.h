@@ -31,6 +31,9 @@ class LispStack {
             stackOfFunctions.push(function);
         }
         
+        bool isEmpty(){
+            return stackOfFunctions.empty();
+        }
 };
 
 

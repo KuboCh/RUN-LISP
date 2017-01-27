@@ -35,6 +35,8 @@ public:
     map<string, Variable*>::const_iterator getParametrsIterator();
     map<string, Variable*>::const_iterator getParametrsIteratorEnd();
     int getNumberOfVariables();
+    
+    void print();
 private:
     map<string, Variable*> variables;
     vector<Function*> functions;

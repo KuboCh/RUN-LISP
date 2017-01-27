@@ -23,7 +23,7 @@ Parser::~Parser() {
 
 // Push back string s to (standard) input stream
 
-void pushBack(string s) {
+void Parser::pushBack(string s) {
     for (int i = s.size() - 1; i >= 0; i--)
         cin.putback(s[i]);
 }
@@ -173,13 +173,13 @@ pair<Function*, list<Parametr*> > Parser::readInBodyFunction(Enviroment* e, Func
                 // je to cislo
                 p->value = readNumber(arg);
                 if (p->value->dataType() == DataType::TYPE_ERROR) {
-                    //TODO zmazat zvysok imputu?
+                    cin.sync(); // clear the input buffer ??
                     throw p->value->toString(); //return p->value;
                 }
             } else if (arg[0] == '"') {
                 p->value = readString(arg);
                 if (p->value->dataType() == DataType::TYPE_ERROR) {
-                    //TODO zmazat zvysok imputu?
+                    cin.sync(); // clear the input buffer ??
                     throw p->value->toString(); //return p->value;
                 }
             } else {
@@ -194,7 +194,6 @@ pair<Function*, list<Parametr*> > Parser::readInBodyFunction(Enviroment* e, Func
             parameters.push_back(p);
         }
     }
-    //cin >> bracket;
     cin.get(); // zoberie iba ), pre pripad ze je nieco za
     return pair<Function*, list<Parametr*> >(functionInBody, parameters);
 }
@@ -219,7 +218,7 @@ DataType* Parser::readFunction(Enviroment* e) {
     }
     // parse last argument
     if (pos != 0) // arg == blahblah)
-        function->addArgument(arg.substr(0, pos)); //TODO why? nefunguje pre pripad (a b c)enter function->addArgument(arg.substr(0, arg.size() - 2)); 
+        function->addArgument(arg.substr(0, pos)); 
     if (pos + 1 != arg.size()) // push back the rest of string
         pushBack(arg.erase(0, pos + 1));
 
@@ -238,78 +237,9 @@ DataType* Parser::readFunction(Enviroment* e) {
     }
     cin >> bracket;
     e->addFunction(function);
-
-    //    string var;
-    //    cin >> var;
-    //    int pos = var.find(")");
-    //
-    //    var = var.substr(1); // skip opening ( of arguments
-    //    var = var.substr(pos + 1); // go to position after )
-    //    if (var.length() == 0)
-    //        cin >> var;
-    //    int varCount = 0;
-    //    while (var != ")") {
-    //        if (var[0] == '(')
-    //            var = var.substr(1);
-    //        Function *functionInBody = e->getFunction(var);
-    //        if (functionInBody == NULL)
-    //            return new Error("Function " + var + " not declared");
-    //        list<Parametr*> parameters = readParametrsOfFunction(e, function, &varCount);
-    //        function->addToBody(functionInBody, parameters);
-    //
-    //
-    //        cin >> var;
-    //
-    //
-    //        pos = var.find(")");
-    //        if (pos != -1) {
-    //
-    //            string befor = var.substr(0, pos);
-    //            string after = var.substr(pos + 1);
-    //            if (befor != "") {
-    //
-    //            }
-    //
-    //        }
-    //
-    //    }
     cout << function->name;
     return new Void();
 }
-
-// TODO, na ten throw spravit catch, ktory vrati Error("popis")...
-
-//list<Parametr*> Parser::readParametrsOfFunction(Enviroment* e, Function *function, int *varCount) {
-//    list<Parametr*> listOfParametrs;
-//    string word;
-//    cin >> word;
-//    while (true) {
-//        if (word[0] == ')') {
-//            //end of parametrs
-//            if (word.length() > 1) {
-//                pushBack(word.substr(1));
-//            }
-//            return listOfParametrs;
-//        }
-//        if (word[0] == '(') {
-//            //function call
-//            word = word.substr(1);
-//            Function *f = e->getFunction(word);
-//            if (f == NULL) {
-//                throw "Function " + word + " not definded";
-//            }
-//            list<Parametr*> parOfInnerFunction = readParametrsOfFunction(e, function, varCount);
-//            for (list<Parametr*>::iterator it = parOfInnerFunction.begin(); it != parOfInnerFunction.end(); ++it) {
-//                if ((*it)->getType() == Parametr::TYPE_FUNCTION) {
-//                    //vo volani funkcie je je dalsia funkcia *f a ta ma parameter dalsiu funkciu :/ fuck 
-//                    //treba pred volanie vlozit (defvar "meno" volanie funkcie) a hodnotu it zamenit za parameter s menon meno
-//                }
-//            }
-//
-//        }
-//
-//    }
-//}
 
 DataType* Parser::readFunctionCall(string functionName, Enviroment *e) {
     int pos = functionName.find(")");

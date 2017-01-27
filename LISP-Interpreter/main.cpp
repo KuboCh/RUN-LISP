@@ -28,7 +28,13 @@ int main(int argc, char** argv) {
     //Parser p(true); // True = talk!
     Parser p(false); // True = talk!
     DataType * result;
-
+    
+    p.pushBack("(def inc4 (x) (inc3 (inc2 (inc1 0))))\n");
+    p.pushBack("(def inc1 (x) (+ x 1))\n");
+    p.pushBack("(def inc2 (x) (+ x 1))\n");
+    p.pushBack("(def inc3 (x) (+ x 1))\n");
+    
+    
     // REPL = Read Eval Print Loop
     while (true) { // Loop
         cout << ++lineNo << ". > ";
@@ -41,7 +47,7 @@ int main(int argc, char** argv) {
         result->print(); // Print
         cout << endl;
         //delete result; // Delete my garbage
-        if (lineNo == 100)
+        if (lineNo == 100) // proti zacykleniu
             break;
     }
     cout << "Bye!" << endl;

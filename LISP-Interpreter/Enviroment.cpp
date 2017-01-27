@@ -61,3 +61,14 @@ Function* Enviroment::getFunction(string name) {
 int Enviroment::getNumberOfVariables() {
     return numberOfVariables;
 }
+
+void Enviroment::print() {
+    cout << "Variables:" << endl;
+    for (map<string, Variable*>::iterator it = variables.begin(); it != variables.end(); ++it) {
+        cout << (*it).first << " = " << (*it).second->toString() << endl;
+    }
+    cout << "Functions:" << endl;
+    for (vector<Function*>::iterator it = functions.begin(); it != functions.end(); ++it) {
+        cout << (*it)->name << endl;
+    }
+}

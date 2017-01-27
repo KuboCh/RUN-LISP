@@ -22,6 +22,7 @@ public:
     Parser(const Parser& orig);
     virtual ~Parser();
     DataType* parse(string line, Enviroment *e);
+    void pushBack(string s);
     
     DataType* readString(string line);
     DataType* readNumber(string line);
