@@ -1,6 +1,8 @@
 #include "Parametr.h"
 #include "Error.h"
 #include "String.h"
+#include "LispStack.h"
+#include "Number.h"
 
 using namespace std;
 
@@ -31,27 +33,41 @@ Parametr::~Parametr() {
 //    parametrName = name;
 //}
 
-DataType* Parametr::eval(Enviroment *e){
-    if (parametrName != "") {
+DataType* Parametr::eval(Enviroment *e) {
+    if (parametrName != "") { // we have name, search for value in environments
         Variable *v = e->getVariable(parametrName);
         if (v == NULL) {
             //TODO ak sa nenaslo hladat v enviromentoch vyssie az potom ak sa nenajde return errror
-            return new Error("Variable " + parametrName + " not declared");
+            stack<Function*> tmpStack;
+            while (v == NULL && !LispStack::getInstance().isEmpty()) {
+                Function *f = LispStack::getInstance().pop();
+                tmpStack.push(f);
+                v = f->functionEnviroment->getVariable(parametrName);
+            }
+            if (v == NULL) {
+                return new Error("Variable " + parametrName + " not declared");
+            }
+            while (!tmpStack.empty()) { // return all popped functions back on stack
+                LispStack::getInstance().push(tmpStack.top());
+                tmpStack.pop();
+            }
         }
+        cout << "Parameter " << parametrName << " is " << ((Number*) v->value)->value <<endl;
         return v->value;
     }
     if (value != NULL) {
-        if (value->dataType() == DataType::TYPE_STRING){
-            String *s = ((String*) value);
+        if (value->dataType() == DataType::TYPE_STRING) {
+            String *s = ((String*) value); // um... wat? :D TODO?
         }
         return value;
     }
-    function->eval(e);
+    cout << "Parametr value is result of function " << function->name << endl;
+    return function->eval(e);
     //TODO eval funkciu - pripravit enviroment
-    
+
 }
 
-int Parametr::getType(){
+int Parametr::getType() {
     if (parametrName != "") {
         return TYPE_VARIABLE_NAME;
     }
