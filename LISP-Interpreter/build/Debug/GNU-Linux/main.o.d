@@ -1,31 +1,35 @@
-build/Debug/GNU-Linux/main.o: main.cpp Parser.h Number.h DataType.h \
- String.h False.h Nil.h True.h Enviroment.h Variable.h List.h Parametr.h \
- Function.h LispStack.h BuildInFunctions.h
+build/Debug/GNU-Linux/main.o: main.cpp Parser2.h String.h DataType.h \
+ Array.h Number.h Variable.h Enviroment.h List.h True.h Symbol.h False.h \
+ Nil.h Error.h BuildInFunctions.h Function.h LispStack.h
 
-Parser.h:
+Parser2.h:
 
-Number.h:
+String.h:
 
 DataType.h:
 
-String.h:
+Array.h:
+
+Number.h:
+
+Variable.h:
+
+Enviroment.h:
+
+List.h:
+
+True.h:
+
+Symbol.h:
 
 False.h:
 
 Nil.h:
 
-True.h:
+Error.h:
 
-Enviroment.h:
-
-Variable.h:
-
-List.h:
-
-Parametr.h:
+BuildInFunctions.h:
 
 Function.h:
 
 LispStack.h:
-
-BuildInFunctions.h:

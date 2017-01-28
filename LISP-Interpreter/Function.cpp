@@ -39,6 +39,7 @@ DataType* Function::eval(Enviroment* e) {
     LispStack::getInstance().push(this); // vlozi sa na stack
     cout << "Pushing " + this->name << endl;
     DataType* result = new Nil();
+    // Ak ma funkcia body functions, treba ich vsetky vyhodnotit v jej environmente
     for (list<pair<Function*, list<Parametr*> > >::iterator it = body.begin(); it != body.end(); ++it) {
         result = evalFunctionInBody(it);
         if (result->dataType() == DataType::TYPE_ERROR) {
@@ -69,9 +70,9 @@ DataType* Function::evalFunctionInBody(list<pair<Function*, list<Parametr*> > >:
         }
         argPos++;
     }
-    //cout << "--------------------------------------" << endl;
-    //enviroment->print();
-    //cout << "--------------------------------------" << endl;
+//    cout << "--------------------------------------" << endl;
+//    enviroment->print();
+//    cout << "--------------------------------------" << endl;
     return (*functionData).first->eval(enviroment);
 }
 
@@ -82,3 +83,14 @@ string Function::getParametrNameAt(int position) {
     return argsNames.at(position);
 }
 
+void Function::printFunctionParams() {
+    cout << this->name;
+    for (list<pair<Function*, list<Parametr*> > >::iterator it = body.begin(); it != body.end(); ++it) {
+        (*it).first->printFunctionParams();
+        for (list<Parametr*>::iterator it2 = (*it).second.begin(); it2 != (*it).second.end(); ++it2) {
+            if ((*it2)->function != NULL) {
+                (*it2)->function->printFunctionParams();
+            }
+        }
+    }
+}

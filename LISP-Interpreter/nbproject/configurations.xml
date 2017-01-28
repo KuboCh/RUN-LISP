@@ -12,16 +12,19 @@
         <itemPath>Nil.h</itemPath>
         <itemPath>Number.h</itemPath>
         <itemPath>String.h</itemPath>
+        <itemPath>Symbol.h</itemPath>
         <itemPath>True.h</itemPath>
         <itemPath>Variable.h</itemPath>
         <itemPath>Void.h</itemPath>
       </logicalFolder>
+      <itemPath>Array.h</itemPath>
       <itemPath>BuildInFunctions.h</itemPath>
       <itemPath>Enviroment.h</itemPath>
       <itemPath>Function.h</itemPath>
       <itemPath>LispStack.h</itemPath>
       <itemPath>Parametr.h</itemPath>
       <itemPath>Parser.h</itemPath>
+      <itemPath>Parser2.h</itemPath>
     </logicalFolder>
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
@@ -34,6 +37,7 @@
         <itemPath>Nil.cpp</itemPath>
         <itemPath>Number.cpp</itemPath>
         <itemPath>String.cpp</itemPath>
+        <itemPath>Symbol.cpp</itemPath>
         <itemPath>True.cpp</itemPath>
         <itemPath>Variable.cpp</itemPath>
         <itemPath>Void.cpp</itemPath>
@@ -42,17 +46,27 @@
                      displayName="Resource Files"
                      projectFiles="true">
       </logicalFolder>
+      <itemPath>Array.cpp</itemPath>
       <itemPath>BuildInFunctions.cpp</itemPath>
       <itemPath>Enviroment.cpp</itemPath>
       <itemPath>Function.cpp</itemPath>
       <itemPath>Parametr.cpp</itemPath>
       <itemPath>Parser.cpp</itemPath>
+      <itemPath>Parser2.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
                    displayName="Test Files"
                    projectFiles="false"
                    kind="TEST_LOGICAL_FOLDER">
+      <logicalFolder name="f2"
+                     displayName="Parser2 Tests"
+                     projectFiles="true"
+                     kind="TEST">
+        <itemPath>tests/Parser2Tests.cpp</itemPath>
+        <itemPath>tests/Parser2Tests.h</itemPath>
+        <itemPath>tests/Parser2TestsRunner.cpp</itemPath>
+      </logicalFolder>
       <logicalFolder name="f1"
                      displayName="ParserTest"
                      projectFiles="true"
@@ -93,6 +107,10 @@
           <commandLine>-std=c++11</commandLine>
         </ccTool>
       </compileType>
+      <item path="Array.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Array.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="BuildInFunctions.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="BuildInFunctions.h" ex="false" tool="3" flavor2="0">
@@ -139,9 +157,17 @@
       </item>
       <item path="Parser.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="Parser2.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Parser2.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="String.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="String.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Symbol.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Symbol.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="True.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -169,7 +195,27 @@
           </linkerLibItems>
         </linkerTool>
       </folder>
+      <folder path="TestFiles/f2">
+        <cTool>
+          <commandLine>`cppunit-config --cflags`</commandLine>
+        </cTool>
+        <ccTool>
+          <commandLine>`cppunit-config --cflags`</commandLine>
+        </ccTool>
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f2</output>
+          <linkerLibItems>
+            <linkerOptionItem>`cppunit-config --libs`</linkerOptionItem>
+          </linkerLibItems>
+        </linkerTool>
+      </folder>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="tests/Parser2Tests.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="tests/Parser2Tests.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="tests/Parser2TestsRunner.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="tests/ParserTest.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -198,6 +244,10 @@
           <developmentMode>5</developmentMode>
         </asmTool>
       </compileType>
+      <item path="Array.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Array.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="BuildInFunctions.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="BuildInFunctions.h" ex="false" tool="3" flavor2="0">
@@ -244,9 +294,17 @@
       </item>
       <item path="Parser.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="Parser2.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Parser2.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="String.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="String.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Symbol.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Symbol.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="True.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -274,7 +332,27 @@
           </linkerLibItems>
         </linkerTool>
       </folder>
+      <folder path="TestFiles/f2">
+        <cTool>
+          <commandLine>`cppunit-config --cflags`</commandLine>
+        </cTool>
+        <ccTool>
+          <commandLine>`cppunit-config --cflags`</commandLine>
+        </ccTool>
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f2</output>
+          <linkerLibItems>
+            <linkerOptionItem>`cppunit-config --libs`</linkerOptionItem>
+          </linkerLibItems>
+        </linkerTool>
+      </folder>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="tests/Parser2Tests.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="tests/Parser2Tests.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="tests/Parser2TestsRunner.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="tests/ParserTest.cpp" ex="false" tool="1" flavor2="0">
       </item>

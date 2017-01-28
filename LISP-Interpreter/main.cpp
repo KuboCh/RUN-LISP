@@ -1,7 +1,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <string>
-#include "Parser.h"
+#include "Parser2.h"
 #include "BuildInFunctions.h"
 #include "LispStack.h"
 
@@ -19,34 +19,34 @@ void buildFunctions(Enviroment *e) {
 int main(int argc, char** argv) {
     cout << "Welcome to LISP interpreter" << endl;
     int lineNo = 0;
-    string word;
+    string line;
     Enviroment mainEnviroment;
     buildFunctions(&mainEnviroment);
     Function *mainFunction = new Function(&mainEnviroment);
     LispStack::getInstance().push(mainFunction);
+    Parser2 parser;
+    Array *parsedData;
 
-    //Parser p(true); // True = talk!
-    Parser p(false); // True = talk!
-    DataType * result;
-    
-    p.pushBack("(def inc4 (x) (inc3 (inc2 (inc1 0))))\n");
-    p.pushBack("(def inc1 (x) (+ x 1))\n");
-    p.pushBack("(def inc2 (x) (+ x 1))\n");
-    p.pushBack("(def inc3 (x) (+ x 1))\n");
-    
-    
     // REPL = Read Eval Print Loop
     while (true) { // Loop
         cout << ++lineNo << ". > ";
-        cin >> word; // Read
-        if (p.talkToMe)
-            cout << "Main: You said: " << word << endl;
-        if (word == "bye" || word == "exit")
+        getline(cin, line);
+        if (line == "bye" || line == "exit")
             break;
-        result = p.parse(word, &mainEnviroment); // Eval + additional read
-        result->print(); // Print
+        parsedData = parser.parse(line, mainEnviroment); // Read
+        if ((*parsedData).isAtom()) {
+            cout << (*parsedData).toString() << endl;
+        } else {
+            cout << "[";
+            for (int i = 0; i < (*parsedData).a.size(); i++) {
+                cout << ((*parsedData).a[i])->toString();
+                if (i + 1 != (*parsedData).a.size())
+                    cout << ",";
+            }
+            cout << "]";
+        }
         cout << endl;
-        //delete result; // Delete my garbage
+
         if (lineNo == 100) // proti zacykleniu
             break;
     }

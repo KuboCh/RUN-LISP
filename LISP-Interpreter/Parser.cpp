@@ -148,6 +148,7 @@ pair<Function*, list<Parametr*> > Parser::readInBodyFunction(Enviroment* e, Func
     char bracket;
     cin >> bracket; // opening bracket (
     cin >> arg; // function name
+    cout << "readInBodyFunction " << arg << endl;
     Function *functionInBody = e->getFunction(arg);
     if (functionInBody == NULL)
         throw "Function " + arg + " not declared";
@@ -218,7 +219,7 @@ DataType* Parser::readFunction(Enviroment* e) {
     }
     // parse last argument
     if (pos != 0) // arg == blahblah)
-        function->addArgument(arg.substr(0, pos)); 
+        function->addArgument(arg.substr(0, pos));
     if (pos + 1 != arg.size()) // push back the rest of string
         pushBack(arg.erase(0, pos + 1));
 
@@ -253,6 +254,9 @@ DataType* Parser::readFunctionCall(string functionName, Enviroment *e) {
         functionName = functionName.substr(0, pos);
     }
     Function *function = e->getFunction(functionName);
+    cout << "---------------------------------------------------" << endl;
+    function->printFunctionParams();
+    cout << endl << "---------------------------------------------------" << endl;
     if (function == NULL)
         return new Error("Call to undefined function " + functionName);
     Enviroment *functionEnviroment = new Enviroment();
@@ -263,6 +267,7 @@ DataType* Parser::readFunctionCall(string functionName, Enviroment *e) {
         int i = 0;
         while (pos != 0) {
             DataType* nextParametr = parse(var, e);
+            //cout << "Function " << function->name << " call with param of type " << nextParametr->dataType() << endl;
             if (nextParametr->dataType() == DataType::TYPE_ERROR) {
                 return nextParametr;
             }

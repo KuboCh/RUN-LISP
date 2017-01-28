@@ -27,6 +27,7 @@ public:
     virtual bool checkArgCount(int givenArgCount);
     DataType* evalFunctionInBody(list<pair<Function*, list<Parametr*> > >::iterator functionData);
     virtual string getParametrNameAt(int position);
+    void printFunctionParams();
     
     string name;
     vector<string> argsNames;

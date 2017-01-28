@@ -18,7 +18,7 @@ public:
     virtual ~Parametr();
     Function *function;
     DataType *value;
-    string parametrName;
+    string parametrName = "";
     DataType* eval(Enviroment *e);
     int getType();
 private:

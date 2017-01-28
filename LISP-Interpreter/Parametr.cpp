@@ -34,6 +34,19 @@ Parametr::~Parametr() {
 //}
 
 DataType* Parametr::eval(Enviroment *e) {
+//    if (function != NULL) {
+//        // param is result of this function
+//        cout << function->name << " is parameter of function" << endl;
+//        DataType* result = NULL;
+//        for (list<pair<Function*, list<Parametr*> > >::iterator it = function->body.begin(); it != function->body.end(); ++it) {
+//            cout << "eval param function "<< (*it).first->name<<endl;
+//            //result = (*it).first->eval(e);
+//            //if (result->dataType() == DataType::TYPE_ERROR) {
+//            //    return result; // return that error
+//            //}
+//        }
+//        return function->eval(e);
+//    }
     if (parametrName != "") { // we have name, search for value in environments
         Variable *v = e->getVariable(parametrName);
         if (v == NULL) {
@@ -52,7 +65,7 @@ DataType* Parametr::eval(Enviroment *e) {
                 tmpStack.pop();
             }
         }
-        cout << "Parameter " << parametrName << " is " << ((Number*) v->value)->value <<endl;
+        cout << "Parameter " << parametrName << " is " << ((Number*) v->value)->value << endl;
         return v->value;
     }
     if (value != NULL) {
@@ -62,7 +75,8 @@ DataType* Parametr::eval(Enviroment *e) {
         return value;
     }
     cout << "Parametr value is result of function " << function->name << endl;
-    return function->eval(e);
+        return function->eval(e);
+    //return function->eval(e);
     //TODO eval funkciu - pripravit enviroment
 
 }

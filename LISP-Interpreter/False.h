@@ -1,13 +1,14 @@
 #include <string>
 #include <iostream>
 #include "DataType.h"
+#include "Symbol.h"
 
 #ifndef FALSE_H
 #define FALSE_H
 
 using namespace std;
 
-class False : public DataType {
+class False : public Symbol {
 public:
     False();
     False(const False& orig);

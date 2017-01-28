@@ -3,6 +3,7 @@
 #include "Nil.h"
 #include "Number.h"
 #include "String.h"
+#include "Symbol.h"
 
 #ifndef BUILDINFUNCTIONS_H
 #define BUILDINFUNCTIONS_H

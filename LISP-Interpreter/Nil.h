@@ -1,13 +1,14 @@
 #include <string>
 #include <iostream>
 #include "DataType.h"
+#include "Symbol.h"
 
 #ifndef NIL_H
 #define NIL_H
 
 using namespace std;
 
-class Nil : public DataType {
+class Nil : public Symbol  {
 public:
     Nil();
     Nil(const Nil& orig);
