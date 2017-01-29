@@ -1,4 +1,12 @@
 #include "Parser2.h"
+#include "Array.h"
+#include "Enviroment.h"
+#include "Number.h"
+#include "String.h"
+#include "Symbol.h"
+#include "True.h"
+#include "False.h"
+#include "Nil.h"
 
 Parser2::Parser2() {
 }
@@ -178,7 +186,7 @@ Array* giveMeaningToTokens(list<string>& tokens, Enviroment& e) {
  */
 Array* Parser2::parse(string line, Enviroment& e) {
     string input;
-    Array *result;
+    Array *result = NULL;
     try {
         input = getFullInput(line);
         list<string> tokens = tokenize(input);

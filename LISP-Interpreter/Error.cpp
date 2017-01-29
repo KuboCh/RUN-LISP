@@ -1,6 +1,5 @@
 #include "Error.h"
-
-using namespace std;
+#include "DataType.h"
 
 Error::Error() {
 }

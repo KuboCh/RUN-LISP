@@ -1,8 +1,14 @@
 #include "BuildInFunctions.h"
+#include "Variable.h"
+#include "DataType.h"
+#include "Enviroment.h"
+#include "Function.h"
+#include "List.h"
+#include "Number.h"
+#include "String.h"
 #include "Error.h"
-#include "Void.h"
 #include "LispStack.h"
-#include "True.h"
+#include "Void.h"
 
 BuildInPlus::BuildInPlus() {
     name = "+";

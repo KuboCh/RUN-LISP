@@ -1,9 +1,11 @@
-#include "DataType.h"
 #include <string>
+#include "DataType.h"
+
 using namespace std;
 
 #ifndef VARIABLE_H
 #define VARIABLE_H
+//class DataType;
 
 class Variable : public DataType {
 public:

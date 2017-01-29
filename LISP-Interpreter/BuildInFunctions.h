@@ -1,13 +1,13 @@
+#include <string>
 #include "Function.h"
-#include "Enviroment.h"
-#include "Nil.h"
-#include "Number.h"
-#include "String.h"
-#include "Symbol.h"
-#include "List.h"
+
+using namespace std;
 
 #ifndef BUILDINFUNCTIONS_H
 #define BUILDINFUNCTIONS_H
+class DataType;
+class Enviroment;
+//class Function;
 
 class BuildInPlus : public Function {
 private:

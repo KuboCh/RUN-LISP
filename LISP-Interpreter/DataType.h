@@ -2,10 +2,10 @@
 #include <iostream>
 #include "Array.h"
 
+using namespace std;
+
 #ifndef DATATYPE_H
 #define DATATYPE_H
-
-using namespace std;
 
 class DataType : public Array {
 public:

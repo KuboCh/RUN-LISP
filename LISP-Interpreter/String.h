@@ -2,10 +2,11 @@
 #include <iostream>
 #include "DataType.h"
 
+using namespace std;
+
 #ifndef STRING_H
 #define STRING_H
-
-using namespace std;
+class Enviroment;
 
 class String : public DataType {
 public:

@@ -1,12 +1,13 @@
 #include <string>
 #include <iostream>
-#include "DataType.h"
 #include <stdlib.h>
+#include "DataType.h"
+
+using namespace std;
 
 #ifndef NUMBER_H
 #define NUMBER_H
-
-using namespace std;
+class Enviroment;
 
 class Number : public DataType {
 public:

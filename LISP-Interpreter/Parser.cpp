@@ -1,14 +1,16 @@
-#include <stdlib.h>
-#include <algorithm>    // std::reverse
-#include <limits>
 #include "Parser.h"
-#include "Enviroment.h"
 #include "Error.h"
+#include "String.h"
+#include "List.h"
+#include "Number.h"
+#include "True.h"
+#include "False.h"
+#include "Nil.h"
+#include "Enviroment.h"
+#include "Variable.h"
+#include "Parametr.h"
 #include "Function.h"
 #include "Void.h"
-#include "Parametr.h"
-
-using namespace std;
 
 Parser::Parser() {
     talkToMe = false;

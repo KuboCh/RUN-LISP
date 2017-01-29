@@ -1,12 +1,11 @@
 #include "Function.h"
-#include <string>
-#include "Nil.h"
-#include "LispStack.h"
-#include "Error.h"
+#include "DataType.h"
+#include "Enviroment.h"
 #include "Parametr.h"
+#include "LispStack.h"
+#include "Nil.h"
 #include "Number.h"
-
-using namespace std;
+#include "Error.h"
 
 Function::Function() {
     argCount = 0;

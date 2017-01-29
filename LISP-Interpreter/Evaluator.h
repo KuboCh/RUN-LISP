@@ -1,11 +1,11 @@
-#include "DataType.h"
-#include "Array.h"
-#include "Enviroment.h"
 #include <string>
 #include <vector>
 
 #ifndef EVALUATOR_H
 #define EVALUATOR_H
+class DataType;
+class Array;
+class Enviroment;
 
 class Evaluator {
 public:

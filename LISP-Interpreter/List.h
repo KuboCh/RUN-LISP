@@ -1,11 +1,11 @@
 #include <list>
-
 #include "DataType.h"
+
+using namespace std;
 
 #ifndef LIST_H
 #define LIST_H
-
-using namespace std;
+class Enviroment;
 
 class List : public DataType {
 public:

@@ -1,12 +1,13 @@
 #include <string>
 #include <iostream>
-#include "DataType.h"
 #include "Symbol.h"
+
+using namespace std;
 
 #ifndef TRUE_H
 #define TRUE_H
-
-using namespace std;
+class DataType;
+class Enviroment;
 
 class True : public Symbol {
 public:

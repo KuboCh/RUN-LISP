@@ -1,7 +1,5 @@
 #include <stack>
 
-#include "Function.h"
-
 #ifndef LISPSTACK_H
 #define LISPSTACK_H
 

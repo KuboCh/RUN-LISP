@@ -1,16 +1,14 @@
 #include <string>
-#include "Variable.h"
 #include <list>
 #include <vector>
-#include "DataType.h"
-#include "Enviroment.h"
+
+using namespace std;
 
 #ifndef FUNCTION_H
 #define FUNCTION_H
-
 class Parametr;
-
-using namespace std;
+class DataType;
+class Enviroment;
 
 class Function {
 public:

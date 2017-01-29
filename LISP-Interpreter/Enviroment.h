@@ -1,17 +1,14 @@
-#include<vector>
-#include<map>
+#include <vector>
+#include <map>
 #include <sstream>
-//#include "Variable.h"
-//#include "List.h"
+
+using namespace std;
 
 #ifndef ENVIROMENT_H
 #define ENVIROMENT_H
-
-class Function;
 class Variable;
-class List;
+class Function;
 class DataType;
-using namespace std;
 
 class Enviroment {
 public:

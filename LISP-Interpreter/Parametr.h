@@ -1,12 +1,12 @@
 #include <string>
-#include "Function.h"
-#include "Enviroment.h"
-#include "LispStack.h"
+
+using namespace std;
 
 #ifndef PARAMETR_H
 #define PARAMETR_H
-
-using namespace std;
+class Function;
+class DataType;
+class Enviroment;
 
 class Parametr {
 public:

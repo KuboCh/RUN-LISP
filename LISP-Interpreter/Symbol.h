@@ -1,13 +1,11 @@
-#include "DataType.h"
 #include <string>
 #include "DataType.h"
-#include "Enviroment.h"
-#include "Error.h"
 
 using namespace std;
 
 #ifndef SYMBOL_H
 #define SYMBOL_H
+class Enviroment;
 
 class Symbol : public DataType {
 public:

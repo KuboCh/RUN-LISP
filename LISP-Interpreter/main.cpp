@@ -1,10 +1,14 @@
 #include <cstdlib>
 #include <iostream>
 #include <string>
-#include "Parser2.h"
+#include "DataType.h"
+#include "Enviroment.h"
 #include "BuildInFunctions.h"
+#include "Function.h"
 #include "LispStack.h"
+#include "Parser2.h"
 #include "Evaluator.h"
+#include "Array.h"
 
 using namespace std;
 
@@ -49,9 +53,11 @@ int main(int argc, char** argv) {
         //            cout << "]";
         //        }
         //        cout << endl;
-        result = evaluator.eval(parsedData, mainEnviroment);
-        if (result != NULL) {
-            cout << result->toString() << endl;
+        if (parsedData != NULL) {
+            result = evaluator.eval(parsedData, mainEnviroment);
+            if (result != NULL) {
+                cout << result->toString() << endl;
+            }
         }
 
         if (lineNo == 100) // proti zacykleniu

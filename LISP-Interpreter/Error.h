@@ -1,11 +1,10 @@
 #include <string>
-
 #include "DataType.h"
+
+using namespace std;
 
 #ifndef ERROR_H
 #define ERROR_H
-
-using namespace std;
 
 class Error : public DataType {
 public:

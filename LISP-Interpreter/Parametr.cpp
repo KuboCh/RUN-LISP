@@ -3,6 +3,9 @@
 #include "String.h"
 #include "LispStack.h"
 #include "Number.h"
+#include "Variable.h"
+#include "Enviroment.h"
+#include "Function.h"
 
 using namespace std;
 

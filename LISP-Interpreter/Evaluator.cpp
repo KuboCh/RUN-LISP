@@ -1,17 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/* 
- * File:   Evaluator.cpp
- * Author: phil
- * 
- * Created on Nedeľa, 2017, januára 29, 9:03
- */
-
 #include "Evaluator.h"
+#include "DataType.h"
+#include "Array.h"
+#include "Enviroment.h"
 
 Evaluator::Evaluator() {
 }

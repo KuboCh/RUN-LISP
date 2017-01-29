@@ -1,12 +1,13 @@
 #include <string>
 #include <iostream>
-#include "DataType.h"
 #include "Symbol.h"
+
+using namespace std;
 
 #ifndef NIL_H
 #define NIL_H
-
-using namespace std;
+class DataType;
+class Enviroment;
 
 class Nil : public Symbol  {
 public:

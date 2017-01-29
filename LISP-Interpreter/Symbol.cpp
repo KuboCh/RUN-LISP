@@ -1,4 +1,7 @@
 #include "Symbol.h"
+#include "Variable.h"
+#include "Error.h"
+#include "Enviroment.h"
 
 Symbol::Symbol() {
 }

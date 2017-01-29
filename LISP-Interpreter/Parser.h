@@ -1,19 +1,18 @@
 #include <string>
 #include <iostream>
 #include <list>
-#include "Number.h"
-#include "String.h"
-#include "False.h"
-#include "Nil.h"
-#include "True.h"
-#include "Enviroment.h"
-#include "Parametr.h"
-#include "List.h"
+#include <algorithm>    // std::reverse
+#include <limits>
+#include <stdlib.h>
+
+using namespace std;
 
 #ifndef PARSER_H
 #define PARSER_H
-
-using namespace std;
+class DataType;
+class Enviroment;
+class Function;
+class Parametr;
 
 class Parser {
 public:
