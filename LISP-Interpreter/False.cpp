@@ -12,8 +12,8 @@ False::~False() {
 /*
  * False is (surprisingly) false.
  */
-void False::eval() {
-    //    return false;
+DataType* False::eval(Enviroment& e) {
+    return this;
 }
 
 void False::print(){

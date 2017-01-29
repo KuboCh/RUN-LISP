@@ -15,8 +15,8 @@ Error::Error(const Error& orig) {
 Error::~Error() {
 }
 
-void Error::eval() {
-    //TODO return
+DataType* Error::eval(Enviroment& e) {
+    return this;
 }
 
 void Error::print(){

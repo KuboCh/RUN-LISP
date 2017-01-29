@@ -14,8 +14,8 @@ Number::Number(const Number& orig) {
 Number::~Number() {
 }
 
-void Number::eval() {
-    // Number is already evaluated (atomic value)
+DataType* Number::eval(Enviroment& e) {
+    return this;
 }
 
 void Number::print(){

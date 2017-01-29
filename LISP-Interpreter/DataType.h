@@ -24,8 +24,9 @@ public:
     DataType(const DataType& orig);
     virtual ~DataType();
 
-    virtual void eval() {
+    virtual DataType* eval(Enviroment& e) {
         cout << "Abstract DataType eval() should be overriden." << endl;
+        return NULL;
     }
 
     virtual void print() {

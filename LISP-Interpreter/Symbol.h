@@ -1,6 +1,8 @@
 #include "DataType.h"
 #include <string>
 #include "DataType.h"
+#include "Enviroment.h"
+#include "Error.h"
 
 using namespace std;
 
@@ -10,16 +12,11 @@ using namespace std;
 class Symbol : public DataType {
 public:
     Symbol();
-
-    Symbol(const string& s) {
-        value = s;
-    }
+    Symbol(const string& s);
     Symbol(const Symbol& orig);
     virtual ~Symbol();
 
-    virtual void eval() {
-        cout << "Abstract Symbol eval() should be overriden." << endl;
-    }
+    virtual DataType* eval(Enviroment& e);
 
     virtual void print() {
         cout << value << endl;

@@ -14,7 +14,7 @@ public:
     False(const False& orig);
     virtual ~False();
     
-    void eval();
+     virtual DataType* eval(Enviroment& e);
     virtual void print();
     int dataType() { return TYPE_FALSE; }
     string toString() { return "false"; }

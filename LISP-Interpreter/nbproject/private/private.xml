@@ -7,16 +7,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/phil/Dokumenty/mi-run/RUN-LISP/LISP-Interpreter/Number.h</file>
-            <file>file:/home/phil/Dokumenty/mi-run/RUN-LISP/LISP-Interpreter/Function.h</file>
-            <file>file:/home/phil/Dokumenty/mi-run/RUN-LISP/LISP-Interpreter/BuildInFunctions.cpp</file>
-            <file>file:/home/phil/Dokumenty/mi-run/RUN-LISP/LISP-Interpreter/Parser.cpp</file>
-            <file>file:/home/phil/Dokumenty/mi-run/RUN-LISP/LISP-Interpreter/Enviroment.h</file>
-            <file>file:/home/phil/Dokumenty/mi-run/RUN-LISP/LISP-Interpreter/LispStack.h</file>
             <file>file:/home/phil/Dokumenty/mi-run/RUN-LISP/LISP-Interpreter/Enviroment.cpp</file>
-            <file>file:/home/phil/Dokumenty/mi-run/RUN-LISP/LISP-Interpreter/Function.cpp</file>
             <file>file:/home/phil/Dokumenty/mi-run/RUN-LISP/LISP-Interpreter/main.cpp</file>
-            <file>file:/home/phil/Dokumenty/mi-run/RUN-LISP/LISP-Interpreter/Parametr.cpp</file>
+            <file>file:/home/phil/Dokumenty/mi-run/RUN-LISP/LISP-Interpreter/Evaluator.cpp</file>
+            <file>file:/home/phil/Dokumenty/mi-run/RUN-LISP/LISP-Interpreter/Parser2.cpp</file>
+            <file>file:/home/phil/Dokumenty/mi-run/RUN-LISP/LISP-Interpreter/Symbol.h</file>
         </group>
     </open-files>
 </project-private>

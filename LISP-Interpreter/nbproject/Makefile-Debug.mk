@@ -40,6 +40,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/DataType.o \
 	${OBJECTDIR}/Enviroment.o \
 	${OBJECTDIR}/Error.o \
+	${OBJECTDIR}/Evaluator.o \
 	${OBJECTDIR}/False.o \
 	${OBJECTDIR}/Function.o \
 	${OBJECTDIR}/List.o \
@@ -118,6 +119,11 @@ ${OBJECTDIR}/Error.o: Error.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Error.o Error.cpp
+
+${OBJECTDIR}/Evaluator.o: Evaluator.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Evaluator.o Evaluator.cpp
 
 ${OBJECTDIR}/False.o: False.cpp 
 	${MKDIR} -p ${OBJECTDIR}
@@ -292,6 +298,19 @@ ${OBJECTDIR}/Error_nomain.o: ${OBJECTDIR}/Error.o Error.cpp
 	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Error_nomain.o Error.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/Error.o ${OBJECTDIR}/Error_nomain.o;\
+	fi
+
+${OBJECTDIR}/Evaluator_nomain.o: ${OBJECTDIR}/Evaluator.o Evaluator.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/Evaluator.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Evaluator_nomain.o Evaluator.cpp;\
+	else  \
+	    ${CP} ${OBJECTDIR}/Evaluator.o ${OBJECTDIR}/Evaluator_nomain.o;\
 	fi
 
 ${OBJECTDIR}/False_nomain.o: ${OBJECTDIR}/False.o False.cpp 

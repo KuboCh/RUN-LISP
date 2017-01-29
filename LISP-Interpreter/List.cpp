@@ -9,8 +9,8 @@ List::List(const List& orig) {
 List::~List() {
 }
 
-void List::eval() {
-    //TODO
+DataType* List::eval(Enviroment& e) {
+    return this;
 }
 
 void List::print(){

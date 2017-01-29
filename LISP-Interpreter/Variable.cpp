@@ -16,8 +16,8 @@ Variable::Variable(const Variable& orig) {
 Variable::~Variable() {
 }
 
-void Variable::eval() {
-    value->eval();
+DataType* Variable::eval(Enviroment& e) {
+    return value->eval(e);
 }
 
 void Variable::print(){

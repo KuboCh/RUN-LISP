@@ -12,8 +12,8 @@ Nil::~Nil() {
 /*
  * Nil is (surprisingly) nil.
  */
-void Nil::eval() {
-    //    return NULL;
+DataType* Nil::eval(Enviroment& e) {
+    return this;
 }
 
 void Nil::print(){

@@ -14,7 +14,7 @@ public:
     Nil(const Nil& orig);
     virtual ~Nil();
     
-    void eval();
+     virtual DataType* eval(Enviroment& e);
     virtual void print();
     int dataType() { return TYPE_NIL; }
     string toString() { return "nil"; }

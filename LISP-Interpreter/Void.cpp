@@ -13,7 +13,7 @@ void Void::print() {
     cout << "";
 }
 
-void Void::eval() {
-    
+DataType* Void::eval(Enviroment& e) {
+    return this;
 }
 

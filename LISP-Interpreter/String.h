@@ -14,7 +14,7 @@ public:
     String(const String& orig);
     virtual ~String();
     
-    void eval();
+     virtual DataType* eval(Enviroment& e);
     virtual void print();
     virtual int dataType() { return TYPE_STRING; }
     string value;

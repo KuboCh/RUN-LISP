@@ -4,6 +4,7 @@
 #include "Parser2.h"
 #include "BuildInFunctions.h"
 #include "LispStack.h"
+#include "Evaluator.h"
 
 using namespace std;
 
@@ -26,6 +27,8 @@ int main(int argc, char** argv) {
     LispStack::getInstance().push(mainFunction);
     Parser2 parser;
     Array *parsedData;
+    Evaluator evaluator;
+    DataType * result;
 
     // REPL = Read Eval Print Loop
     while (true) { // Loop
@@ -34,18 +37,22 @@ int main(int argc, char** argv) {
         if (line == "bye" || line == "exit")
             break;
         parsedData = parser.parse(line, mainEnviroment); // Read
-        if ((*parsedData).isAtom()) {
-            cout << (*parsedData).toString() << endl;
-        } else {
-            cout << "[";
-            for (int i = 0; i < (*parsedData).a.size(); i++) {
-                cout << ((*parsedData).a[i])->toString();
-                if (i + 1 != (*parsedData).a.size())
-                    cout << ",";
-            }
-            cout << "]";
+        //        if ((*parsedData).isAtom()) {
+        //            cout << (*parsedData).toString() << endl;
+        //        } else {
+        //            cout << "[";
+        //            for (int i = 0; i < (*parsedData).a.size(); i++) {
+        //                cout << ((*parsedData).a[i])->toString();
+        //                if (i + 1 != (*parsedData).a.size())
+        //                    cout << ",";
+        //            }
+        //            cout << "]";
+        //        }
+        //        cout << endl;
+        result = evaluator.eval(parsedData, mainEnviroment);
+        if (result != NULL) {
+            cout << result->toString() << endl;
         }
-        cout << endl;
 
         if (lineNo == 100) // proti zacykleniu
             break;

@@ -13,7 +13,7 @@ public:
     Error(string errorMessage);
     Error(const Error& orig);
     virtual ~Error();
-    void eval();
+     virtual DataType* eval(Enviroment& e);
     virtual void print();
     string errorMessage;
     int dataType() { return TYPE_ERROR; }

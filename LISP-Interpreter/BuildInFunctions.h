@@ -4,6 +4,7 @@
 #include "Number.h"
 #include "String.h"
 #include "Symbol.h"
+#include "List.h"
 
 #ifndef BUILDINFUNCTIONS_H
 #define BUILDINFUNCTIONS_H

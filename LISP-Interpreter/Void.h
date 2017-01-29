@@ -6,7 +6,7 @@
 
 class Void : public DataType {
 public:
-    void eval();
+     virtual DataType* eval(Enviroment& e);
     virtual void print();
     int dataType() { return TYPE_VOID; }
     virtual string toString() { return ""; }
