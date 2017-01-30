@@ -1,4 +1,5 @@
 #include <string>
+#include <list>
 
 using namespace std;
 
@@ -15,6 +16,7 @@ public:
     Parameter(const Parameter& orig);
     virtual ~Parameter();
     Function *function;
+    list<Parameter*> parametersOfFunction;
     Array *value;
     string parameterName = "";
     DataType* eval(Environment *e);

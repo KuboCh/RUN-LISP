@@ -6,6 +6,7 @@
 #include "Number.h"
 #include "Nil.h"
 #include "Variable.h"
+#include "String.h"
 
 Array::Array() {
 }
@@ -76,11 +77,17 @@ pair<Function*, list<Parameter*> > Array::getInBodyFunction(Environment& e) {
         if (a[i]->isAtom()) {
             param->value = (DataType*) a[i];
             if (((DataType*) a[i])->dataType() == DataType::TYPE_SYMBOL) {
-                param->parameterName = (*this)[i]; // string of this param
+                //ak je funkcia defvar, defconst symbol sa zameni za string
+                if ((function->name == "defvar" || function->name == "defconst") && i == 1){
+                    param->value = new String((*this)[i]);
+                } else {
+                    param->parameterName = (*this)[i]; // string of this param
+                }
             }
         } else {
             pair<Function*, list<Parameter*> > ibf = a[i]->getInBodyFunction(e);
             param->function = ibf.first;
+            param->parametersOfFunction = ibf.second;
         }
         parameters.push_back(param);
     }
