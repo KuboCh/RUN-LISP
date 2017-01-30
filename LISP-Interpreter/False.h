@@ -7,7 +7,7 @@ using namespace std;
 #ifndef FALSE_H
 #define FALSE_H
 class DataType;
-class Enviroment;
+class Environment;
 
 class False : public Symbol {
 public:
@@ -15,7 +15,7 @@ public:
     False(const False& orig);
     virtual ~False();
 
-    virtual DataType* eval(Enviroment& e);
+    virtual DataType* eval(Environment& e);
     virtual void print();
 
     int dataType() {

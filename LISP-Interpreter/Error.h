@@ -12,11 +12,16 @@ public:
     Error(string errorMessage);
     Error(const Error& orig);
     virtual ~Error();
-     virtual DataType* eval(Enviroment& e);
+
+    virtual DataType* eval(Environment& e);
     virtual void print();
-    string errorMessage;
-    int dataType() { return TYPE_ERROR; }
     virtual string toString();
+
+    int dataType() {
+        return TYPE_ERROR;
+    }
+
+    string errorMessage;
 private:
 
 };

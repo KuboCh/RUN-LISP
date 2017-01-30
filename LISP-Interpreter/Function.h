@@ -1,37 +1,46 @@
 #include <string>
 #include <list>
 #include <vector>
+#include "DataType.h"
 
 using namespace std;
 
 #ifndef FUNCTION_H
 #define FUNCTION_H
-class Parametr;
-class DataType;
-class Enviroment;
+class Parameter;
+class Environment;
 
-class Function {
+class Function : public DataType {
 public:
     Function();
-    Function(Enviroment * e);
-    //Function(string name, int argCount, Parametr* args, List body);
+    Function(Environment * e);
     Function(const Function& orig);
+    Function(const string& name);
     virtual ~Function();
-    //int getArgCount();
-    void print();
     void addArgument(string name);
-    void addToBody(pair<Function*, list<Parametr*> > ribf);
-    virtual DataType* eval(Enviroment *e);
+    void addToBody(pair<Function*, list<Parameter*> > ribf);
+    
+    virtual DataType* eval(Environment &e);
     virtual bool checkArgCount(int givenArgCount);
-    DataType* evalFunctionInBody(list<pair<Function*, list<Parametr*> > >::iterator functionData);
-    virtual string getParametrNameAt(int position);
-    void printFunctionParams();
+    DataType* evalFunctionInBody(list<pair<Function*, list<Parameter*> > >::iterator functionData);
+    virtual string getParameterNameAt(int position);
+    
+    virtual int dataType() {
+        return TYPE_FUNCTION;
+    }
+    
+    virtual void print(){
+        cout << name << endl;
+    }
+
+    virtual string toString() {
+        return name;
+    }
     
     string name;
     vector<string> argsNames;
-    list<pair<Function*, list<Parametr*> > > body;
-    int argCount;
-    Enviroment *functionEnviroment;
+    list<pair<Function*, list<Parameter*> > > body;
+    Environment *functionEnvironment;
 private:
     
 };

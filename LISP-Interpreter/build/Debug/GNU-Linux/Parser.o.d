@@ -1,35 +1,22 @@
-build/Debug/GNU-Linux/Parser.o: Parser.cpp Parser.h Error.h DataType.h \
- Array.h String.h List.h Number.h True.h Symbol.h False.h Nil.h \
- Enviroment.h Variable.h Parametr.h Function.h Void.h
+build/Debug/GNU-Linux/Parser.o: Parser.cpp Parser.h Array.h Environment.h \
+ Number.h DataType.h String.h Symbol.h True.h False.h Nil.h
 
 Parser.h:
 
-Error.h:
-
-DataType.h:
-
 Array.h:
 
-String.h:
-
-List.h:
+Environment.h:
 
 Number.h:
 
-True.h:
+DataType.h:
+
+String.h:
 
 Symbol.h:
+
+True.h:
 
 False.h:
 
 Nil.h:
-
-Enviroment.h:
-
-Variable.h:
-
-Parametr.h:
-
-Function.h:
-
-Void.h:

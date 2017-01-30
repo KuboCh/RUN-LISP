@@ -7,18 +7,23 @@ using namespace std;
 #ifndef NIL_H
 #define NIL_H
 class DataType;
-class Enviroment;
+class Environment;
 
-class Nil : public Symbol  {
+class Nil : public Symbol {
 public:
     Nil();
     Nil(const Nil& orig);
     virtual ~Nil();
-    
-     virtual DataType* eval(Enviroment& e);
+    virtual DataType* eval(Environment& e);
     virtual void print();
-    int dataType() { return TYPE_NIL; }
-    string toString() { return "nil"; }
+
+    int dataType() {
+        return TYPE_NIL;
+    }
+
+    string toString() {
+        return "nil";
+    }
 private:
 
 };

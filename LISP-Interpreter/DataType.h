@@ -16,32 +16,20 @@ public:
     static const int TYPE_TRUE = 4;
     static const int TYPE_NIL = 5;
     static const int TYPE_ERROR = 6;
-    static const int TYPE_PARAMETR = 7;
+    static const int TYPE_PARAMETER = 7;
     static const int TYPE_VOID = 8;
     static const int TYPE_SYMBOL = 9;
+    static const int TYPE_FUNCTION = 10;
 
     DataType();
     DataType(const DataType& orig);
     virtual ~DataType();
 
-    virtual DataType* eval(Enviroment& e) {
-        cout << "Abstract DataType eval() should be overriden." << endl;
-        return NULL;
-    }
-
-    virtual void print() {
-        cout << "Abstract DataType print should be overriden." << endl;
-    }
-
-    virtual int dataType() {
-        cout << "Abstract DataType type() should be overriden." << endl;
-        return TYPE_ERROR;
-    }
-
-    virtual string toString() {
-        cout << "Abstract DataType type() should be overriden." << endl;
-        return "";
-    }
+    virtual DataType* eval(Environment& e);
+    virtual void print();
+    virtual int dataType();
+    virtual string toString();
+    string typeToString();
 private:
 
 };

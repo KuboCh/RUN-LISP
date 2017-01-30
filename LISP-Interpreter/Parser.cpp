@@ -1,340 +1,200 @@
 #include "Parser.h"
-#include "Error.h"
-#include "String.h"
-#include "List.h"
+#include "Array.h"
+#include "Environment.h"
 #include "Number.h"
+#include "String.h"
+#include "Symbol.h"
 #include "True.h"
 #include "False.h"
 #include "Nil.h"
-#include "Enviroment.h"
-#include "Variable.h"
-#include "Parametr.h"
-#include "Function.h"
-#include "Void.h"
 
 Parser::Parser() {
-    talkToMe = false;
 }
 
-Parser::Parser(bool talk) {
-    talkToMe = talk;
+Parser::Parser(const Parser& orig) {
 }
 
 Parser::~Parser() {
 }
 
-// Push back string s to (standard) input stream
-
-void Parser::pushBack(string s) {
-    for (int i = s.size() - 1; i >= 0; i--)
-        cin.putback(s[i]);
-}
-
-void skipWhiteSpaces() {
-    while (cin.peek() == ' ' || cin.peek() == '\t' || cin.peek() == '\n') {
-        cin.get();
-    }
-}
-
-DataType* Parser::readString(string word) {
-    string fullString = word;
-    while (fullString.find('"', 1) == -1) { // if closing " was not found
-        cin >> word;
-        if (!word.empty())
-            fullString += " " + word;
-        else // input is empty and string was not ended by "
-            return new Error("E: Error occured while reading string " + fullString + " - End of input.");
-
-    }
-    int pos = fullString.find('"', 1);
-    word = fullString;
-    if (pos + 1 != fullString.size()) { // there's something after " in string
-        word.erase(0, pos + 1);
-        pushBack(word);
-    };
-    return new String(fullString.substr(1, pos - 1));
-}
-
-DataType* Parser::readList(string word, Enviroment *e) {
-    if (talkToMe)
-        cout << "reading list" << endl;
-    string element;
-    List *list = new List();
-    if (word == "(list") {
-        cin >> element;
-    } else {
-        element = word.substr(1);
-    }
-    while (true) {
-        if (element[0] == ')') {
-            if (element.length() != 1) {
-                element = element.substr(1);
-                pushBack(element);
-            }
-            return list;
-        }
-        DataType *newElement = parse(element, e);
-        if (newElement->dataType() == DataType::TYPE_ERROR) {
-            return newElement;
-        }
-        list->addElement(newElement);
-        cin >> element;
-    }
-}
-
-// Read a number from input stream (actually: integers only)
-
-DataType* Parser::readNumber(string word) {
-    // check each char of word and create number
-    string myWord = word;
-    for (int i = 0; i < word.size(); i++) {
-        if ((word[i] < '0') || (word[i] > '9')) { // NaN
-            if (talkToMe)
-                cout << "W: You've probably made a mistake in command " << word << ", but I will separate the number from it." << endl;
-            myWord = word.substr(0, i);
-            word.erase(0, i);
-            pushBack(word);
-            //            cout << "Pushing back word: \"" << word << "\"" << endl;
-            break;
+/*
+ *  Check the count of parenthesis in the given text
+ * @throws string If there are more closed then opened parenthesis (no way to repair it).
+ */
+int Parser::parenthesisCheck(string text) {
+    int openedParenthesis = 0;
+    for (int i = 0; i < text.size(); i++) {
+        if (text[i] == '(') {
+            openedParenthesis += 1;
+            //cout << "Adding p from pos " << i << ", pcount = " << openedParenthesis << endl;
+        } else if (text[i] == ')') {
+            if (openedParenthesis > 0) {
+                openedParenthesis -= 1;
+                //cout << "Removing p from pos " << i << ", pcount = " << openedParenthesis << endl;
+            } else
+                throw "E: Parenthesis count is wrong.";
         }
     }
-    return new Number(atoi(myWord.c_str()));
-}
-
-DataType* Parser::readSymbol(string word, Enviroment *e) {
-    if (word.compare("true") == 0)
-        return new True();
-    else if (word.compare("false") == 0)
-        return new False();
-    else if (word.compare("nil") == 0)
-        return new Nil();
-    if (talkToMe)
-        cout << "reading symbol" << endl;
-    int pos = word.find_first_of("()");
-    if (pos != -1) {
-        pushBack(word.substr(pos));
-        word = word.substr(0, pos);
-    }
-    Variable *var = e->getVariable(word);
-    if (var == NULL) {
-        return new Error("Variable " + word + " not found");
-    }
-    return var;
-}
-
-// nacita definovanie premennej, meno + hodnota, constant = ci je premenna konstanta
-
-DataType* Parser::readVariable(bool constant, Enviroment *e) {
-    string name;
-    string word;
-    cin >> name;
-    cin >> word;
-    DataType* value = parse(word, e);
-    cin >> word;
-    for (int i = 0; i < word.length(); i++) {
-        if (word[i] == ')') {
-            if (i + 1 != word.length())
-                pushBack(word.substr(i));
-            break;
-        }
-        if (!(word[i] == ' ' || word[i] == '\t'))
-            return new Error("Unexpected '" + word + "' in reading variable " + name);
-    }
-    return e->addVariable(name, value, constant);
-}
-
-// Read 1 inBodyFunction with params
-
-pair<Function*, list<Parametr*> > Parser::readInBodyFunction(Enviroment* e, Function *function, int *varCount) {
-    string arg;
-    char bracket;
-    cin >> bracket; // opening bracket (
-    cin >> arg; // function name
-    cout << "readInBodyFunction " << arg << endl;
-    Function *functionInBody = e->getFunction(arg);
-    if (functionInBody == NULL)
-        throw "Function " + arg + " not declared";
-    list<Parametr*> parameters;
-    while (cin.peek() != ')') {
-        (*varCount)++;
-        cin >> arg;
-        if (arg[0] == '(') { // param is a function
-            pushBack(arg);
-            int vCount = 0;
-            pair<Function*, list<Parametr*> > ribf = readInBodyFunction(e, functionInBody, &vCount);
-            Parametr * p = new Parametr();
-            p->function = ribf.first;
-            parameters.push_back(p);
-        } else {
-            int bpos = arg.find(')');
-            if (bpos != -1) {
-                pushBack(arg.substr(bpos));
-                arg = arg.substr(0, bpos);
-            }
-            Parametr* p = new Parametr();
-            if ((arg[0] >= '0') && (arg[0] <= '9')) {
-                // je to cislo
-                p->value = readNumber(arg);
-                if (p->value->dataType() == DataType::TYPE_ERROR) {
-                    cin.sync(); // clear the input buffer ??
-                    throw p->value->toString(); //return p->value;
-                }
-            } else if (arg[0] == '"') {
-                p->value = readString(arg);
-                if (p->value->dataType() == DataType::TYPE_ERROR) {
-                    cin.sync(); // clear the input buffer ??
-                    throw p->value->toString(); //return p->value;
-                }
-            } else {
-                if ((functionInBody->name == "defvar" || functionInBody->name == "defconst") && parameters.size() == 0) {
-                    // pri defvar a defconst sa prvy parameter zameni za DataType String s value = nazov premennej
-                    // inak by sa pri eval funkcii volal eval parametra - hladala by sa hodnota pre parameter, ktory sa ma este len vytvorit
-                    p->value = new String(arg);
-                } else {
-                    p->parametrName = arg;
-                }
-            }
-            parameters.push_back(p);
-        }
-    }
-    cin.get(); // zoberie iba ), pre pripad ze je nieco za
-    return pair<Function*, list<Parametr*> >(functionInBody, parameters);
-}
-
-// (def func (x y) (+ x y))
-
-DataType* Parser::readFunction(Enviroment* e) {
-    Function *function = new Function();
-    cin >> function->name;
-    if (e->getFunction(function->name))
-        return new Error("Function " + function->name + " is already defined.");
-
-    // Read arg list
-    string arg;
-    char bracket;
-    cin >> bracket >> arg;
-    int pos = arg.find(')');
-    while (pos == -1) {
-        function->addArgument(arg);
-        cin >> arg;
-        pos = arg.find(')');
-    }
-    // parse last argument
-    if (pos != 0) // arg == blahblah)
-        function->addArgument(arg.substr(0, pos));
-    if (pos + 1 != arg.size()) // push back the rest of string
-        pushBack(arg.erase(0, pos + 1));
-
-    // Now parse functions in body!
-    int varCount;
-    skipWhiteSpaces();
-    while (cin.peek() != ')') { // while end of list of functions: read one of them
-        pair<Function*, list<Parametr*> > ribf;
-        try {
-            ribf = readInBodyFunction(e, function, &varCount);
-        } catch (const char* error) {
-            return new Error(error);
-        }
-        function->addToBody(ribf);
-        skipWhiteSpaces();
-    }
-    cin >> bracket;
-    e->addFunction(function);
-    cout << function->name;
-    return new Void();
-}
-
-DataType* Parser::readFunctionCall(string functionName, Enviroment *e) {
-    int pos = functionName.find(")");
-    bool hasParametrs = true;
-    if (pos != -1) {
-        //volanie funkcie bez parametrov
-        hasParametrs = false;
-        if (pos + 1 != functionName.size()) {
-            pushBack(functionName.substr(pos + 1));
-        }
-        functionName = functionName.substr(0, pos);
-    }
-    Function *function = e->getFunction(functionName);
-    cout << "---------------------------------------------------" << endl;
-    function->printFunctionParams();
-    cout << endl << "---------------------------------------------------" << endl;
-    if (function == NULL)
-        return new Error("Call to undefined function " + functionName);
-    Enviroment *functionEnviroment = new Enviroment();
-    if (hasParametrs) {
-        string var;
-        cin >> var;
-        pos = var.find(")");
-        int i = 0;
-        while (pos != 0) {
-            DataType* nextParametr = parse(var, e);
-            //cout << "Function " << function->name << " call with param of type " << nextParametr->dataType() << endl;
-            if (nextParametr->dataType() == DataType::TYPE_ERROR) {
-                return nextParametr;
-            }
-            if (nextParametr->dataType() == DataType::TYPE_PARAMETR) {
-                nextParametr = ((Variable*) nextParametr)->value;
-            }
-            try {
-                functionEnviroment->addVariable(function->getParametrNameAt(i), nextParametr, false);
-            } catch (const char* error) {
-                cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                return new Error(error);
-            }
-            cin >> var;
-            pos = var.find(")");
-            if (pos != -1) { // najdena )
-                if (var.length() != 1) { // nieco je pred alebo za )
-                    string toPush = var.substr(pos);
-                    var = var.substr(0, pos);
-                    if (var == "") {
-                        toPush = toPush.substr(1);
-                        pushBack(toPush);
-                        break;
-                    }
-                    pushBack(toPush);
-                    pos = -1;
-                }
-
-            }
-            i++;
-        }
-    }
-    return function->eval(functionEnviroment);
+    return openedParenthesis;
 }
 
 /*
- * Parse content of the line as:
+ *  Get all the parenthesis with content from input
+ * @return string Full read input.
+ */
+string Parser::getFullInput(string& line) {
+    string wholeLine = line;
+    while (this->parenthesisCheck(wholeLine) > 0) {
+        getline(cin, line);
+        wholeLine += line;
+    }
+    return wholeLine;
+}
+
+/*
+ * @returns For input string "hello    \t \n" returns "hello"
+ */
+void removeEndingWhiteSpaces(string& s) {
+    int endPos = s.size() - 1;
+    while ((s[endPos] == ' ' || s[endPos] == '\t' || s[endPos] == '\n') && endPos != -1)
+        endPos--;
+    if (endPos != -1) {
+        s = s.substr(0, endPos + 1);
+    } else {
+        s = "";
+    }
+}
+
+/*
+ * Get tokens from string input
+ * @Param input Correct input (with correct parenthesis count).
+ * @Example 
+ * For input (hello (world)) it will return<br>
+ * ["(", "hello", "(", "world", ")", ")"]
+ * @return string array The array of tokens for input.
+ */
+list<string> Parser::tokenize(const string input) {
+    list<string> tokens;
+    bool wordStarted = false;
+    bool isString = false;
+    string readWord;
+    for (int i = 0; i < input.size(); i++) {
+        if (input[i] == '(' || input[i] == ')') {
+            if (wordStarted && readWord.size() > 0) { // end reading
+                removeEndingWhiteSpaces(readWord);
+                tokens.push_back(readWord);
+                readWord = "";
+            }
+            tokens.push_back(string(1, input[i])); // separate parenthesis
+            wordStarted = false;
+        } else {
+            if (wordStarted) { // continue reading word
+                if (!isString && (input[i] == ' ' || input[i] == '\t' || input[i] == '\n')) {
+                    removeEndingWhiteSpaces(readWord);
+                    tokens.push_back(readWord);
+                    readWord = "";
+                } else {
+                    readWord += input[i];
+                }
+            } else { // jump the leading spaces and start to read word
+                if (input[i] == ' ' || input[i] == '\t' || input[i] == '\n')
+                    continue;
+                if (input[i] == '"')
+                    isString = true;
+                wordStarted = true;
+                readWord += input[i];
+            }
+        }
+    }
+    if (readWord != "") {
+        tokens.push_back(readWord);
+    }
+    return tokens;
+}
+
+/*
+ * Check each char of word and create number.
+ */
+Number* readNumber(const string& word) {
+    for (int i = 0; i < word.size(); i++) {
+        if ((word[i] < '0') || (word[i] > '9')) {
+            throw "E: Cannot create number from token " + word;
+        }
+    }
+    return new Number(atoi(word.c_str()));
+}
+
+Symbol* readSymbol(string name, Environment& e) {
+    if (name.compare("true") == 0)
+        return new True();
+    else if (name.compare("false") == 0)
+        return new False();
+    else if (name.compare("nil") == 0)
+        return new Nil();
+    return new Symbol(name);
+}
+
+/*
+ * Easier way to compare 2 string.
+ */
+bool is(const string& first, const string& second) {
+    return first.compare(second) == 0;
+}
+
+/*
+ * Take separated tokens and give them some meaning:
  * 1. Atom (Number, String, etc.)
  * 2. Symbol -> could be evaluated as atom/another symbol/list
  * 3. List -> functions/atoms/symbols/...
  */
-DataType* Parser::parse(string word, Enviroment *e) {
-    switch (word[0]) {
-        case '"':
-            return readString(word);
-        case '(':
-            if (word == "(defconst") {
-                return readVariable(true, e);
-            } else if (word == "(defvar") {
-                return readVariable(false, e);
-            } else if (word == "(def") {
-                return readFunction(e);
-            } else if (word == "(list") {
-                return readList(word, e);
-            } else {
-                return readFunctionCall(word.substr(1), e); // calling a function
-            }
-        default:
-            if (word[0] >= '0' && word[0] <= '9') {
-                return readNumber(word);
-            } else {
-                return readSymbol(word, e); // symbol/function/true-false-nil
-            }
-            break;
+Array* giveMeaningToTokens(list<string>& tokens, Environment& e) {
+    Array* result = new Array();
+    string token;
+    if (tokens.size() == 0)
+        throw "Token count is too small to evaluate it.";
+    token = (*tokens.begin());
+    tokens.pop_front();
+    if (is(token, "(")) { // List (basic/function/if/...)
+        Array* partial = new Array();
+        while (!is((*tokens.begin()), ")")) {
+            partial->a.push_back(giveMeaningToTokens(tokens, e));
+        }
+        tokens.pop_front(); // )
+        return partial;
+    } else if (is(token, ")")) {
+        throw "Unexpected ) in token list.";
+    } else { // Atoms/Symbols
+        if (token[0] == '"') {
+            //            result->a.push_back(new String(token));
+            //            return result;
+            return new String(token);
+        } else if (token[0] >= '0' && token[0] <= '9') {
+            //            result->a.push_back(readNumber(token));
+            //            return result;
+            return readNumber(token);
+        } else {
+            //            result->a.push_back(readSymbol(token, e));
+            //            return result;
+            return readSymbol(token, e);
+        }
     }
-    return new Error("Undefined command");
+    return result;
 }
 
-
+/*
+ * Parse content
+ */
+Array* Parser::parse(string line, Environment& e) {
+    string input;
+    Array *result = NULL;
+    try {
+        input = getFullInput(line);
+        list<string> tokens = tokenize(input);
+        result = giveMeaningToTokens(tokens, e);
+    } catch (const char* error) {
+        cout << error << endl;
+        cin.sync(); // clear input buffer
+        cout << "Try to enter your commands again." << endl;
+    }
+    return result;
+}

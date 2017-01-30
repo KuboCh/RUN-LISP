@@ -9,7 +9,7 @@ List::List(const List& orig) {
 List::~List() {
 }
 
-DataType* List::eval(Enviroment& e) {
+DataType* List::eval(Environment& e) {
     return this;
 }
 

@@ -1,5 +1,5 @@
 #include "Void.h"
-#include "Enviroment.h"
+#include "Environment.h"
 
 Void::Void() {
 }
@@ -14,7 +14,7 @@ void Void::print() {
     cout << "";
 }
 
-DataType* Void::eval(Enviroment& e) {
+DataType* Void::eval(Environment& e) {
     return this;
 }
 

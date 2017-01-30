@@ -13,7 +13,7 @@ String::String(const String& orig) {
 String::~String() {
 }
 
-DataType* String::eval(Enviroment& e) {
+DataType* String::eval(Environment& e) {
     return this;
 }
 

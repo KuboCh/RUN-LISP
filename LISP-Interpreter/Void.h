@@ -5,11 +5,14 @@ using namespace std;
 
 #ifndef VOID_H
 #define VOID_H
-class Enviroment;
+class Environment;
 
 class Void : public DataType {
 public:
-    virtual DataType* eval(Enviroment& e);
+    Void();
+    Void(const Void& orig);
+    virtual ~Void();
+    virtual DataType* eval(Environment& e);
     virtual void print();
 
     int dataType() {
@@ -19,9 +22,6 @@ public:
     virtual string toString() {
         return "";
     }
-    Void();
-    Void(const Void& orig);
-    virtual ~Void();
 private:
 
 };

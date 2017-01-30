@@ -5,7 +5,7 @@ using namespace std;
 
 #ifndef SYMBOL_H
 #define SYMBOL_H
-class Enviroment;
+class Environment;
 
 class Symbol : public DataType {
 public:
@@ -13,13 +13,11 @@ public:
     Symbol(const string& s);
     Symbol(const Symbol& orig);
     virtual ~Symbol();
-
-    virtual DataType* eval(Enviroment& e);
+    virtual DataType* eval(Environment& e);
 
     virtual void print() {
         cout << value << endl;
     }
-    string value;
 
     virtual int dataType() {
         return TYPE_SYMBOL;
@@ -28,6 +26,8 @@ public:
     virtual string toString() {
         return value;
     }
+    
+    string value;
 private:
 
 };

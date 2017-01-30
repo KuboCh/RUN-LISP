@@ -1,25 +1,25 @@
-#include "Enviroment.h"
+#include "Environment.h"
 #include "Variable.h"
 #include "Error.h"
 #include "Function.h"
 
-Enviroment::Enviroment() {
+Environment::Environment() {
     numberOfVariables = 0;
 }
 
-Enviroment::Enviroment(const Enviroment& orig) {
+Environment::Environment(const Environment& orig) {
 }
 
-Enviroment::~Enviroment() {
+Environment::~Environment() {
 }
 
-Variable* Enviroment::getVariable(string name) {
+Variable* Environment::getVariable(string name) {
     if (variables.find(name) == variables.end())
         return NULL;
     return variables[name];
 }
 
-DataType* Enviroment::addVariable(string name, DataType *value, bool isConstant) {
+DataType* Environment::addVariable(string name, DataType *value, bool isConstant) {
     map<string, Variable*>::iterator it = variables.find(name);
     if (it != variables.end()) {
         if (it->second->constant) {
@@ -35,21 +35,26 @@ DataType* Enviroment::addVariable(string name, DataType *value, bool isConstant)
     return newVariable;
 }
 
-map<string, Variable*>::const_iterator Enviroment::getParametrsIterator() {
+map<string, Variable*>::const_iterator Environment::getParametersIterator() {
     return variables.begin();
 }
 
-map<string, Variable*>::const_iterator Enviroment::getParametrsIteratorEnd() {
+map<string, Variable*>::const_iterator Environment::getParametersIteratorEnd() {
     return variables.end();
 }
 
-Function* Enviroment::addFunction(Function* function) {
-    //TODO kontrola ci uz take nahodou neexistuje
+/*
+ * Add the given function into environment. Also includes check whether the function 
+ * is in this environment.
+ */
+Function* Environment::addFunction(Function* function) {
+    if (this->getFunction(function->name))
+        throw "Function " + function->name + " is already defined.";
     functions.push_back(function);
     return function;
 }
 
-Function* Enviroment::getFunction(string name) {
+Function* Environment::getFunction(string name) {
     for (vector<Function*>::iterator it = functions.begin(); it != functions.end(); it++) {
         if ((*it)->name == name) {
             return (*it);
@@ -58,11 +63,11 @@ Function* Enviroment::getFunction(string name) {
     return NULL;
 }
 
-int Enviroment::getNumberOfVariables() {
+int Environment::getNumberOfVariables() {
     return numberOfVariables;
 }
 
-void Enviroment::print() {
+void Environment::print() {
     cout << "Variables:" << endl;
     for (map<string, Variable*>::iterator it = variables.begin(); it != variables.end(); ++it) {
         cout << (*it).first << " = " << (*it).second->toString() << endl;

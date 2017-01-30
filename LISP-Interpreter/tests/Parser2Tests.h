@@ -2,7 +2,7 @@
 #define PARSER2TESTS_H
 #include <string>
 #include <vector>
-#include "../Parser2.h"
+#include "../Parser.h"
 
 using namespace std;
 
@@ -27,7 +27,7 @@ private:
     void testParenthesisCheck();
     void testGetFullInput();
     void testTokenize();
-    Parser2 parser;
+    Parser parser;
     string input;
 };
 
