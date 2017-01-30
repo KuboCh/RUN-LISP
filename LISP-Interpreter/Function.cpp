@@ -34,7 +34,6 @@ void Function::addToBody(pair<Function*, list<Parameter*> > ribf) {
 }
 
 DataType* Function::eval(Environment &e) {
-    *functionEnvironment = e;
     LispStack::getInstance().push(this); // vlozi sa na stack
     cout << "Pushing " + this->name << endl;
     DataType* result = new Nil();
@@ -72,6 +71,7 @@ DataType* Function::evalFunctionInBody(list<pair<Function*, list<Parameter*> > >
     //    cout << "--------------------------------------" << endl;
     //    environment->print();
     //    cout << "--------------------------------------" << endl;
+    (*functionData).first->functionEnvironment = environment;
     return (*functionData).first->eval(*environment);
 }
 

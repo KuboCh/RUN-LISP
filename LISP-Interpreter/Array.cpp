@@ -61,6 +61,7 @@ DataType* Array::callFunction(Environment& e) {
         cout << error << endl;
         return NULL;
     }
+    function->functionEnvironment = functionEnvironment;
     return function->eval(*functionEnvironment);
 }
 
