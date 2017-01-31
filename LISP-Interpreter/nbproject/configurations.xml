@@ -15,7 +15,6 @@
         <itemPath>Symbol.h</itemPath>
         <itemPath>True.h</itemPath>
         <itemPath>Variable.h</itemPath>
-        <itemPath>Void.h</itemPath>
       </logicalFolder>
       <itemPath>Array.h</itemPath>
       <itemPath>BuildInFunctions.h</itemPath>
@@ -40,7 +39,6 @@
         <itemPath>Symbol.cpp</itemPath>
         <itemPath>True.cpp</itemPath>
         <itemPath>Variable.cpp</itemPath>
-        <itemPath>Void.cpp</itemPath>
       </logicalFolder>
       <logicalFolder name="ResourceFiles"
                      displayName="Resource Files"
@@ -166,10 +164,6 @@
       </item>
       <item path="Variable.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="Void.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="Void.h" ex="false" tool="3" flavor2="0">
-      </item>
       <folder path="TestFiles/f2">
         <cTool>
           <commandLine>`cppunit-config --cflags`</commandLine>
@@ -280,10 +274,6 @@
       <item path="Variable.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Variable.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="Void.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="Void.h" ex="false" tool="3" flavor2="0">
       </item>
       <folder path="TestFiles/f2">
         <cTool>

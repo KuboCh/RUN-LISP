@@ -18,12 +18,12 @@ public:
     
     Variable* getVariable(string name);
     DataType* addVariable(string name, DataType* value, bool isConstant);
-//    void removeVariable(Variable *parameter);
+    bool removeVariable(string name);
     
     Function* addFunction(Function *function);
     Function* getFunction(string name, Variable *arg);
     Function* getFunction(string name);
-//    void removeFunction(Function function);
+    bool removeFunction(string name);
     
     map<string, Variable*>::iterator getParametersIterator();
     map<string, Variable*>::iterator getParametersIteratorEnd();

@@ -37,31 +37,19 @@ string Array::toString() {
  */
 DataType* Array::callFunction(Environment* e) {
     Function *function = e->getFunction((*this)[0]);
-    Environment *functionEnvironment = Memory::getInstance().get();//new Environment();// 
+    Environment *functionEnvironment = Memory::getInstance().get(); //new Environment();// 
     if (function == NULL) {
         cout << "Call to undefined function " << (*this)[0] << endl;
         return NULL;
     }
     // parametre by mali byt do konca tohoto array
-    try {
-        for (int i = 1; i < a.size(); i++) {
-            DataType *p = a[i]->eval(e);
-            if (p->dataType() == DataType::TYPE_PARAMETER) { // get value of this param
-                p = p->eval(e);
-            }
-            //cout << "arg: " <<p->toString() << " of type " << p->typeToString() << endl;
-            functionEnvironment->addVariable(function->getParameterNameAt(i - 1), p, false);
+    for (int i = 1; i < a.size(); i++) {
+        DataType *p = a[i]->eval(e);
+        if (p->dataType() == DataType::TYPE_PARAMETER) { // get value of this param
+            p = p->eval(e);
         }
-    } catch (const char* error) {
-        //cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // ???
-        cin.sync(); // clear cin?
-        cout << error << endl;
-        return NULL;
-    } catch (string error) {
-        //cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // ???
-        cin.sync(); // clear cin?
-        cout << error << endl;
-        return NULL;
+        //cout << "arg: " <<p->toString() << " of type " << p->typeToString() << endl;
+        functionEnvironment->addVariable(function->getParameterNameAt(i - 1), p, false);
     }
     function->functionEnvironment = functionEnvironment;
     return function->eval(functionEnvironment);
@@ -182,6 +170,22 @@ DataType* Array::processLoop(Environment* e) {
     return result;
 }
 
+DataType* Array::undefFunction(Environment *e) {
+    Function *function = e->getFunction((*this)[0]);
+    function->functionEnvironment = Memory::getInstance().get(); //new Environment();// 
+    if (function == NULL) {
+        cout << "Call to undefined function " << (*this)[0] << endl;
+        return NULL;
+    }
+    // parametre by mali byt do konca tohoto array
+    for (int i = 1; i < a.size(); i++) {
+        if (a[i]->isAtom() && ((DataType*) a[i])->dataType() != DataType::TYPE_SYMBOL)
+            throw "Wrong argument type for undef.";
+        function->functionEnvironment->addVariable(function->getParameterNameAt(i - 1), (Symbol*) a[i], false);
+    }
+    return function->eval(function->functionEnvironment);
+}
+
 /*
  * Eval of array = defvar/defconst/def function/call function.
  * Everything that's not array is an atom (symbol, string, number) and is evaluated separately.
@@ -208,6 +212,8 @@ DataType* Array::eval(Environment* e) {
                 return processLoop(e);
             } else if (name.compare("def") == 0) {
                 return defFunction(e);
+            } else if (name.compare("undef") == 0) {
+                return undefFunction(e);
             } else {
                 return callFunction(e);
             }

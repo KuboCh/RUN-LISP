@@ -50,11 +50,9 @@ string DataType::typeToString() {
                 break;
             case 7: result = "parameter";
                 break;
-            case 8: result = "void";
+            case 8: result = "symbol";
                 break;
-            case 9: result = "symbol";
-                break;
-            case 10: result = "function";
+            case 9: result = "function";
                 break;
         }
         return result;

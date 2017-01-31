@@ -51,7 +51,6 @@ OBJECTFILES= \
 	${OBJECTDIR}/Symbol.o \
 	${OBJECTDIR}/True.o \
 	${OBJECTDIR}/Variable.o \
-	${OBJECTDIR}/Void.o \
 	${OBJECTDIR}/main.o
 
 # Test Directory
@@ -169,11 +168,6 @@ ${OBJECTDIR}/Variable.o: Variable.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Variable.o Variable.cpp
-
-${OBJECTDIR}/Void.o: Void.cpp 
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Void.o Void.cpp
 
 ${OBJECTDIR}/main.o: main.cpp 
 	${MKDIR} -p ${OBJECTDIR}
@@ -410,19 +404,6 @@ ${OBJECTDIR}/Variable_nomain.o: ${OBJECTDIR}/Variable.o Variable.cpp
 	    $(COMPILE.cc) -O2 -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Variable_nomain.o Variable.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/Variable.o ${OBJECTDIR}/Variable_nomain.o;\
-	fi
-
-${OBJECTDIR}/Void_nomain.o: ${OBJECTDIR}/Void.o Void.cpp 
-	${MKDIR} -p ${OBJECTDIR}
-	@NMOUTPUT=`${NM} ${OBJECTDIR}/Void.o`; \
-	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
-	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
-	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
-	then  \
-	    ${RM} "$@.d";\
-	    $(COMPILE.cc) -O2 -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Void_nomain.o Void.cpp;\
-	else  \
-	    ${CP} ${OBJECTDIR}/Void.o ${OBJECTDIR}/Void_nomain.o;\
 	fi
 
 ${OBJECTDIR}/main_nomain.o: ${OBJECTDIR}/main.o main.cpp 

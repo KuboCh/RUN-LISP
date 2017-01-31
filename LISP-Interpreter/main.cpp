@@ -20,10 +20,15 @@ void buildFunctions(Environment *e) {
     e->addFunction(new BuildInPlus());
     e->addFunction(new BuildInDefconst());
     e->addFunction(new BuildInDefvar());
+    e->addFunction(new BuildInUndef());
     e->addFunction(new BuildInList());
     e->addFunction(new BuildInMinus());
     e->addFunction(new BuildInMultiplication());
     e->addFunction(new BuildInEqual());
+    e->addFunction(new BuildInLower());
+    e->addFunction(new BuildInGreater());
+    e->addFunction(new BuildInAnd());
+    e->addFunction(new BuildInOr());
 }
 
 int main(int argc, char** argv) {

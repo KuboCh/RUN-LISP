@@ -19,6 +19,7 @@ public:
     virtual ~Array();
     virtual DataType* eval(Environment* e);
     DataType* defFunction(Environment* e);
+    DataType* undefFunction(Environment* e);
     pair<Function*, list<Parameter*> > getInBodyFunction(Environment* e);
     DataType* callFunction(Environment* e);
     DataType* processIf(Environment* e);

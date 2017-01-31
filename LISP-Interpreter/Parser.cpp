@@ -91,6 +91,12 @@ list<string> Parser::tokenize(const string input) {
                     removeEndingWhiteSpaces(readWord);
                     tokens.push_back(readWord);
                     readWord = "";
+                } else if (isString && input[i] == '"') {
+                    readWord += input[i];
+                    tokens.push_back(readWord);
+                    readWord = "";
+                    wordStarted = false;
+                    isString = false;
                 } else {
                     readWord += input[i];
                 }
