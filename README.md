@@ -9,10 +9,11 @@ http://cppunit.sourceforge.net/doc/cvs/cppunit_cookbook.html
 
 # Naša podmnožina jazyka LISP podporuje:
 - Základné typy: Celé číslo (Number), String, Symbol, True, False, Nil
-- Built-in funkcie: + - * == defconst, defvar, <, >, ==
+- Built-in funkcie: + - * == defconst, defvar, <, >, ==, undef
 - Definícia premennej: (defvar x 5)
 - Definícia konštanty: (defconst x 5)
 - Definícia funkcie: (def f (x y z) (+ x y z) (- x y))
+- Vymazanie premennej/funkcie: (undef x)
 - Podmienky: (if (== 1 1) true false)
 - Logické spojky: (== 1 1), (&& true false), (|| true false)
 - For cyklus: (for i from 1 to 10 do (+ i 5))
@@ -57,4 +58,12 @@ true (true)
 5 (parameter)
 17. > (defconst c 6)
 Can't change value of constant (error)
+18. > (undef x)
+true (true)
+19. > x
+Symbol x not found in environment. (error)
+20. > (undef +)
+true (true)
+21. > (+ 1 2)
+Call to undefined function +
 ```
