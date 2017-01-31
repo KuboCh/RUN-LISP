@@ -26,11 +26,9 @@ int Parser::parenthesisCheck(string text) {
     for (int i = 0; i < text.size(); i++) {
         if (text[i] == '(') {
             openedParenthesis += 1;
-            //cout << "Adding p from pos " << i << ", pcount = " << openedParenthesis << endl;
         } else if (text[i] == ')') {
             if (openedParenthesis > 0) {
                 openedParenthesis -= 1;
-                //cout << "Removing p from pos " << i << ", pcount = " << openedParenthesis << endl;
             } else
                 throw "E: Parenthesis count is wrong.";
         }
@@ -124,7 +122,7 @@ Number* readNumber(const string& word) {
     return new Number(atoi(word.c_str()));
 }
 
-Symbol* readSymbol(string name, Environment& e) {
+Symbol* readSymbol(string name) {
     if (name.compare("true") == 0)
         return new True();
     else if (name.compare("false") == 0)
@@ -147,7 +145,7 @@ bool is(const string& first, const string& second) {
  * 2. Symbol -> could be evaluated as atom/another symbol/list
  * 3. List -> functions/atoms/symbols/...
  */
-Array* giveMeaningToTokens(list<string>& tokens, Environment& e) {
+Array* giveMeaningToTokens(list<string>& tokens) {
     Array* result = new Array();
     string token;
     if (tokens.size() == 0)
@@ -157,7 +155,7 @@ Array* giveMeaningToTokens(list<string>& tokens, Environment& e) {
     if (is(token, "(")) { // List (basic/function/if/...)
         Array* partial = new Array();
         while (!is((*tokens.begin()), ")")) {
-            partial->a.push_back(giveMeaningToTokens(tokens, e));
+            partial->a.push_back(giveMeaningToTokens(tokens));
         }
         tokens.pop_front(); // )
         return partial;
@@ -165,17 +163,11 @@ Array* giveMeaningToTokens(list<string>& tokens, Environment& e) {
         throw "Unexpected ) in token list.";
     } else { // Atoms/Symbols
         if (token[0] == '"') {
-            //            result->a.push_back(new String(token));
-            //            return result;
             return new String(token);
         } else if (token[0] >= '0' && token[0] <= '9') {
-            //            result->a.push_back(readNumber(token));
-            //            return result;
             return readNumber(token);
         } else {
-            //            result->a.push_back(readSymbol(token, e));
-            //            return result;
-            return readSymbol(token, e);
+            return readSymbol(token);
         }
     }
     return result;
@@ -184,13 +176,13 @@ Array* giveMeaningToTokens(list<string>& tokens, Environment& e) {
 /*
  * Parse content
  */
-Array* Parser::parse(string line, Environment& e) {
+Array* Parser::parse(string line) {
     string input;
     Array *result = NULL;
     try {
         input = getFullInput(line);
         list<string> tokens = tokenize(input);
-        result = giveMeaningToTokens(tokens, e);
+        result = giveMeaningToTokens(tokens);
     } catch (const char* error) {
         cout << error << endl;
         cin.sync(); // clear input buffer

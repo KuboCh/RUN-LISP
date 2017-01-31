@@ -35,11 +35,11 @@ DataType* Environment::addVariable(string name, DataType *value, bool isConstant
     return newVariable;
 }
 
-map<string, Variable*>::const_iterator Environment::getParametersIterator() {
+map<string, Variable*>::iterator Environment::getParametersIterator() {
     return variables.begin();
 }
 
-map<string, Variable*>::const_iterator Environment::getParametersIteratorEnd() {
+map<string, Variable*>::iterator Environment::getParametersIteratorEnd() {
     return variables.end();
 }
 

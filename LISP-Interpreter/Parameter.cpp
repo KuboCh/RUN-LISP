@@ -6,6 +6,7 @@
 #include "Variable.h"
 #include "Environment.h"
 #include "Function.h"
+#include "Memory.h"
 
 using namespace std;
 
@@ -44,9 +45,9 @@ DataType* Parameter::eval(Environment *e) {
 //            if (((DataType*) value)->dataType() == DataType::TYPE_STRING) {
 //                String *s = ((String*) value); 
 //            } else
-                return value->eval(*e);
+                return value->eval(e);
         }
-        return value->eval(*e);
+        return value->eval(e);
     }
    
 //    cout << "Parameter value is result of function " << function->name << endl;
@@ -55,11 +56,11 @@ DataType* Parameter::eval(Environment *e) {
         return new Error("Wrong number of arguments of " + function->name);
     }
     cout << "Evaluating function " << function->name << endl;
-    Environment *environment = new Environment();
+    Environment *environment = Memory::getInstance().get();//new Environment();//
     int argPos = 0;
     for (list<Parameter*>::iterator paramIt = parametersOfFunction.begin(); paramIt != parametersOfFunction.end(); ++paramIt) {
         try {
-            DataType *par = (*paramIt)->eval(e)->eval(*e);
+            DataType *par = (*paramIt)->eval(e)->eval(e);
             if (par->dataType() == DataType::TYPE_ERROR) {
                 return par;
             }
@@ -73,7 +74,7 @@ DataType* Parameter::eval(Environment *e) {
     //    environment->print();
     //    cout << "--------------------------------------" << endl;
     function->functionEnvironment = environment;
-    return function->eval(*environment);
+    return function->eval(environment);
     
     
 }

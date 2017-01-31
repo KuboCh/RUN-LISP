@@ -9,7 +9,7 @@ DataType::DataType(const DataType& orig) {
 DataType::~DataType() {
 }
 
-DataType* DataType::eval(Environment& e) {
+DataType* DataType::eval(Environment* e) {
     cout << "Abstract DataType eval() should be overriden." << endl;
     return NULL;
 }

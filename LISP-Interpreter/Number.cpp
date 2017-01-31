@@ -14,7 +14,7 @@ Number::Number(const Number& orig) {
 Number::~Number() {
 }
 
-DataType* Number::eval(Environment& e) {
+DataType* Number::eval(Environment* e) {
     return this;
 }
 

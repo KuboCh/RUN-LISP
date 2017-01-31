@@ -25,7 +25,7 @@ public:
     DataType(const DataType& orig);
     virtual ~DataType();
 
-    virtual DataType* eval(Environment& e);
+    virtual DataType* eval(Environment* e);
     virtual void print();
     virtual int dataType();
     virtual string toString();

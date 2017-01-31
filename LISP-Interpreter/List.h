@@ -12,7 +12,7 @@ public:
     List();
     List(const List& orig);
     virtual ~List();
-    virtual DataType* eval(Environment& e);
+    virtual DataType* eval(Environment* e);
     virtual void print();
     void addElement(DataType *element);
     virtual string toString();

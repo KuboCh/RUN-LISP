@@ -12,7 +12,7 @@ Nil::~Nil() {
 /*
  * Nil is (surprisingly) nil.
  */
-DataType* Nil::eval(Environment& e) {
+DataType* Nil::eval(Environment* e) {
     return this;
 }
 

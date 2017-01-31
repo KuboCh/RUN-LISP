@@ -13,7 +13,7 @@ public:
     Error(const Error& orig);
     virtual ~Error();
 
-    virtual DataType* eval(Environment& e);
+    virtual DataType* eval(Environment* e);
     virtual void print();
     virtual string toString();
 

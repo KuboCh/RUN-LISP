@@ -14,7 +14,7 @@ True::~True() {
 /*
  * True is (surprisingly) true.
  */
-DataType* True::eval(Environment& e) {
+DataType* True::eval(Environment* e) {
     return this;
 }
 

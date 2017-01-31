@@ -12,7 +12,7 @@ public:
     Void();
     Void(const Void& orig);
     virtual ~Void();
-    virtual DataType* eval(Environment& e);
+    virtual DataType* eval(Environment* e);
     virtual void print();
 
     int dataType() {

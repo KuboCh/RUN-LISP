@@ -14,7 +14,7 @@ public:
     Nil();
     Nil(const Nil& orig);
     virtual ~Nil();
-    virtual DataType* eval(Environment& e);
+    virtual DataType* eval(Environment* e);
     virtual void print();
 
     int dataType() {

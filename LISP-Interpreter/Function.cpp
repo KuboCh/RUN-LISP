@@ -6,6 +6,7 @@
 #include "Nil.h"
 #include "Number.h"
 #include "Error.h"
+#include "Memory.h"
 
 Function::Function() {
     functionEnvironment = new Environment();
@@ -33,7 +34,7 @@ void Function::addToBody(pair<Function*, list<Parameter*> > ribf) {
     body.push_back(ribf);
 }
 
-DataType* Function::eval(Environment &e) {
+DataType* Function::eval(Environment *e) {
     LispStack::getInstance().push(this); // vlozi sa na stack
     cout << "Pushing " + this->name << endl;
     DataType* result = new Nil();
@@ -58,11 +59,12 @@ DataType* Function::evalFunctionInBody(list<pair<Function*, list<Parameter*> > >
         return new Error("Wrong number of arguments of " + (*functionData).first->name);
     }
     cout << "Evaluating function " << (*functionData).first->name << endl;
-    Environment *environment = new Environment();
+    (*functionData).first->functionEnvironment = Memory::getInstance().get();
+    Environment *environment = (*functionData).first->functionEnvironment; //new Environment();
     int argPos = 0;
     for (list<Parameter*>::iterator paramIt = (*functionData).second.begin(); paramIt != (*functionData).second.end(); ++paramIt) {
         try {
-            DataType *par = (*paramIt)->eval(functionEnvironment)->eval(*functionEnvironment);
+            DataType *par = (*paramIt)->eval(functionEnvironment)->eval(functionEnvironment);
             if (par->dataType() == DataType::TYPE_ERROR) {
                 return par;
             }
@@ -75,8 +77,7 @@ DataType* Function::evalFunctionInBody(list<pair<Function*, list<Parameter*> > >
     //    cout << "--------------------------------------" << endl;
     //    environment->print();
     //    cout << "--------------------------------------" << endl;
-    (*functionData).first->functionEnvironment = environment;
-    return (*functionData).first->eval(*environment);
+    return (*functionData).first->eval(environment);
 }
 
 string Function::getParameterNameAt(int position) {

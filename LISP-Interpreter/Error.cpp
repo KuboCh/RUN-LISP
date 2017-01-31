@@ -14,7 +14,7 @@ Error::Error(const Error& orig) {
 Error::~Error() {
 }
 
-DataType* Error::eval(Environment& e) {
+DataType* Error::eval(Environment* e) {
     return this;
 }
 

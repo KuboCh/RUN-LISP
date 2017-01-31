@@ -10,12 +10,12 @@ class Environment;
 
 class BuildInPlus : public Function {
 private:
-    DataType* sumNubers(Environment &e);
-    DataType* sumStrings(Environment &e);
+    DataType* sumNubers(Environment *e);
+    DataType* sumStrings(Environment *e);
 public:
     BuildInPlus();
     virtual ~BuildInPlus();
-    virtual DataType* eval(Environment &e);
+    virtual DataType* eval(Environment *e);
     virtual bool checkArgCount(int givenArgCount);
     virtual string getParameterNameAt(int position);
 };
@@ -24,7 +24,7 @@ class BuildInDefvar : public Function {
 public:
     BuildInDefvar();;
     virtual ~BuildInDefvar() {};
-    virtual DataType* eval(Environment &e);
+    virtual DataType* eval(Environment *e);
     virtual bool checkArgCount(int givenArgCount);
     virtual string getParameterNameAt(int position);
 };
@@ -33,7 +33,7 @@ class BuildInMinus : public Function {
 public:
     BuildInMinus();;
     virtual ~BuildInMinus() {};
-    virtual DataType* eval(Environment &e);
+    virtual DataType* eval(Environment *e);
     virtual bool checkArgCount(int givenArgCount);
     virtual string getParameterNameAt(int position);
 };
@@ -42,7 +42,7 @@ class BuildInMultiplication : public Function {
 public:
     BuildInMultiplication();;
     virtual ~BuildInMultiplication() {};
-    virtual DataType* eval(Environment &e);
+    virtual DataType* eval(Environment *e);
     virtual bool checkArgCount(int givenArgCount);
     virtual string getParameterNameAt(int position);
 };
@@ -51,7 +51,7 @@ class BuildInDefconst : public Function {
 public:
     BuildInDefconst();;
     virtual ~BuildInDefconst() {};
-    virtual DataType* eval(Environment &e);
+    virtual DataType* eval(Environment *e);
     virtual bool checkArgCount(int givenArgCount);
     virtual string getParameterNameAt(int position);
 };
@@ -60,7 +60,7 @@ class BuildInList : public Function {
 public:
     BuildInList();;
     virtual ~BuildInList() {};
-    virtual DataType* eval(Environment &e);
+    virtual DataType* eval(Environment *e);
     virtual bool checkArgCount(int givenArgCount);
     virtual string getParameterNameAt(int position);
 };
@@ -70,7 +70,7 @@ class BuildInEqual : public Function {
 public:
     BuildInEqual();;
     virtual ~BuildInEqual() {};
-    virtual DataType* eval(Environment &e);
+    virtual DataType* eval(Environment *e);
     virtual bool checkArgCount(int givenArgCount);
     virtual string getParameterNameAt(int position);
 };
@@ -80,7 +80,7 @@ public:
 //public:
 //    BuildInLower();;
 //    virtual ~BuildInLower() {};
-//    virtual DataType* eval(Environment &e);
+//    virtual DataType* eval(Environment *e);
 //    virtual bool checkArgCount(int givenArgCount);
 //    virtual string getParameterNameAt(int position);
 //};
@@ -90,7 +90,7 @@ public:
 //public:
 //    BuildInGreater();;
 //    virtual ~BuildInGreater() {};
-//    virtual DataType* eval(Environment &e);
+//    virtual DataType* eval(Environment *e);
 //    virtual bool checkArgCount(int givenArgCount);
 //    virtual string getParameterNameAt(int position);
 //};
@@ -100,7 +100,7 @@ public:
 //public:
 //    BuildInLeq();;
 //    virtual ~BuildInLeq() {};
-//    virtual DataType* eval(Environment &e);
+//    virtual DataType* eval(Environment *e);
 //    virtual bool checkArgCount(int givenArgCount);
 //    virtual string getParameterNameAt(int position);
 //};
@@ -110,7 +110,7 @@ public:
 //public:
 //    BuildInGeq();;
 //    virtual ~BuildInGeq() {};
-//    virtual DataType* eval(Environment &e);
+//    virtual DataType* eval(Environment *e);
 //    virtual bool checkArgCount(int givenArgCount);
 //    virtual string getParameterNameAt(int position);
 //};

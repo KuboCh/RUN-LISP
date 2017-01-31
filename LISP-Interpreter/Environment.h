@@ -4,8 +4,8 @@
 
 using namespace std;
 
-#ifndef ENVIROMENT_H
-#define ENVIROMENT_H
+#ifndef ENVIRONMENT_H
+#define ENVIRONMENT_H
 class Variable;
 class Function;
 class DataType;
@@ -25,8 +25,8 @@ public:
     Function* getFunction(string name);
 //    void removeFunction(Function function);
     
-    map<string, Variable*>::const_iterator getParametersIterator();
-    map<string, Variable*>::const_iterator getParametersIteratorEnd();
+    map<string, Variable*>::iterator getParametersIterator();
+    map<string, Variable*>::iterator getParametersIteratorEnd();
     int getNumberOfVariables();
     void print();
     
@@ -35,11 +35,21 @@ public:
         //        return variableNames[index];
         return static_cast<ostringstream*> (&(ostringstream() << index))->str() + "var";
     }
+    bool mark;
+    
+    /*
+     * Empty all for next use
+     */
+    void empty(){
+        variables.clear();
+        functions.clear();
+        numberOfVariables = 0;
+    }
 private:
     map<string, Variable*> variables;
     vector<Function*> functions;
     int numberOfVariables;
 };
 
-#endif /* ENVIROMENT_H */
+#endif /* ENVIRONMENT_H */
 

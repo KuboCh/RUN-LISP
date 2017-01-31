@@ -14,7 +14,7 @@ public:
     True();
     True(const True& orig);
     virtual ~True();
-    virtual DataType* eval(Environment& e);
+    virtual DataType* eval(Environment* e);
     virtual void print();
 
     virtual int dataType() {

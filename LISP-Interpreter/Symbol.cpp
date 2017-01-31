@@ -16,10 +16,10 @@ Symbol::Symbol(const string& s) {
     value = s;
 }
 
-DataType* Symbol::eval(Environment& e) {
-    Variable *var = e.getVariable(value);
+DataType* Symbol::eval(Environment* e) {
+    Variable *var = e->getVariable(value);
     if (var == NULL) {
-        Function * func = e.getFunction(value);
+        Function * func = e->getFunction(value);
         if(func == NULL){
            return new Error("Symbol " + value + " not found in environment.");
         } else {

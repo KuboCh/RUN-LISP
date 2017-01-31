@@ -22,6 +22,7 @@
       <itemPath>Environment.h</itemPath>
       <itemPath>Function.h</itemPath>
       <itemPath>LispStack.h</itemPath>
+      <itemPath>Memory.h</itemPath>
       <itemPath>Parameter.h</itemPath>
       <itemPath>Parser.h</itemPath>
     </logicalFolder>
@@ -130,6 +131,8 @@
       <item path="List.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="List.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Memory.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Nil.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -243,6 +246,8 @@
       <item path="List.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="List.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Memory.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Nil.cpp" ex="false" tool="1" flavor2="0">
       </item>
