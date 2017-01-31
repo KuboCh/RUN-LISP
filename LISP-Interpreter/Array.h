@@ -17,12 +17,13 @@ public:
     Array();
     Array(const Array& orig);
     virtual ~Array();
-    virtual DataType* eval(Environment& e);
-    DataType* defFunction(Environment& e);
-    pair<Function*, list<Parameter*> > getInBodyFunction(Environment& e);
-    DataType* callFunction(Environment& e);
-    DataType* processIf(Environment& e);
-    DataType* processLoop(Environment& e);
+    virtual DataType* eval(Environment* e);
+    DataType* defFunction(Environment* e);
+    DataType* undefFunction(Environment* e);
+    pair<Function*, list<Parameter*> > getInBodyFunction(Environment* e);
+    DataType* callFunction(Environment* e);
+    DataType* processIf(Environment* e);
+    DataType* processLoop(Environment* e);
     virtual string toString();
 
     /*

@@ -15,7 +15,7 @@ public:
     Parser();
     Parser(const Parser& orig);
     virtual ~Parser();
-    Array* parse(string line, Environment& e);
+    Array* parse(string line);
     int parenthesisCheck(string text);
     string getFullInput(string& line);
     list<string> tokenize(string input);

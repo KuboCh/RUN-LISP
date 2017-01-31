@@ -7,6 +7,7 @@
 #include "Nil.h"
 #include "Variable.h"
 #include "String.h"
+#include "Memory.h"
 
 Array::Array() {
 }
@@ -34,40 +35,28 @@ string Array::toString() {
  *    (+ 5 (- 3 2))
  *    (+ x (- x 1))
  */
-DataType* Array::callFunction(Environment& e) {
-    Function *function = e.getFunction((*this)[0]);
-    Environment *functionEnvironment = new Environment();
+DataType* Array::callFunction(Environment* e) {
+    Function *function = e->getFunction((*this)[0]);
+    Environment *functionEnvironment = Memory::getInstance().get(); //new Environment();// 
     if (function == NULL) {
         cout << "Call to undefined function " << (*this)[0] << endl;
         return NULL;
     }
     // parametre by mali byt do konca tohoto array
-    try {
-        for (int i = 1; i < a.size(); i++) {
-            DataType *p = a[i]->eval(e);
-            if(p->dataType() == DataType::TYPE_PARAMETER){ // get value of this param
-                p = p->eval(e);
-            }
-            //cout << "arg: " <<p->toString() << " of type " << p->typeToString() << endl;
-            functionEnvironment->addVariable(function->getParameterNameAt(i - 1), p, false);
+    for (int i = 1; i < a.size(); i++) {
+        DataType *p = a[i]->eval(e);
+        if (p->dataType() == DataType::TYPE_PARAMETER) { // get value of this param
+            p = p->eval(e);
         }
-    } catch (const char* error) {
-        //cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // ???
-        cin.sync(); // clear cin?
-        cout << error << endl;
-        return NULL;
-    } catch (string error) {
-        //cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // ???
-        cin.sync(); // clear cin?
-        cout << error << endl;
-        return NULL;
+        //cout << "arg: " <<p->toString() << " of type " << p->typeToString() << endl;
+        functionEnvironment->addVariable(function->getParameterNameAt(i - 1), p, false);
     }
     function->functionEnvironment = functionEnvironment;
-    return function->eval(*functionEnvironment);
+    return function->eval(functionEnvironment);
 }
 
-pair<Function*, list<Parameter*> > Array::getInBodyFunction(Environment& e) {
-    Function *function = e.getFunction((*this)[0]);
+pair<Function*, list<Parameter*> > Array::getInBodyFunction(Environment* e) {
+    Function *function = e->getFunction((*this)[0]);
     if (!function)
         throw "Function " + (*this)[0] + " is not defined.";
     list<Parameter*> parameters;
@@ -78,7 +67,7 @@ pair<Function*, list<Parameter*> > Array::getInBodyFunction(Environment& e) {
             param->value = (DataType*) a[i];
             if (((DataType*) a[i])->dataType() == DataType::TYPE_SYMBOL) {
                 //ak je funkcia defvar, defconst symbol sa zameni za string
-                if ((function->name == "defvar" || function->name == "defconst") && i == 1){
+                if ((function->name == "defvar" || function->name == "defconst") && i == 1) {
                     param->value = new String((*this)[i]);
                 } else {
                     param->parameterName = (*this)[i]; // string of this param
@@ -103,7 +92,7 @@ pair<Function*, list<Parameter*> > Array::getInBodyFunction(Environment& e) {
  *      ...
  * )
  */
-DataType* Array::defFunction(Environment& e) {
+DataType* Array::defFunction(Environment *e) {
     Function *function = new Function((*this)[1]);
     // Set function arguments
     if (!a[2]->isAtom()) {
@@ -115,13 +104,13 @@ DataType* Array::defFunction(Environment& e) {
     }
     // Now set functions in body!
     for (int i = 3; i < a.size(); i++) { // for each body function get params and add
-        if (!a[i]->isAtom()) { 
+        if (!a[i]->isAtom()) {
             function->addToBody(a[i]->getInBodyFunction(e));
         } else {
             throw "Wrong declaration of body function (atom given).";
         }
     }
-    e.addFunction(function);
+    e->addFunction(function);
     return (DataType*) a[1]; // symbol for this function
 }
 
@@ -130,7 +119,7 @@ DataType* Array::defFunction(Environment& e) {
  * @Format (if (test) (conseq) (alt))
  * @returns result value of conseq/alt
  */
-DataType* Array::processIf(Environment& e) {
+DataType* Array::processIf(Environment* e) {
     if (a.size() != 4)
         throw "Wrong number of conditional (if).";
     DataType * condResult;
@@ -156,7 +145,7 @@ DataType* Array::processIf(Environment& e) {
  *      ...
  *     )
  */
-DataType* Array::processLoop(Environment& e) {
+DataType* Array::processLoop(Environment* e) {
     if (a.size() < 7 || a[2]->toString().compare("from") != 0
             || a[4]->toString().compare("to") != 0
             || a[6]->toString().compare("do") != 0)
@@ -168,7 +157,7 @@ DataType* Array::processLoop(Environment& e) {
         throw "Loop bounds should be of type number.";
     Number *fromN = (Number*) from;
     Number *toN = (Number*) to;
-    DataType* var = e.addVariable(a[1]->toString(), fromN, true);
+    DataType* var = e->addVariable(a[1]->toString(), fromN, true);
     Number* varN = (Number*) ((Variable*) var)->value;
     DataType* result = new Nil();
     for (int i = fromN->value; i < toN->value; i++) {
@@ -181,35 +170,50 @@ DataType* Array::processLoop(Environment& e) {
     return result;
 }
 
+DataType* Array::undefFunction(Environment *e) {
+    Function *function = e->getFunction((*this)[0]);
+    function->functionEnvironment = Memory::getInstance().get(); //new Environment();// 
+    if (function == NULL) {
+        cout << "Call to undefined function " << (*this)[0] << endl;
+        return NULL;
+    }
+    // parametre by mali byt do konca tohoto array
+    for (int i = 1; i < a.size(); i++) {
+        if (a[i]->isAtom() && ((DataType*) a[i])->dataType() != DataType::TYPE_SYMBOL)
+            throw "Wrong argument type for undef.";
+        function->functionEnvironment->addVariable(function->getParameterNameAt(i - 1), (Symbol*) a[i], false);
+    }
+    return function->eval(function->functionEnvironment);
+}
+
 /*
  * Eval of array = defvar/defconst/def function/call function.
  * Everything that's not array is an atom (symbol, string, number) and is evaluated separately.
  * Evaluation is runned in some environment (=set of functions and variables).
  * @returns DataType = Atomic value (string/number).
  */
-DataType* Array::eval(Environment& e) {
+DataType* Array::eval(Environment* e) {
     try {
         if (a.size() > 0) {
             string name = (*this)[0];
             if (name.compare("defvar") == 0) {
-                if (a.size() == 3) {
-                    return e.addVariable(a[1]->toString(), a[2]->eval(e), false);
-                } else {
+                if (a.size() == 3)
+                    return e->addVariable(a[1]->toString(), a[2]->eval(e), false);
+                else
                     cout << "(defvar name value)" << endl;
-                }
-
             } else if (name.compare("defconst") == 0) {
-                if (a.size() == 3) {
-                    return e.addVariable(a[1]->toString(), a[2]->eval(e), true);
-                } else {
+                if (a.size() == 3)
+                    return e->addVariable(a[1]->toString(), a[2]->eval(e), true);
+                else
                     cout << "(defconst name value)" << endl;
-                }
             } else if (name.compare("if") == 0) {
                 return processIf(e);
-            } else if (name.compare("for") == 0) { 
+            } else if (name.compare("for") == 0) {
                 return processLoop(e);
             } else if (name.compare("def") == 0) {
                 return defFunction(e);
+            } else if (name.compare("undef") == 0) {
+                return undefFunction(e);
             } else {
                 return callFunction(e);
             }

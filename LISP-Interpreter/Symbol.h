@@ -13,7 +13,7 @@ public:
     Symbol(const string& s);
     Symbol(const Symbol& orig);
     virtual ~Symbol();
-    virtual DataType* eval(Environment& e);
+    virtual DataType* eval(Environment* e);
 
     virtual void print() {
         cout << value << endl;

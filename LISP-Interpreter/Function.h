@@ -20,7 +20,7 @@ public:
     void addArgument(string name);
     void addToBody(pair<Function*, list<Parameter*> > ribf);
     
-    virtual DataType* eval(Environment& e);
+    virtual DataType* eval(Environment* e);
     virtual bool checkArgCount(int givenArgCount);
     DataType* evalFunctionInBody(list<pair<Function*, list<Parameter*> > >::iterator functionData);
     virtual string getParameterNameAt(int position);

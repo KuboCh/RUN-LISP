@@ -17,15 +17,14 @@ public:
     static const int TYPE_NIL = 5;
     static const int TYPE_ERROR = 6;
     static const int TYPE_PARAMETER = 7;
-    static const int TYPE_VOID = 8;
-    static const int TYPE_SYMBOL = 9;
-    static const int TYPE_FUNCTION = 10;
+    static const int TYPE_SYMBOL = 8;
+    static const int TYPE_FUNCTION = 9;
 
     DataType();
     DataType(const DataType& orig);
     virtual ~DataType();
 
-    virtual DataType* eval(Environment& e);
+    virtual DataType* eval(Environment* e);
     virtual void print();
     virtual int dataType();
     virtual string toString();

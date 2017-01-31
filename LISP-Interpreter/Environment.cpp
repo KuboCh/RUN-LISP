@@ -35,11 +35,21 @@ DataType* Environment::addVariable(string name, DataType *value, bool isConstant
     return newVariable;
 }
 
-map<string, Variable*>::const_iterator Environment::getParametersIterator() {
+bool Environment::removeVariable(string name) {
+    map<string, Variable*>::iterator it = variables.find(name);
+    if (it != variables.end()) {
+        variables.erase(it);
+        numberOfVariables--;
+        return true;
+    }
+    return false;
+}
+
+map<string, Variable*>::iterator Environment::getParametersIterator() {
     return variables.begin();
 }
 
-map<string, Variable*>::const_iterator Environment::getParametersIteratorEnd() {
+map<string, Variable*>::iterator Environment::getParametersIteratorEnd() {
     return variables.end();
 }
 
@@ -61,6 +71,16 @@ Function* Environment::getFunction(string name) {
         }
     }
     return NULL;
+}
+
+bool Environment::removeFunction(string name) {
+    for (vector<Function*>::iterator it = functions.begin(); it != functions.end(); ++it) {
+        if ((*it)->name.compare(name) == 0) {
+            functions.erase(it);
+            return true;
+        }
+    }
+    return false;
 }
 
 int Environment::getNumberOfVariables() {

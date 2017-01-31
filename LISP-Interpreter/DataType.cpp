@@ -9,7 +9,7 @@ DataType::DataType(const DataType& orig) {
 DataType::~DataType() {
 }
 
-DataType* DataType::eval(Environment& e) {
+DataType* DataType::eval(Environment* e) {
     cout << "Abstract DataType eval() should be overriden." << endl;
     return NULL;
 }
@@ -50,11 +50,9 @@ string DataType::typeToString() {
                 break;
             case 7: result = "parameter";
                 break;
-            case 8: result = "void";
+            case 8: result = "symbol";
                 break;
-            case 9: result = "symbol";
-                break;
-            case 10: result = "function";
+            case 9: result = "function";
                 break;
         }
         return result;

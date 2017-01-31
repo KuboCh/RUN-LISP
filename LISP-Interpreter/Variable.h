@@ -12,7 +12,7 @@ public:
     Variable(string name, DataType *value, bool constant);
     Variable(const Variable& orig);
     virtual ~Variable();
-    virtual DataType* eval(Environment& e);
+    virtual DataType* eval(Environment* e);
     virtual void print();
 
     virtual int dataType() {

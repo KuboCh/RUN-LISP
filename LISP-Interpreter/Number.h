@@ -15,7 +15,7 @@ public:
     Number(int val);
     Number(const Number& orig);
     virtual ~Number();
-    virtual DataType* eval(Environment& e);
+    virtual DataType* eval(Environment* e);
     virtual void print();
     virtual string toString();
 

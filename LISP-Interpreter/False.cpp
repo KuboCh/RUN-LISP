@@ -14,7 +14,7 @@ False::~False() {
 /*
  * False is (surprisingly) false.
  */
-DataType* False::eval(Environment& e) {
+DataType* False::eval(Environment* e) {
     return this;
 }
 
