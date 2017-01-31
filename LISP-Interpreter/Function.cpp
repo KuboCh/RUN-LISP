@@ -62,7 +62,11 @@ DataType* Function::evalFunctionInBody(list<pair<Function*, list<Parameter*> > >
     int argPos = 0;
     for (list<Parameter*>::iterator paramIt = (*functionData).second.begin(); paramIt != (*functionData).second.end(); ++paramIt) {
         try {
-            environment->addVariable((*functionData).first->getParameterNameAt(argPos), (*paramIt)->eval(functionEnvironment)->eval(*functionEnvironment), false);
+            DataType *par = (*paramIt)->eval(functionEnvironment)->eval(*functionEnvironment);
+            if (par->dataType() == DataType::TYPE_ERROR) {
+                return par;
+            }
+            environment->addVariable((*functionData).first->getParameterNameAt(argPos), par, false);
         } catch (const char* error) {
             return new Error(error);
         }
