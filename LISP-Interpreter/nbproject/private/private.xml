@@ -9,15 +9,7 @@
         <group>
             <file>file:/home/phil/Dokumenty/mi-run/RUN-LISP/LISP-Interpreter/Array.h</file>
             <file>file:/home/phil/Dokumenty/mi-run/RUN-LISP/LISP-Interpreter/Array.cpp</file>
-            <file>file:/home/phil/Dokumenty/mi-run/RUN-LISP/LISP-Interpreter/BuildInFunctions.cpp</file>
-            <file>file:/home/phil/Dokumenty/mi-run/RUN-LISP/LISP-Interpreter/Parser.cpp</file>
-            <file>file:/home/phil/Dokumenty/mi-run/RUN-LISP/LISP-Interpreter/BuildInFunctions.h</file>
-            <file>file:/home/phil/Dokumenty/mi-run/RUN-LISP/LISP-Interpreter/Function.cpp</file>
             <file>file:/home/phil/Dokumenty/mi-run/RUN-LISP/LISP-Interpreter/main.cpp</file>
-            <file>file:/home/phil/Dokumenty/mi-run/RUN-LISP/LISP-Interpreter/Parametr.cpp</file>
-            <file>file:/home/phil/Dokumenty/mi-run/RUN-LISP/LISP-Interpreter/Parser2.cpp</file>
-            <file>file:/home/phil/Dokumenty/mi-run/RUN-LISP/LISP-Interpreter/Symbol.h</file>
-            <file>file:/home/phil/Dokumenty/mi-run/RUN-LISP/LISP-Interpreter/Parametr.h</file>
         </group>
     </open-files>
 </project-private>
