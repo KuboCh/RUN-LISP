@@ -125,5 +125,32 @@ public:
     virtual string getParameterNameAt(int position);
 };
 
+class BuildInIf : public Function {
+public:
+    BuildInIf();;
+    virtual ~BuildInIf() {};
+    virtual DataType* eval(Environment *e);
+    virtual bool checkArgCount(int givenArgCount);
+    virtual string getParameterNameAt(int position);
+};
+
+class BuildInFor : public Function {
+public:
+    BuildInFor();;
+    virtual ~BuildInFor() {};
+    virtual DataType* eval(Environment *e);
+    virtual bool checkArgCount(int givenArgCount);
+    virtual string getParameterNameAt(int position);
+};
+
+class BuildInOut : public Function {
+public:
+    BuildInOut();;
+    virtual ~BuildInOut() {};
+    virtual DataType* eval(Environment *e);
+    virtual bool checkArgCount(int givenArgCount);
+    virtual string getParameterNameAt(int position);
+};
+
 #endif /* BUILDINFUNCTIONS_H */
 

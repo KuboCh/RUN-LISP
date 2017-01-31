@@ -21,6 +21,7 @@ public:
     DataType* defFunction(Environment* e);
     DataType* undefFunction(Environment* e);
     pair<Function*, list<Parameter*> > getInBodyFunction(Environment* e);
+    pair<Function*, list<Parameter*> > getInBodyFor(Environment* e, Function* function);
     DataType* callFunction(Environment* e);
     DataType* processIf(Environment* e);
     DataType* processLoop(Environment* e);

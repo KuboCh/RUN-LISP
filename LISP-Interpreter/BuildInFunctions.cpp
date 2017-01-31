@@ -416,3 +416,71 @@ DataType* BuildInUndef::eval(Environment *e) {
         return new True();
     else return new False();
 }
+
+BuildInIf::BuildInIf() {
+    name = "if";
+}
+
+string BuildInIf::getParameterNameAt(int position) {
+    return Environment::varNameAt(position);
+}
+
+bool BuildInIf::checkArgCount(int givenArgCount) {
+    return givenArgCount == 3;
+}
+
+/*
+ * 
+ * 
+ * 
+ */
+DataType* BuildInIf::eval(Environment *e) {
+    throw "error eval of if function";
+}
+
+BuildInFor::BuildInFor() {
+    name = "for";
+}
+
+string BuildInFor::getParameterNameAt(int position) {
+    return Environment::varNameAt(position);
+}
+
+bool BuildInFor::checkArgCount(int givenArgCount) {
+    return givenArgCount > 3;
+}
+
+/*
+ * 
+ * 
+ * 
+ */
+DataType* BuildInFor::eval(Environment *e) {
+    throw "error eval of for function";
+}
+
+BuildInOut::BuildInOut() {
+    name = "out";
+}
+
+string BuildInOut::getParameterNameAt(int position) {
+    return Environment::varNameAt(position);
+}
+
+bool BuildInOut::checkArgCount(int givenArgCount) {
+    return givenArgCount == 1;
+}
+
+/*
+ * 
+ * 
+ * 
+ */
+DataType* BuildInOut::eval(Environment *e) {
+    if (e->getNumberOfVariables() != 1) {
+        return new Error("Wrong number of arguments of out");
+    }
+    Variable *toPrint = e->getVariable(Environment::varNameAt(0));
+    cout << toPrint->value->toString() << endl;
+    return new Nil();
+}

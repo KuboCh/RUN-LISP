@@ -59,6 +59,22 @@ DataType* Function::evalFunctionInBody(list<pair<Function*, list<Parameter*> > >
         return new Error("Wrong number of arguments of " + (*functionData).first->name);
     }
     cout << "Evaluating function " << (*functionData).first->name << endl;
+    //eval of if
+    if ((*functionData).first->name == "if") {
+        list<Parameter*>::iterator paramOfIf = (*functionData).second.begin();
+        if ((*paramOfIf)->eval(functionEnvironment)->eval(functionEnvironment)->dataType() == DataType::TYPE_TRUE) {
+            paramOfIf++;
+        } else {
+            paramOfIf++;
+            paramOfIf++;
+        }
+        return (*paramOfIf)->eval(functionEnvironment)->eval(functionEnvironment);
+    }
+
+    //eval of for
+    if ((*functionData).first->name == "for") {
+        return evalForCycle(functionData);
+    }
     (*functionData).first->functionEnvironment = Memory::getInstance().get();
     Environment *environment = (*functionData).first->functionEnvironment; //new Environment();
     int argPos = 0;
@@ -85,4 +101,33 @@ string Function::getParameterNameAt(int position) {
         throw "Trying to get parameter on position that doesn't exist.";
     }
     return argsNames.at(position);
+}
+
+DataType* Function::evalForCycle(list<pair<Function*, list<Parameter*> > >::iterator functionData) {
+    list<Parameter*>::iterator paramOfFor = (*functionData).second.begin();
+    string itName = (*paramOfFor)->parameterName;
+    paramOfFor++;
+    DataType* fromDataType = (*paramOfFor)->eval(functionEnvironment);
+    if (fromDataType->dataType() != DataType::TYPE_NUMBER) {
+        return new Error("Loop bounds should be of type number.");
+    }
+    paramOfFor++;
+    DataType* toDataType = (*paramOfFor)->eval(functionEnvironment);
+    if (toDataType->dataType() != DataType::TYPE_NUMBER) {
+        return new Error("Loop bounds should be of type number.");
+    } 
+    functionEnvironment->addVariable(itName, fromDataType, false);
+    int from = ((Number*) fromDataType)->value;
+    int to = ((Number*) toDataType)->value;
+    DataType* result = NULL;
+    paramOfFor++;
+    for (int i = from; i < to; ++i){
+        for (list<Parameter*>::iterator it = paramOfFor; it != (*functionData).second.end(); ++it){
+            result = (*it)->eval(functionEnvironment)->eval(functionEnvironment);
+            if (result->dataType() == DataType::TYPE_ERROR) {
+                return result;
+            }
+        } 
+    }
+    return result;
 }

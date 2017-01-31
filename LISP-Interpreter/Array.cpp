@@ -59,6 +59,9 @@ pair<Function*, list<Parameter*> > Array::getInBodyFunction(Environment* e) {
     Function *function = e->getFunction((*this)[0]);
     if (!function)
         throw "Function " + (*this)[0] + " is not defined.";
+    if (function->name == "for") {
+        return getInBodyFor(e, function);
+    }
     list<Parameter*> parameters;
     Parameter* param;
     for (int i = 1; i < a.size(); i++) {
@@ -229,4 +232,42 @@ DataType* Array::eval(Environment* e) {
     }
     //cout << "Abstract Array eval() should be implemented." << endl;
     return NULL;
+}
+
+pair<Function*, list<Parameter*> > Array::getInBodyFor(Environment* e, Function* function) {
+    if (a.size() < 7 || a[2]->toString().compare("from") != 0
+            || a[4]->toString().compare("to") != 0
+            || a[6]->toString().compare("do") != 0)
+        throw "Wrong defintion of loop parameters";
+    DataType* from = a[3]->eval(e);
+    DataType* to = a[5]->eval(e);
+    if (from->dataType() != DataType::TYPE_NUMBER
+            || to->dataType() != DataType::TYPE_NUMBER)
+        throw "Loop bounds should be of type number.";
+    list<Parameter*> params;
+    Parameter *name = new Parameter();
+    name->parameterName = a[1]->toString();
+    params.push_back(name);
+    params.push_back(new Parameter(from));
+    params.push_back(new Parameter(to));
+    for (int i = 7; i < a.size(); i++) { // perform body functions
+        Parameter *param = new Parameter();
+        if (a[i]->isAtom()) {
+            param->value = (DataType*) a[i];
+            if (((DataType*) a[i])->dataType() == DataType::TYPE_SYMBOL) {
+                //ak je funkcia defvar, defconst symbol sa zameni za string
+                if ((function->name == "defvar" || function->name == "defconst") && i == 1) {
+                    param->value = new String((*this)[i]);
+                } else {
+                    param->parameterName = (*this)[i]; // string of this param
+                }
+            }
+        } else {
+            pair<Function*, list<Parameter*> > ibf = a[i]->getInBodyFunction(e);
+            param->function = ibf.first;
+            param->parametersOfFunction = ibf.second;
+        }
+        params.push_back(param);
+    }
+    return pair<Function*, list<Parameter*> >(function, params);
 }

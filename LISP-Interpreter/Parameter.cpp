@@ -16,6 +16,10 @@ Parameter::Parameter() {
 Parameter::Parameter(const Parameter& orig) {
 }
 
+Parameter::Parameter(Array* value) {
+    this->value = value;
+}
+
 Parameter::~Parameter() {
 }
 
