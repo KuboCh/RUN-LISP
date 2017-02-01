@@ -16,6 +16,10 @@ Parameter::Parameter() {
 Parameter::Parameter(const Parameter& orig) {
 }
 
+Parameter::Parameter(Array* value) {
+    this->value = value;
+}
+
 Parameter::~Parameter() {
 }
 
@@ -40,41 +44,86 @@ DataType* Parameter::eval(Environment *e) {
         cout << "Parameter " << parameterName << " is " << v->value->toString() << endl;
         return v->value;
     }
+
+    if (function != NULL) {
+        //    cout << "Parameter value is result of function " << function->name << endl;
+        //    return function->eval(*e);
+        if (!(function->checkArgCount(parametersOfFunction.size()))) {
+            return new Error("Wrong number of arguments of " + function->name);
+        }
+        cout << "Evaluating function " << function->name << endl;
+        if (function->name == "if") {
+            list<Parameter*>::iterator paramOfIf = parametersOfFunction.begin();
+            if ((*paramOfIf)->eval(e)->eval(e)->dataType() == DataType::TYPE_TRUE) {
+                paramOfIf++;
+            } else {
+                paramOfIf++;
+                paramOfIf++;
+            }
+            return (*paramOfIf)->eval(e)->eval(e);
+        }
+        if (function->name == "for") {
+            list<Parameter*>::iterator paramOfFor = parametersOfFunction.begin();
+            string itName = (*paramOfFor)->parameterName;
+            paramOfFor++;
+            DataType* fromDataType = (*paramOfFor)->eval(e);
+            if (fromDataType->dataType() != DataType::TYPE_NUMBER) {
+                return new Error("Loop bounds should be of type number.");
+            }
+            paramOfFor++;
+            DataType* toDataType = (*paramOfFor)->eval(e);
+            if (toDataType->dataType() != DataType::TYPE_NUMBER) {
+                return new Error("Loop bounds should be of type number.");
+            }
+            e->addVariable(itName, fromDataType, false);
+            int from = ((Number*) fromDataType)->value;
+            int to = ((Number*) toDataType)->value;
+            DataType* result = NULL;
+            paramOfFor++;
+            for (int i = from; i < to; ++i) {
+                for (list<Parameter*>::iterator it = paramOfFor; it != parametersOfFunction.end(); ++it) {
+                    result = (*it)->eval(e)->eval(e);
+                    if (result->dataType() == DataType::TYPE_ERROR) {
+                        return result;
+                    }
+                }
+            }
+            return result;
+        }
+        if (function->name == "return") {
+            DataType* result = (*parametersOfFunction.begin())->eval(e)->eval(e);
+            result->isResult = true;
+            return result;
+        }
+
+        Environment *environment = Memory::getInstance().get(); //new Environment();//
+        int argPos = 0;
+        for (list<Parameter*>::iterator paramIt = parametersOfFunction.begin(); paramIt != parametersOfFunction.end(); ++paramIt) {
+            try {
+                DataType *par = (*paramIt)->eval(e)->eval(e);
+                if (par->dataType() == DataType::TYPE_ERROR) {
+                    return par;
+                }
+                environment->addVariable(function->getParameterNameAt(argPos), par, false);
+            } catch (const char* error) {
+                return new Error(error);
+            }
+            argPos++;
+        }
+        //    cout << "--------------------------------------" << endl;
+        //    environment->print();
+        //    cout << "--------------------------------------" << endl;
+        function->functionEnvironment = environment;
+        return function->eval(environment);
+    }
+
     if (value != NULL) {
         if (value->isAtom()) {
-//            if (((DataType*) value)->dataType() == DataType::TYPE_STRING) {
-//                String *s = ((String*) value); 
-//            } else
-                return value->eval(e);
+            //            if (((DataType*) value)->dataType() == DataType::TYPE_STRING) {
+            //                String *s = ((String*) value); 
+            //            } else
+            return value->eval(e);
         }
         return value->eval(e);
     }
-   
-//    cout << "Parameter value is result of function " << function->name << endl;
-//    return function->eval(*e);
-    if (!(function->checkArgCount(parametersOfFunction.size()))) {
-        return new Error("Wrong number of arguments of " + function->name);
-    }
-    cout << "Evaluating function " << function->name << endl;
-    Environment *environment = Memory::getInstance().get();//new Environment();//
-    int argPos = 0;
-    for (list<Parameter*>::iterator paramIt = parametersOfFunction.begin(); paramIt != parametersOfFunction.end(); ++paramIt) {
-        try {
-            DataType *par = (*paramIt)->eval(e)->eval(e);
-            if (par->dataType() == DataType::TYPE_ERROR) {
-                return par;
-            }
-            environment->addVariable(function->getParameterNameAt(argPos), par, false);
-        } catch (const char* error) {
-            return new Error(error);
-        }
-        argPos++;
-    }
-    //    cout << "--------------------------------------" << endl;
-    //    environment->print();
-    //    cout << "--------------------------------------" << endl;
-    function->functionEnvironment = environment;
-    return function->eval(environment);
-    
-    
 }

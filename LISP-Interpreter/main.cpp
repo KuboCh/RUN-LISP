@@ -29,6 +29,10 @@ void buildFunctions(Environment *e) {
     e->addFunction(new BuildInGreater());
     e->addFunction(new BuildInAnd());
     e->addFunction(new BuildInOr());
+    e->addFunction(new BuildInIf());
+    e->addFunction(new BuildInFor());
+    e->addFunction(new BuildInOut());
+    e->addFunction(new BuildInReturn());
 }
 
 int main(int argc, char** argv) {

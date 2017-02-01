@@ -19,6 +19,7 @@ public:
     static const int TYPE_PARAMETER = 7;
     static const int TYPE_SYMBOL = 8;
     static const int TYPE_FUNCTION = 9;
+    static const int TYPE_RETURN = 10;
 
     DataType();
     DataType(const DataType& orig);
@@ -29,6 +30,7 @@ public:
     virtual int dataType();
     virtual string toString();
     string typeToString();
+    bool isResult = false;
 private:
 
 };

@@ -14,6 +14,7 @@ class Parameter {
 public:
     Parameter();
     Parameter(const Parameter& orig);
+    Parameter(Array *value);
     virtual ~Parameter();
     Function *function;
     list<Parameter*> parametersOfFunction;

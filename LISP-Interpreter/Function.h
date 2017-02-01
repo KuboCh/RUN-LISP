@@ -23,6 +23,7 @@ public:
     virtual DataType* eval(Environment* e);
     virtual bool checkArgCount(int givenArgCount);
     DataType* evalFunctionInBody(list<pair<Function*, list<Parameter*> > >::iterator functionData);
+    DataType* evalForCycle(list<pair<Function*, list<Parameter*> > >::iterator functionData);
     virtual string getParameterNameAt(int position);
     
     virtual int dataType() {
