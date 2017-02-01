@@ -83,6 +83,8 @@ DataType* Function::evalFunctionInBody(list<pair<Function*, list<Parameter*> > >
         result->isResult = true;
         return result;
     }
+    LispStack::getInstance().push((*functionData).first);
+    cout << "pushing " << (*functionData).first->name << endl;
     (*functionData).first->functionEnvironment = Memory::getInstance().get();
     Environment *environment = (*functionData).first->functionEnvironment; //new Environment();
     int argPos = 0;
@@ -98,6 +100,7 @@ DataType* Function::evalFunctionInBody(list<pair<Function*, list<Parameter*> > >
         }
         argPos++;
     }
+    LispStack::getInstance().pop();
     //    cout << "--------------------------------------" << endl;
     //    environment->print();
     //    cout << "--------------------------------------" << endl;
@@ -127,7 +130,7 @@ DataType* Function::evalForCycle(list<pair<Function*, list<Parameter*> > >::iter
     functionEnvironment->addVariable(itName, fromDataType, false);
     int from = ((Number*) fromDataType)->value;
     int to = ((Number*) toDataType)->value;
-    DataType* result = NULL;
+    DataType* result = new Nil();
     paramOfFor++;
     for (int i = from; i < to; ++i) {
         for (list<Parameter*>::iterator it = paramOfFor; it != (*functionData).second.end(); ++it) {

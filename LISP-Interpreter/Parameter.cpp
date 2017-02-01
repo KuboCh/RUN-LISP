@@ -95,8 +95,10 @@ DataType* Parameter::eval(Environment *e) {
             result->isResult = true;
             return result;
         }
-
+        LispStack::getInstance().push(function);
+        cout << "pushing " << function->name << endl;
         Environment *environment = Memory::getInstance().get(); //new Environment();//
+        function->functionEnvironment = environment;
         int argPos = 0;
         for (list<Parameter*>::iterator paramIt = parametersOfFunction.begin(); paramIt != parametersOfFunction.end(); ++paramIt) {
             try {
@@ -113,17 +115,11 @@ DataType* Parameter::eval(Environment *e) {
         //    cout << "--------------------------------------" << endl;
         //    environment->print();
         //    cout << "--------------------------------------" << endl;
-        function->functionEnvironment = environment;
+        LispStack::getInstance().pop();
         return function->eval(environment);
     }
 
     if (value != NULL) {
-        if (value->isAtom()) {
-            //            if (((DataType*) value)->dataType() == DataType::TYPE_STRING) {
-            //                String *s = ((String*) value); 
-            //            } else
-            return value->eval(e);
-        }
         return value->eval(e);
     }
 }

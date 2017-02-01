@@ -48,7 +48,7 @@ DataType* Array::callFunction(Environment* e) {
         if (p->dataType() == DataType::TYPE_PARAMETER) { // get value of this param
             p = p->eval(e);
         }
-        //cout << "arg: " <<p->toString() << " of type " << p->typeToString() << endl;
+        cout << "arg: " << p->toString() << " of type " << p->typeToString() << endl;
         functionEnvironment->addVariable(function->getParameterNameAt(i - 1), p, false);
     }
     function->functionEnvironment = functionEnvironment;
@@ -76,10 +76,12 @@ pair<Function*, list<Parameter*> > Array::getInBodyFunction(Environment* e) {
                     param->parameterName = (*this)[i]; // string of this param
                 }
             }
+            param->function = NULL;
         } else {
             pair<Function*, list<Parameter*> > ibf = a[i]->getInBodyFunction(e);
             param->function = ibf.first;
             param->parametersOfFunction = ibf.second;
+            param->value == NULL;
         }
         parameters.push_back(param);
     }
@@ -240,16 +242,31 @@ pair<Function*, list<Parameter*> > Array::getInBodyFor(Environment* e, Function*
             || a[6]->toString().compare("do") != 0)
         throw "Wrong defintion of loop parameters";
     DataType* from = a[3]->eval(e);
-    DataType* to = a[5]->eval(e);
-    if (from->dataType() != DataType::TYPE_NUMBER
-            || to->dataType() != DataType::TYPE_NUMBER)
+
+    Parameter *param = new Parameter();
+    if (a[5]->isAtom()) {
+        param->value = (DataType*) a[5];
+        if (((DataType*) a[5])->dataType() == DataType::TYPE_SYMBOL) {
+
+            param->parameterName = (*this)[5]; // string of this param
+
+        }
+        param->function = NULL;
+    } else {
+        pair<Function*, list<Parameter*> > ibf = a[5]->getInBodyFunction(e);
+        param->function = ibf.first;
+        param->parametersOfFunction = ibf.second;
+        param->value == NULL;
+    }
+    //DataType* to = a[5]->eval(e);
+    if (from->dataType() != DataType::TYPE_NUMBER)
         throw "Loop bounds should be of type number.";
     list<Parameter*> params;
     Parameter *name = new Parameter();
     name->parameterName = a[1]->toString();
     params.push_back(name);
     params.push_back(new Parameter(from));
-    params.push_back(new Parameter(to));
+    params.push_back(param);
     for (int i = 7; i < a.size(); i++) { // perform body functions
         Parameter *param = new Parameter();
         if (a[i]->isAtom()) {

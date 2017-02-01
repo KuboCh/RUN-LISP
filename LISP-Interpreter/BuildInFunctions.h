@@ -161,5 +161,50 @@ public:
     virtual string getParameterNameAt(int position);
 };
 
+class BuildInAt : public Function {
+public:
+    BuildInAt();;
+    virtual ~BuildInAt() {};
+    virtual DataType* eval(Environment *e);
+    virtual bool checkArgCount(int givenArgCount);
+    virtual string getParameterNameAt(int position);
+};
+
+class BuildInSet : public Function {
+public:
+    BuildInSet();;
+    virtual ~BuildInSet() {};
+    virtual DataType* eval(Environment *e);
+    virtual bool checkArgCount(int givenArgCount);
+    virtual string getParameterNameAt(int position);
+};
+
+class BuildInDelete : public Function {
+public:
+    BuildInDelete();;
+    virtual ~BuildInDelete() {};
+    virtual DataType* eval(Environment *e);
+    virtual bool checkArgCount(int givenArgCount);
+    virtual string getParameterNameAt(int position);
+};
+
+class BuildInAdd : public Function {
+public:
+    BuildInAdd();;
+    virtual ~BuildInAdd() {};
+    virtual DataType* eval(Environment *e);
+    virtual bool checkArgCount(int givenArgCount);
+    virtual string getParameterNameAt(int position);
+};
+
+class BuildInLength : public Function {
+public:
+    BuildInLength();
+    virtual ~BuildInLength() {};
+    virtual DataType* eval(Environment *e);
+    virtual bool checkArgCount(int givenArgCount);
+    virtual string getParameterNameAt(int position);
+};
+
 #endif /* BUILDINFUNCTIONS_H */
 
