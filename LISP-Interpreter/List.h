@@ -1,4 +1,4 @@
-#include <list>
+#include <vector>
 #include "DataType.h"
 
 using namespace std;
@@ -14,14 +14,13 @@ public:
     virtual ~List();
     virtual DataType* eval(Environment* e);
     virtual void print();
-    void addElement(DataType *element);
+    void addElement(Array *element);
     virtual string toString();
 
     int dataType() {
         return TYPE_LIST;
     }
-private:
-    list<DataType*> elements;
+    vector<Array*> elements;
 };
 
 #endif /* LIST_H */

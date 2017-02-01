@@ -33,6 +33,11 @@ void buildFunctions(Environment *e) {
     e->addFunction(new BuildInFor());
     e->addFunction(new BuildInOut());
     e->addFunction(new BuildInReturn());
+    e->addFunction(new BuildInAt());
+    e->addFunction(new BuildInSet());
+    e->addFunction(new BuildInDelete());
+    e->addFunction(new BuildInAdd());
+    e->addFunction(new BuildInLength());
 }
 
 int main(int argc, char** argv) {

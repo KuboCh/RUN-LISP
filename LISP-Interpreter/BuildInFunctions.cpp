@@ -224,9 +224,12 @@ DataType* BuildInEqual::eval(Environment *e) {
     for (int i = 1; i < e->getNumberOfVariables(); i++) {
         Variable *p2 = e->getVariable(Environment::varNameAt(i));
         if (valueType != p2->value->dataType()
-                || valueString.compare(p2->value->toString()) != 0)
+                || valueString.compare(p2->value->toString()) != 0) {
+            cout << "== false" << endl;
             return new False();
+        }
     }
+    cout << "== true" << endl;
     return new True();
 }
 
@@ -512,4 +515,162 @@ DataType* BuildInReturn::eval(Environment *e) {
 //    cout << toPrint->value->toString() << endl;
 //    return new Nil();
     throw "error eval of return function";
+}
+
+BuildInAt::BuildInAt() {
+    name = "at";
+}
+
+string BuildInAt::getParameterNameAt(int position) {
+    return Environment::varNameAt(position);
+}
+
+bool BuildInAt::checkArgCount(int givenArgCount) {
+    return givenArgCount == 2;
+}
+
+/*
+ * 
+ * 
+ * 
+ */
+DataType* BuildInAt::eval(Environment *e) {
+    Variable *l = e->getVariable(Environment::varNameAt(0));
+    if (l->value->dataType() != DataType::TYPE_LIST){
+        return new Error("Wrong parameter of at, expected list");
+    }
+    DataType *poz = e->getVariable(Environment::varNameAt(1))->eval(e);
+    if (poz->dataType() != DataType::TYPE_NUMBER){
+        return new Error("Wrong parameter of at, expected number");
+    }
+    List *newList = (List*) l->value;
+    int position = ((Number*) poz)->value;
+    if (newList->elements.size() <= position || position < 0) {
+        return new Error("Wrong position at at");
+    }
+    return newList->elements[position]->eval(e);
+}
+
+BuildInSet::BuildInSet() {
+    name = "set";
+}
+
+string BuildInSet::getParameterNameAt(int position) {
+    return Environment::varNameAt(position);
+}
+
+bool BuildInSet::checkArgCount(int givenArgCount) {
+    return givenArgCount == 3;
+}
+
+/*
+ * 
+ * 
+ * 
+ */
+DataType* BuildInSet::eval(Environment *e) {
+    Variable *l = e->getVariable(Environment::varNameAt(0));
+    if (l->value->dataType() != DataType::TYPE_LIST){
+        return new Error("Wrong parameter of set, expected list");
+    }
+    DataType *poz = e->getVariable(Environment::varNameAt(1))->eval(e);
+    if (poz->dataType() != DataType::TYPE_NUMBER){
+        return new Error("Wrong parameter of set, expected number");
+    }
+    List *newList = (List*) l->value;
+    int position = ((Number*) poz)->value;
+    if (newList->elements.size() <= position || position < 0) {
+        return new Error("Wrong position at set");
+    }
+    newList->elements[position] = e->getVariable(Environment::varNameAt(2))->value;
+    return newList;
+}
+
+
+BuildInDelete::BuildInDelete() {
+    name = "delete";
+}
+
+string BuildInDelete::getParameterNameAt(int position) {
+    return Environment::varNameAt(position);
+}
+
+bool BuildInDelete::checkArgCount(int givenArgCount) {
+    return givenArgCount == 2;
+}
+
+/*
+ * 
+ * 
+ * 
+ */
+DataType* BuildInDelete::eval(Environment *e) {
+    Variable *l = e->getVariable(Environment::varNameAt(0));
+    if (l->value->dataType() != DataType::TYPE_LIST){
+        return new Error("Wrong parameter of delete, expected list");
+    }
+    DataType *poz = e->getVariable(Environment::varNameAt(1))->eval(e);
+    if (poz->dataType() != DataType::TYPE_NUMBER){
+        return new Error("Wrong parameter of delete, expected number");
+    }
+    List *newList = (List*) l->value;
+    int position = ((Number*) poz)->value;
+    if (newList->elements.size() <= position || position < 0) {
+        return new Error("Wrong position at delete");
+    }
+    newList->elements.erase(newList->elements.begin() + position);
+    return newList;
+}
+
+BuildInAdd::BuildInAdd() {
+    name = "add";
+}
+
+string BuildInAdd::getParameterNameAt(int position) {
+    return Environment::varNameAt(position);
+}
+
+bool BuildInAdd::checkArgCount(int givenArgCount) {
+    return givenArgCount == 2;
+}
+
+/*
+ * 
+ * 
+ * 
+ */
+DataType* BuildInAdd::eval(Environment *e) {
+    Variable *l = e->getVariable(Environment::varNameAt(0));
+    if (l->value->dataType() != DataType::TYPE_LIST){
+        return new Error("Wrong parameter of add, expected list");
+    }
+    DataType *value = e->getVariable(Environment::varNameAt(1))->eval(e);
+    List *newList = (List*) l->value;
+    newList->elements.push_back(value);
+    return newList;
+}
+
+BuildInLength::BuildInLength() {
+    name = "length";
+}
+
+string BuildInLength::getParameterNameAt(int position) {
+    return Environment::varNameAt(position);
+}
+
+bool BuildInLength::checkArgCount(int givenArgCount) {
+    return givenArgCount == 1;
+}
+
+/*
+ * 
+ * 
+ * 
+ */
+DataType* BuildInLength::eval(Environment *e) {
+    Variable *l = e->getVariable(Environment::varNameAt(0));
+    if (l->value->dataType() != DataType::TYPE_LIST){
+        return new Error("Wrong parameter of lenght, expected list");
+    }
+    return new Number(((List*) l->value)->elements.size());
 }

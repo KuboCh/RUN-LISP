@@ -10,27 +10,34 @@ List::~List() {
 }
 
 DataType* List::eval(Environment* e) {
+//    List *l = new List();
+//    for (vector<Array*>::const_iterator it = elements.begin(); it != elements.end(); ++it){
+//        l->addElement((*it)->eval(e));
+//    }
+//    return l;
     return this;
 }
 
 void List::print(){
     cout << "(";
-    for (list<DataType*>::const_iterator it = elements.begin(); it != elements.end(); ++it){
+    for (vector<Array*>::const_iterator it = elements.begin(); it != elements.end(); ++it){
         if (it != elements.begin()) { 
             cout << " ";
         }
-        (*it)->print();
+        if ((*it)->isAtom()){
+            ((DataType*) (*it))->print();
+        }
     }
     cout << ")";
 }
 
-void List::addElement(DataType *element) {
+void List::addElement(Array *element) {
     elements.push_back(element);
 }
 
 string List::toString() {
     string result = "(";
-    for (list<DataType*>::const_iterator it = elements.begin(); it != elements.end(); ++it){
+    for (vector<Array*>::const_iterator it = elements.begin(); it != elements.end(); ++it){
         if (it != elements.begin()) { 
             result += " ";
         }
