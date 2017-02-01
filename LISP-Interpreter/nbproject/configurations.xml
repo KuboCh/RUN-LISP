@@ -56,6 +56,14 @@
                    displayName="Test Files"
                    projectFiles="false"
                    kind="TEST_LOGICAL_FOLDER">
+      <logicalFolder name="f1"
+                     displayName="EvalTests"
+                     projectFiles="true"
+                     kind="TEST">
+        <itemPath>tests/EvalTests.cpp</itemPath>
+        <itemPath>tests/EvalTests.h</itemPath>
+        <itemPath>tests/EvalTestsRunner.cpp</itemPath>
+      </logicalFolder>
       <logicalFolder name="f2"
                      displayName="Parser2 Tests"
                      projectFiles="true"
@@ -164,6 +172,20 @@
       </item>
       <item path="Variable.h" ex="false" tool="3" flavor2="0">
       </item>
+      <folder path="TestFiles/f1">
+        <cTool>
+          <commandLine>`cppunit-config --cflags`</commandLine>
+        </cTool>
+        <ccTool>
+          <commandLine>`cppunit-config --cflags`</commandLine>
+        </ccTool>
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f1</output>
+          <linkerLibItems>
+            <linkerOptionItem>`cppunit-config --libs`</linkerOptionItem>
+          </linkerLibItems>
+        </linkerTool>
+      </folder>
       <folder path="TestFiles/f2">
         <cTool>
           <commandLine>`cppunit-config --cflags`</commandLine>
@@ -179,6 +201,12 @@
         </linkerTool>
       </folder>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="tests/EvalTests.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="tests/EvalTests.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="tests/EvalTestsRunner.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="tests/Parser2Tests.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -275,6 +303,20 @@
       </item>
       <item path="Variable.h" ex="false" tool="3" flavor2="0">
       </item>
+      <folder path="TestFiles/f1">
+        <cTool>
+          <commandLine>`cppunit-config --cflags`</commandLine>
+        </cTool>
+        <ccTool>
+          <commandLine>`cppunit-config --cflags`</commandLine>
+        </ccTool>
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f1</output>
+          <linkerLibItems>
+            <linkerOptionItem>`cppunit-config --libs`</linkerOptionItem>
+          </linkerLibItems>
+        </linkerTool>
+      </folder>
       <folder path="TestFiles/f2">
         <cTool>
           <commandLine>`cppunit-config --cflags`</commandLine>
@@ -290,6 +332,12 @@
         </linkerTool>
       </folder>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="tests/EvalTests.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="tests/EvalTests.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="tests/EvalTestsRunner.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="tests/Parser2Tests.cpp" ex="false" tool="1" flavor2="0">
       </item>

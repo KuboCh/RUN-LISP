@@ -4,6 +4,7 @@
 #define LISPSTACK_H
 
 using namespace std;
+class Function;
 
 class LispStack {
     private:
