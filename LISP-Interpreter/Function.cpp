@@ -1,21 +1,19 @@
 #include "Function.h"
-#include <string>
-#include "Nil.h"
+#include "DataType.h"
+#include "Environment.h"
+#include "Parameter.h"
 #include "LispStack.h"
-#include "Error.h"
-#include "Parametr.h"
+#include "Nil.h"
 #include "Number.h"
-
-using namespace std;
+#include "Error.h"
+#include "Memory.h"
 
 Function::Function() {
-    argCount = 0;
-    functionEnviroment = new Enviroment();
+    functionEnvironment = new Environment();
 }
 
-Function::Function(Enviroment* e) {
-    functionEnviroment = e;
-    argCount = 0;
+Function::Function(Environment* e) {
+    functionEnvironment = e;
 }
 
 Function::Function(const Function& orig) {
@@ -24,61 +22,67 @@ Function::Function(const Function& orig) {
 Function::~Function() {
 }
 
-void Function::addArgument(string name) {
-    //args.push_back(Parametr(name, NULL, false));
-    argsNames.push_back(name);
-    argCount++;
+Function::Function(const string& name) {
+    this->name = name;
 }
 
-void Function::addToBody(pair<Function*, list<Parametr*> > ribf) {//Function* function, list<Parametr*> parametrs) {
+void Function::addArgument(string name) {
+    argsNames.push_back(name);
+}
+
+void Function::addToBody(pair<Function*, list<Parameter*> > ribf) {
     body.push_back(ribf);
 }
 
-DataType* Function::eval(Enviroment* e) {
-    functionEnviroment = e;
+DataType* Function::eval(Environment *e) {
     LispStack::getInstance().push(this); // vlozi sa na stack
     cout << "Pushing " + this->name << endl;
     DataType* result = new Nil();
-    for (list<pair<Function*, list<Parametr*> > >::iterator it = body.begin(); it != body.end(); ++it) {
+    // Ak ma funkcia body functions, treba ich vsetky vyhodnotit v jej environmente
+    for (list<pair<Function*, list<Parameter*> > >::iterator it = body.begin(); it != body.end(); ++it) {
         result = evalFunctionInBody(it);
         if (result->dataType() == DataType::TYPE_ERROR) {
             return result; // return that error
         }
     }
-    cout << "Poping " + this->name + " value is " << ((Number*) result)->value << endl;
+    cout << "Poping " + this->name + " value is " << result->toString() << endl;
     LispStack::getInstance().pop(); // vyberie sa zo stacku
     return result;
 }
 
 bool Function::checkArgCount(int givenArgCount) {
-    return givenArgCount == argCount;
+    return givenArgCount == argsNames.size();
 }
 
-DataType* Function::evalFunctionInBody(list<pair<Function*, list<Parametr*> > >::iterator functionData) {
+DataType* Function::evalFunctionInBody(list<pair<Function*, list<Parameter*> > >::iterator functionData) {
     if (!((*functionData).first->checkArgCount((*functionData).second.size()))) {
         return new Error("Wrong number of arguments of " + (*functionData).first->name);
     }
     cout << "Evaluating function " << (*functionData).first->name << endl;
-    Enviroment *enviroment = new Enviroment();
+    (*functionData).first->functionEnvironment = Memory::getInstance().get();
+    Environment *environment = (*functionData).first->functionEnvironment; //new Environment();
     int argPos = 0;
-    for (list<Parametr*>::iterator paramIt = (*functionData).second.begin(); paramIt != (*functionData).second.end(); ++paramIt) {
+    for (list<Parameter*>::iterator paramIt = (*functionData).second.begin(); paramIt != (*functionData).second.end(); ++paramIt) {
         try {
-            enviroment->addVariable((*functionData).first->getParametrNameAt(argPos), (*paramIt)->eval(functionEnviroment), false);
+            DataType *par = (*paramIt)->eval(functionEnvironment)->eval(functionEnvironment);
+            if (par->dataType() == DataType::TYPE_ERROR) {
+                return par;
+            }
+            environment->addVariable((*functionData).first->getParameterNameAt(argPos), par, false);
         } catch (const char* error) {
             return new Error(error);
         }
         argPos++;
     }
-    //cout << "--------------------------------------" << endl;
-    //enviroment->print();
-    //cout << "--------------------------------------" << endl;
-    return (*functionData).first->eval(enviroment);
+    //    cout << "--------------------------------------" << endl;
+    //    environment->print();
+    //    cout << "--------------------------------------" << endl;
+    return (*functionData).first->eval(environment);
 }
 
-string Function::getParametrNameAt(int position) {
+string Function::getParameterNameAt(int position) {
     if (position >= argsNames.size()) {
-        throw "Trying to get parameter on position that doesn't exist."; //TODO
+        throw "Trying to get parameter on position that doesn't exist.";
     }
     return argsNames.at(position);
 }
-

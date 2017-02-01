@@ -1,12 +1,13 @@
 #include <string>
 #include <iostream>
-#include "DataType.h"
 #include <stdlib.h>
+#include "DataType.h"
+
+using namespace std;
 
 #ifndef NUMBER_H
 #define NUMBER_H
-
-using namespace std;
+class Environment;
 
 class Number : public DataType {
 public:
@@ -14,12 +15,15 @@ public:
     Number(int val);
     Number(const Number& orig);
     virtual ~Number();
-    
-    void eval();
+    virtual DataType* eval(Environment* e);
     virtual void print();
+    virtual string toString();
+
+    virtual int dataType() {
+        return TYPE_NUMBER;
+    }
+    
     int value;
-    virtual int dataType() { return TYPE_NUMBER; }
-    virtual string toString(); 
 private:
 };
 

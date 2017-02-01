@@ -1,11 +1,10 @@
 #include <stack>
 
-#include "Function.h"
-
 #ifndef LISPSTACK_H
 #define LISPSTACK_H
 
 using namespace std;
+class Function;
 
 class LispStack {
     private:

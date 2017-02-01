@@ -59,7 +59,7 @@ void ParserTest::testBasicDataTypes() {
 void ParserTest::testBasicVariables() {
     p.pushBack(" a 5)\n");
     DataType* d = p.parse("(defvar", &e);
-    CPPUNIT_ASSERT(d->dataType() == d->TYPE_PARAMETR);
+    CPPUNIT_ASSERT(d->dataType() == d->TYPE_PARAMETER);
     Variable* v = (Variable*) d;
     CPPUNIT_ASSERT(v->name == "a");
     CPPUNIT_ASSERT(v->constant == false);
@@ -77,7 +77,7 @@ void ParserTest::testBasicVariables() {
     
     p.pushBack(" b 5)\n");
     d = p.parse("(defconst", &e);
-    CPPUNIT_ASSERT(d->dataType() == d->TYPE_PARAMETR);
+    CPPUNIT_ASSERT(d->dataType() == d->TYPE_PARAMETER);
     v = (Variable*) d;
     CPPUNIT_ASSERT(v->name == "b");
     CPPUNIT_ASSERT(v->constant == true);
@@ -86,7 +86,7 @@ void ParserTest::testBasicVariables() {
     CPPUNIT_ASSERT(n->value == 5);
     // reading consts
     d = p.parse("b", &e);
-    CPPUNIT_ASSERT(d->dataType() == d->TYPE_PARAMETR);
+    CPPUNIT_ASSERT(d->dataType() == d->TYPE_PARAMETER);
     v = (Variable*) d;
     CPPUNIT_ASSERT(v->name == "b");
     CPPUNIT_ASSERT(v->constant == true);
@@ -99,7 +99,7 @@ void ParserTest::testBasicVariables() {
 void ParserTest::testBasicVariablesWithSpace() {
     p.pushBack(" a 5 )\n");
     DataType* d = p.parse("(defvar", &e);
-    CPPUNIT_ASSERT(d->dataType() == d->TYPE_PARAMETR);
+    CPPUNIT_ASSERT(d->dataType() == d->TYPE_PARAMETER);
     Variable* v = (Variable*) d;
     CPPUNIT_ASSERT(v->name == "a");
     CPPUNIT_ASSERT(v->constant == false);
@@ -117,7 +117,7 @@ void ParserTest::testBasicVariablesWithSpace() {
     
     p.pushBack(" b 5 )\n");
     d = p.parse("(defconst", &e);
-    CPPUNIT_ASSERT(d->dataType() == d->TYPE_PARAMETR);
+    CPPUNIT_ASSERT(d->dataType() == d->TYPE_PARAMETER);
     v = (Variable*) d;
     CPPUNIT_ASSERT(v->name == "b");
     CPPUNIT_ASSERT(v->constant == true);
@@ -126,7 +126,7 @@ void ParserTest::testBasicVariablesWithSpace() {
     CPPUNIT_ASSERT(n->value == 5);
     // reading consts
     d = p.parse("b", &e);
-    CPPUNIT_ASSERT(d->dataType() == d->TYPE_PARAMETR);
+    CPPUNIT_ASSERT(d->dataType() == d->TYPE_PARAMETER);
     v = (Variable*) d;
     CPPUNIT_ASSERT(v->name == "b");
     CPPUNIT_ASSERT(v->constant == true);

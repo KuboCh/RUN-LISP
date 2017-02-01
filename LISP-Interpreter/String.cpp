@@ -13,8 +13,8 @@ String::String(const String& orig) {
 String::~String() {
 }
 
-void String::eval() {
-    // String is already evaluated (atomic value)
+DataType* String::eval(Environment* e) {
+    return this;
 }
 
 void String::print() {

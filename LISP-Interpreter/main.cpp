@@ -1,52 +1,67 @@
 #include <cstdlib>
 #include <iostream>
 #include <string>
-#include "Parser.h"
+#include "DataType.h"
+#include "Environment.h"
 #include "BuildInFunctions.h"
+#include "Function.h"
 #include "LispStack.h"
+#include "Parser.h"
+#include "Array.h"
+#include "Memory.h"
 
 using namespace std;
 
-void buildFunctions(Enviroment *e) {
+
+/*
+ * Init Built-In functions
+ */
+void buildFunctions(Environment *e) {
     e->addFunction(new BuildInPlus());
     e->addFunction(new BuildInDefconst());
     e->addFunction(new BuildInDefvar());
+    e->addFunction(new BuildInUndef());
     e->addFunction(new BuildInList());
     e->addFunction(new BuildInMinus());
     e->addFunction(new BuildInMultiplication());
+    e->addFunction(new BuildInEqual());
+    e->addFunction(new BuildInLower());
+    e->addFunction(new BuildInGreater());
+    e->addFunction(new BuildInAnd());
+    e->addFunction(new BuildInOr());
 }
 
 int main(int argc, char** argv) {
     cout << "Welcome to LISP interpreter" << endl;
     int lineNo = 0;
-    string word;
-    Enviroment mainEnviroment;
-    buildFunctions(&mainEnviroment);
-    Function *mainFunction = new Function(&mainEnviroment);
+    string line;
+    Environment *mainEnvironment = Memory::getInstance().get();
+    buildFunctions(mainEnvironment);
+    Function *mainFunction = new Function(mainEnvironment);
+    mainFunction->name = "main";
     LispStack::getInstance().push(mainFunction);
-
-    //Parser p(true); // True = talk!
-    Parser p(false); // True = talk!
+    Parser parser;
+    Array *parsedData;
     DataType * result;
-    
-    p.pushBack("(def inc4 (x) (inc3 (inc2 (inc1 0))))\n");
-    p.pushBack("(def inc1 (x) (+ x 1))\n");
-    p.pushBack("(def inc2 (x) (+ x 1))\n");
-    p.pushBack("(def inc3 (x) (+ x 1))\n");
-    
-    
     // REPL = Read Eval Print Loop
     while (true) { // Loop
         cout << ++lineNo << ". > ";
-        cin >> word; // Read
-        if (p.talkToMe)
-            cout << "Main: You said: " << word << endl;
-        if (word == "bye" || word == "exit")
+        getline(cin, line);
+        if (line == "bye" || line == "exit")
             break;
-        result = p.parse(word, &mainEnviroment); // Eval + additional read
-        result->print(); // Print
-        cout << endl;
-        //delete result; // Delete my garbage
+        parsedData = parser.parse(line); // Read
+        if (parsedData != NULL) {
+            result = parsedData->eval(mainEnvironment); // Eval
+            if (result != NULL) {
+                cout << result->toString() << " (" << result->typeToString() << ")" << endl; // Print
+            }
+        }
+        // testing memory
+//        Environment *mainEnvironment2 = Memory::getInstance().get();
+//        Function *mainFunction2 = new Function(mainEnvironment2);
+//        mainFunction2->name = "main2";
+//        LispStack::getInstance().push(mainFunction2);
+
         if (lineNo == 100) // proti zacykleniu
             break;
     }

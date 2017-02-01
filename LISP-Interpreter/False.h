@@ -1,22 +1,30 @@
 #include <string>
 #include <iostream>
-#include "DataType.h"
-
-#ifndef FALSE_H
-#define FALSE_H
+#include "Symbol.h"
 
 using namespace std;
 
-class False : public DataType {
+#ifndef FALSE_H
+#define FALSE_H
+class DataType;
+class Environment;
+
+class False : public Symbol {
 public:
     False();
     False(const False& orig);
     virtual ~False();
-    
-    void eval();
+
+    virtual DataType* eval(Environment* e);
     virtual void print();
-    int dataType() { return TYPE_FALSE; }
-    string toString() { return "false"; }
+
+    int dataType() {
+        return TYPE_FALSE;
+    }
+
+    string toString() {
+        return "false";
+    }
 private:
 
 };

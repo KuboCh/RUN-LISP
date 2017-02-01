@@ -1,6 +1,5 @@
 #include "Error.h"
-
-using namespace std;
+#include "DataType.h"
 
 Error::Error() {
 }
@@ -15,8 +14,8 @@ Error::Error(const Error& orig) {
 Error::~Error() {
 }
 
-void Error::eval() {
-    //TODO return
+DataType* Error::eval(Environment* e) {
+    return this;
 }
 
 void Error::print(){

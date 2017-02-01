@@ -1,8 +1,10 @@
-#ifndef VARIABLE_H
-#define VARIABLE_H
-
+#include <string>
 #include "DataType.h"
 
+using namespace std;
+
+#ifndef VARIABLE_H
+#define VARIABLE_H
 
 class Variable : public DataType {
 public:
@@ -10,15 +12,22 @@ public:
     Variable(string name, DataType *value, bool constant);
     Variable(const Variable& orig);
     virtual ~Variable();
-    void eval();
+    virtual DataType* eval(Environment* e);
     virtual void print();
-    virtual int dataType() { return TYPE_PARAMETR; }
+
+    virtual int dataType() {
+        return TYPE_PARAMETER;
+    }
+
+    string toString() {
+        return value->toString();
+    }
+
     DataType *value;
     string name;
     bool constant;
-    string toString() { return value->toString(); }
 private:
-    
+
 };
 
 #endif /* VARIABLE_H */

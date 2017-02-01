@@ -1,4 +1,6 @@
 #include "False.h"
+#include "DataType.h"
+#include "Environment.h"
 
 False::False() {
 }
@@ -12,8 +14,8 @@ False::~False() {
 /*
  * False is (surprisingly) false.
  */
-void False::eval() {
-    //    return false;
+DataType* False::eval(Environment* e) {
+    return this;
 }
 
 void False::print(){

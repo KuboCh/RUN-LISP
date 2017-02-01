@@ -2,10 +2,11 @@
 #include <iostream>
 #include "DataType.h"
 
+using namespace std;
+
 #ifndef STRING_H
 #define STRING_H
-
-using namespace std;
+class Environment;
 
 class String : public DataType {
 public:
@@ -13,12 +14,19 @@ public:
     String(string s);
     String(const String& orig);
     virtual ~String();
-    
-    void eval();
+    virtual DataType* eval(Environment* e);
     virtual void print();
-    virtual int dataType() { return TYPE_STRING; }
+
+    virtual int dataType() {
+        return TYPE_STRING;
+    }
+
+    string toString() {
+        return value;
+    }
+
     string value;
-    string toString() { return value; }
+
 private:
 
 };

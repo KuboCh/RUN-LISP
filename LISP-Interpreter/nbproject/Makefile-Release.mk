@@ -35,21 +35,22 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/Array.o \
 	${OBJECTDIR}/BuildInFunctions.o \
 	${OBJECTDIR}/DataType.o \
-	${OBJECTDIR}/Enviroment.o \
+	${OBJECTDIR}/Environment.o \
 	${OBJECTDIR}/Error.o \
 	${OBJECTDIR}/False.o \
 	${OBJECTDIR}/Function.o \
 	${OBJECTDIR}/List.o \
 	${OBJECTDIR}/Nil.o \
 	${OBJECTDIR}/Number.o \
-	${OBJECTDIR}/Parametr.o \
+	${OBJECTDIR}/Parameter.o \
 	${OBJECTDIR}/Parser.o \
 	${OBJECTDIR}/String.o \
+	${OBJECTDIR}/Symbol.o \
 	${OBJECTDIR}/True.o \
 	${OBJECTDIR}/Variable.o \
-	${OBJECTDIR}/Void.o \
 	${OBJECTDIR}/main.o
 
 # Test Directory
@@ -57,12 +58,15 @@ TESTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}/tests
 
 # Test Files
 TESTFILES= \
-	${TESTDIR}/TestFiles/f1
+	${TESTDIR}/TestFiles/f1 \
+	${TESTDIR}/TestFiles/f2
 
 # Test Object Files
 TESTOBJECTFILES= \
-	${TESTDIR}/tests/ParserTest.o \
-	${TESTDIR}/tests/ParserTestRunner.o
+	${TESTDIR}/tests/EvalTests.o \
+	${TESTDIR}/tests/EvalTestsRunner.o \
+	${TESTDIR}/tests/Parser2Tests.o \
+	${TESTDIR}/tests/Parser2TestsRunner.o
 
 # C Compiler Flags
 CFLAGS=
@@ -88,6 +92,11 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/lisp-interpreter: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/lisp-interpreter ${OBJECTFILES} ${LDLIBSOPTIONS}
 
+${OBJECTDIR}/Array.o: Array.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Array.o Array.cpp
+
 ${OBJECTDIR}/BuildInFunctions.o: BuildInFunctions.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
@@ -98,10 +107,10 @@ ${OBJECTDIR}/DataType.o: DataType.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/DataType.o DataType.cpp
 
-${OBJECTDIR}/Enviroment.o: Enviroment.cpp 
+${OBJECTDIR}/Environment.o: Environment.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Enviroment.o Enviroment.cpp
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Environment.o Environment.cpp
 
 ${OBJECTDIR}/Error.o: Error.cpp 
 	${MKDIR} -p ${OBJECTDIR}
@@ -133,10 +142,10 @@ ${OBJECTDIR}/Number.o: Number.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Number.o Number.cpp
 
-${OBJECTDIR}/Parametr.o: Parametr.cpp 
+${OBJECTDIR}/Parameter.o: Parameter.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Parametr.o Parametr.cpp
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Parameter.o Parameter.cpp
 
 ${OBJECTDIR}/Parser.o: Parser.cpp 
 	${MKDIR} -p ${OBJECTDIR}
@@ -148,6 +157,11 @@ ${OBJECTDIR}/String.o: String.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/String.o String.cpp
 
+${OBJECTDIR}/Symbol.o: Symbol.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Symbol.o Symbol.cpp
+
 ${OBJECTDIR}/True.o: True.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
@@ -157,11 +171,6 @@ ${OBJECTDIR}/Variable.o: Variable.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Variable.o Variable.cpp
-
-${OBJECTDIR}/Void.o: Void.cpp 
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Void.o Void.cpp
 
 ${OBJECTDIR}/main.o: main.cpp 
 	${MKDIR} -p ${OBJECTDIR}
@@ -175,22 +184,51 @@ ${OBJECTDIR}/main.o: main.cpp
 .build-tests-conf: .build-tests-subprojects .build-conf ${TESTFILES}
 .build-tests-subprojects:
 
-${TESTDIR}/TestFiles/f1: ${TESTDIR}/tests/ParserTest.o ${TESTDIR}/tests/ParserTestRunner.o ${OBJECTFILES:%.o=%_nomain.o}
+${TESTDIR}/TestFiles/f1: ${TESTDIR}/tests/EvalTests.o ${TESTDIR}/tests/EvalTestsRunner.o ${OBJECTFILES:%.o=%_nomain.o}
 	${MKDIR} -p ${TESTDIR}/TestFiles
 	${LINK.cc}   -o ${TESTDIR}/TestFiles/f1 $^ ${LDLIBSOPTIONS} `cppunit-config --libs`   
 
+${TESTDIR}/TestFiles/f2: ${TESTDIR}/tests/Parser2Tests.o ${TESTDIR}/tests/Parser2TestsRunner.o ${OBJECTFILES:%.o=%_nomain.o}
+	${MKDIR} -p ${TESTDIR}/TestFiles
+	${LINK.cc}   -o ${TESTDIR}/TestFiles/f2 $^ ${LDLIBSOPTIONS} `cppunit-config --libs`   
 
-${TESTDIR}/tests/ParserTest.o: tests/ParserTest.cpp 
+
+${TESTDIR}/tests/EvalTests.o: tests/EvalTests.cpp 
 	${MKDIR} -p ${TESTDIR}/tests
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 `cppunit-config --cflags` -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/ParserTest.o tests/ParserTest.cpp
+	$(COMPILE.cc) -O2 `cppunit-config --cflags` -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/EvalTests.o tests/EvalTests.cpp
 
 
-${TESTDIR}/tests/ParserTestRunner.o: tests/ParserTestRunner.cpp 
+${TESTDIR}/tests/EvalTestsRunner.o: tests/EvalTestsRunner.cpp 
 	${MKDIR} -p ${TESTDIR}/tests
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 `cppunit-config --cflags` -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/ParserTestRunner.o tests/ParserTestRunner.cpp
+	$(COMPILE.cc) -O2 `cppunit-config --cflags` -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/EvalTestsRunner.o tests/EvalTestsRunner.cpp
 
+
+${TESTDIR}/tests/Parser2Tests.o: tests/Parser2Tests.cpp 
+	${MKDIR} -p ${TESTDIR}/tests
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 `cppunit-config --cflags` -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/Parser2Tests.o tests/Parser2Tests.cpp
+
+
+${TESTDIR}/tests/Parser2TestsRunner.o: tests/Parser2TestsRunner.cpp 
+	${MKDIR} -p ${TESTDIR}/tests
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 `cppunit-config --cflags` -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/Parser2TestsRunner.o tests/Parser2TestsRunner.cpp
+
+
+${OBJECTDIR}/Array_nomain.o: ${OBJECTDIR}/Array.o Array.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/Array.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -O2 -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Array_nomain.o Array.cpp;\
+	else  \
+	    ${CP} ${OBJECTDIR}/Array.o ${OBJECTDIR}/Array_nomain.o;\
+	fi
 
 ${OBJECTDIR}/BuildInFunctions_nomain.o: ${OBJECTDIR}/BuildInFunctions.o BuildInFunctions.cpp 
 	${MKDIR} -p ${OBJECTDIR}
@@ -218,17 +256,17 @@ ${OBJECTDIR}/DataType_nomain.o: ${OBJECTDIR}/DataType.o DataType.cpp
 	    ${CP} ${OBJECTDIR}/DataType.o ${OBJECTDIR}/DataType_nomain.o;\
 	fi
 
-${OBJECTDIR}/Enviroment_nomain.o: ${OBJECTDIR}/Enviroment.o Enviroment.cpp 
+${OBJECTDIR}/Environment_nomain.o: ${OBJECTDIR}/Environment.o Environment.cpp 
 	${MKDIR} -p ${OBJECTDIR}
-	@NMOUTPUT=`${NM} ${OBJECTDIR}/Enviroment.o`; \
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/Environment.o`; \
 	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
 	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
 	    ${RM} "$@.d";\
-	    $(COMPILE.cc) -O2 -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Enviroment_nomain.o Enviroment.cpp;\
+	    $(COMPILE.cc) -O2 -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Environment_nomain.o Environment.cpp;\
 	else  \
-	    ${CP} ${OBJECTDIR}/Enviroment.o ${OBJECTDIR}/Enviroment_nomain.o;\
+	    ${CP} ${OBJECTDIR}/Environment.o ${OBJECTDIR}/Environment_nomain.o;\
 	fi
 
 ${OBJECTDIR}/Error_nomain.o: ${OBJECTDIR}/Error.o Error.cpp 
@@ -309,17 +347,17 @@ ${OBJECTDIR}/Number_nomain.o: ${OBJECTDIR}/Number.o Number.cpp
 	    ${CP} ${OBJECTDIR}/Number.o ${OBJECTDIR}/Number_nomain.o;\
 	fi
 
-${OBJECTDIR}/Parametr_nomain.o: ${OBJECTDIR}/Parametr.o Parametr.cpp 
+${OBJECTDIR}/Parameter_nomain.o: ${OBJECTDIR}/Parameter.o Parameter.cpp 
 	${MKDIR} -p ${OBJECTDIR}
-	@NMOUTPUT=`${NM} ${OBJECTDIR}/Parametr.o`; \
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/Parameter.o`; \
 	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
 	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
 	    ${RM} "$@.d";\
-	    $(COMPILE.cc) -O2 -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Parametr_nomain.o Parametr.cpp;\
+	    $(COMPILE.cc) -O2 -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Parameter_nomain.o Parameter.cpp;\
 	else  \
-	    ${CP} ${OBJECTDIR}/Parametr.o ${OBJECTDIR}/Parametr_nomain.o;\
+	    ${CP} ${OBJECTDIR}/Parameter.o ${OBJECTDIR}/Parameter_nomain.o;\
 	fi
 
 ${OBJECTDIR}/Parser_nomain.o: ${OBJECTDIR}/Parser.o Parser.cpp 
@@ -348,6 +386,19 @@ ${OBJECTDIR}/String_nomain.o: ${OBJECTDIR}/String.o String.cpp
 	    ${CP} ${OBJECTDIR}/String.o ${OBJECTDIR}/String_nomain.o;\
 	fi
 
+${OBJECTDIR}/Symbol_nomain.o: ${OBJECTDIR}/Symbol.o Symbol.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/Symbol.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -O2 -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Symbol_nomain.o Symbol.cpp;\
+	else  \
+	    ${CP} ${OBJECTDIR}/Symbol.o ${OBJECTDIR}/Symbol_nomain.o;\
+	fi
+
 ${OBJECTDIR}/True_nomain.o: ${OBJECTDIR}/True.o True.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	@NMOUTPUT=`${NM} ${OBJECTDIR}/True.o`; \
@@ -374,19 +425,6 @@ ${OBJECTDIR}/Variable_nomain.o: ${OBJECTDIR}/Variable.o Variable.cpp
 	    ${CP} ${OBJECTDIR}/Variable.o ${OBJECTDIR}/Variable_nomain.o;\
 	fi
 
-${OBJECTDIR}/Void_nomain.o: ${OBJECTDIR}/Void.o Void.cpp 
-	${MKDIR} -p ${OBJECTDIR}
-	@NMOUTPUT=`${NM} ${OBJECTDIR}/Void.o`; \
-	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
-	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
-	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
-	then  \
-	    ${RM} "$@.d";\
-	    $(COMPILE.cc) -O2 -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Void_nomain.o Void.cpp;\
-	else  \
-	    ${CP} ${OBJECTDIR}/Void.o ${OBJECTDIR}/Void_nomain.o;\
-	fi
-
 ${OBJECTDIR}/main_nomain.o: ${OBJECTDIR}/main.o main.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	@NMOUTPUT=`${NM} ${OBJECTDIR}/main.o`; \
@@ -405,6 +443,7 @@ ${OBJECTDIR}/main_nomain.o: ${OBJECTDIR}/main.o main.cpp
 	@if [ "${TEST}" = "" ]; \
 	then  \
 	    ${TESTDIR}/TestFiles/f1 || true; \
+	    ${TESTDIR}/TestFiles/f2 || true; \
 	else  \
 	    ./${TEST} || true; \
 	fi
