@@ -32,6 +32,7 @@ void buildFunctions(Environment *e) {
     e->addFunction(new BuildInIf());
     e->addFunction(new BuildInFor());
     e->addFunction(new BuildInOut());
+    e->addFunction(new BuildInReturn());
 }
 
 int main(int argc, char** argv) {

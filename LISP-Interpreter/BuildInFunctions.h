@@ -152,5 +152,14 @@ public:
     virtual string getParameterNameAt(int position);
 };
 
+class BuildInReturn : public Function {
+public:
+    BuildInReturn();;
+    virtual ~BuildInReturn() {};
+    virtual DataType* eval(Environment *e);
+    virtual bool checkArgCount(int givenArgCount);
+    virtual string getParameterNameAt(int position);
+};
+
 #endif /* BUILDINFUNCTIONS_H */
 

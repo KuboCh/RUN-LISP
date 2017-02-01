@@ -18,7 +18,7 @@ private:
     int memsize; // maxsize of acutal free memory
 
     Memory() {
-        memsize = 1;
+        memsize = 10;
         // push init memory here
         for (int i = 0; i < memsize; i++) {
             free.push_back(new Environment());

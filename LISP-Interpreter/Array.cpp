@@ -97,6 +97,7 @@ pair<Function*, list<Parameter*> > Array::getInBodyFunction(Environment* e) {
  */
 DataType* Array::defFunction(Environment *e) {
     Function *function = new Function((*this)[1]);
+    e->addFunction(function);
     // Set function arguments
     if (!a[2]->isAtom()) {
         for (int i = 0; i < a[2]->a.size(); i++) {
@@ -113,7 +114,6 @@ DataType* Array::defFunction(Environment *e) {
             throw "Wrong declaration of body function (atom given).";
         }
     }
-    e->addFunction(function);
     return (DataType*) a[1]; // symbol for this function
 }
 

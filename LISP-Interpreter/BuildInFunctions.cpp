@@ -75,6 +75,7 @@ DataType* BuildInDefvar::eval(Environment *e) {
         parentFunction->functionEnvironment->addVariable(((String*) e->getVariable(Environment::varNameAt(0))->value)->value,
                 e->getVariable(Environment::varNameAt(1))->value, false);
     }
+    LispStack::getInstance().push(parentFunction);
     return new Nil();
 }
 
@@ -169,6 +170,7 @@ DataType* BuildInDefconst::eval(Environment *e) {
         parentFunction->functionEnvironment->addVariable(((String*) e->getVariable(Environment::varNameAt(0))->value)->value,
                 e->getVariable(Environment::varNameAt(1))->value, true);
     }
+    LispStack::getInstance().push(parentFunction);
     return new Nil();
 }
 
@@ -483,4 +485,31 @@ DataType* BuildInOut::eval(Environment *e) {
     Variable *toPrint = e->getVariable(Environment::varNameAt(0));
     cout << toPrint->value->toString() << endl;
     return new Nil();
+}
+
+BuildInReturn::BuildInReturn() {
+    name = "return";
+}
+
+string BuildInReturn::getParameterNameAt(int position) {
+    return Environment::varNameAt(position);
+}
+
+bool BuildInReturn::checkArgCount(int givenArgCount) {
+    return givenArgCount == 1;
+}
+
+/*
+ * 
+ * 
+ * 
+ */
+DataType* BuildInReturn::eval(Environment *e) {
+//    if (e->getNumberOfVariables() != 1) {
+//        return new Error("Wrong number of arguments of out");
+//    }
+//    Variable *toPrint = e->getVariable(Environment::varNameAt(0));
+//    cout << toPrint->value->toString() << endl;
+//    return new Nil();
+    throw "error eval of return function";
 }

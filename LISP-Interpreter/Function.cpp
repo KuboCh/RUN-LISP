@@ -42,7 +42,10 @@ DataType* Function::eval(Environment *e) {
     for (list<pair<Function*, list<Parameter*> > >::iterator it = body.begin(); it != body.end(); ++it) {
         result = evalFunctionInBody(it);
         if (result->dataType() == DataType::TYPE_ERROR) {
-            return result; // return that error
+            break; // return that error
+        }
+        if (result->isResult) {
+            break;
         }
     }
     cout << "Poping " + this->name + " value is " << result->toString() << endl;
@@ -74,6 +77,11 @@ DataType* Function::evalFunctionInBody(list<pair<Function*, list<Parameter*> > >
     //eval of for
     if ((*functionData).first->name == "for") {
         return evalForCycle(functionData);
+    }
+    if ((*functionData).first->name == "return") {
+        DataType* result = (*(*functionData).second.begin())->eval(functionEnvironment)->eval(functionEnvironment);
+        result->isResult = true;
+        return result;
     }
     (*functionData).first->functionEnvironment = Memory::getInstance().get();
     Environment *environment = (*functionData).first->functionEnvironment; //new Environment();
@@ -115,19 +123,22 @@ DataType* Function::evalForCycle(list<pair<Function*, list<Parameter*> > >::iter
     DataType* toDataType = (*paramOfFor)->eval(functionEnvironment);
     if (toDataType->dataType() != DataType::TYPE_NUMBER) {
         return new Error("Loop bounds should be of type number.");
-    } 
+    }
     functionEnvironment->addVariable(itName, fromDataType, false);
     int from = ((Number*) fromDataType)->value;
     int to = ((Number*) toDataType)->value;
     DataType* result = NULL;
     paramOfFor++;
-    for (int i = from; i < to; ++i){
-        for (list<Parameter*>::iterator it = paramOfFor; it != (*functionData).second.end(); ++it){
+    for (int i = from; i < to; ++i) {
+        for (list<Parameter*>::iterator it = paramOfFor; it != (*functionData).second.end(); ++it) {
             result = (*it)->eval(functionEnvironment)->eval(functionEnvironment);
             if (result->dataType() == DataType::TYPE_ERROR) {
                 return result;
             }
-        } 
+            if (result->isResult){
+                return result;
+            }
+        }
     }
     return result;
 }
