@@ -5,6 +5,7 @@
 #include "Variable.h"
 #include "LispStack.h"
 #include "Function.h"
+#include "Parser.h"
 
 using namespace std;
 
@@ -50,7 +51,8 @@ public:
      */
     Environment* get() {
         if (free.size() == 0) {
-            cout << "Memory needs more space. Memsize = " << memsize << endl;
+            if (Parser::PRINT)
+                cout << "Memory needs more space. Memsize = " << memsize << endl;
             mark();
             sweep();
             if (free.size() == 0)
@@ -83,7 +85,8 @@ public:
         // check unmarked & sweep
         for (list<Environment*>::iterator it = allocated.begin(); it != allocated.end(); ) {
             if (!(*it)->mark) {
-                cout << "sweep!" << endl;
+                if (Parser::PRINT)
+                    cout << "sweep!" << endl;
                 (*it)->empty(); // remove variables and functions inside
                 free.push_back(*it);
                 it = allocated.erase(it); // delete and return next
@@ -94,7 +97,8 @@ public:
     }
 
     void realloc() {
-        cout << "Realloc" << endl;
+        if (Parser::PRINT)
+            cout << "Realloc" << endl;
         int oldMemsize = memsize;
         memsize *= 2;
         for (int i = oldMemsize; i < memsize; i++)

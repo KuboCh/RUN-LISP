@@ -50,7 +50,8 @@ DataType* Array::callFunction(Environment* e) {
         if (p->dataType() == DataType::TYPE_PARAMETER) { // get value of this param
             p = p->eval(e);
         }
-        cout << "arg: " << p->toString() << " of type " << p->typeToString() << endl;
+        if (Parser::PRINT)
+            cout << "arg: " << p->toString() << " of type " << p->typeToString() << endl;
         functionEnvironment->addVariable(function->getParameterNameAt(i - 1), p, false);
     }
     function->functionEnvironment = functionEnvironment;
@@ -195,7 +196,8 @@ DataType* Array::processLoop(Environment* e) {
     Number* varN = (Number*) ((Variable*) var)->value;
     DataType* result = new Nil();
     for (int i = fromN->value; i < toN->value; i++) {
-        cout << "i=" << varN->value << endl;
+        if (Parser::PRINT)
+            cout << "i=" << varN->value << endl;
         for (int j = 7; j < a.size(); j++) { // perform body functions
             result = a[j]->eval(e);
         }

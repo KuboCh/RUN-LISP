@@ -19,6 +19,7 @@ public:
     int parenthesisCheck(string text);
     string getFullInput(string& line);
     list<string> tokenize(string input);
+    static const bool PRINT = false;
 private:
 };
 

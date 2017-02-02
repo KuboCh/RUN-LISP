@@ -12,7 +12,6 @@
 
 using namespace std;
 
-
 /*
  * Init Built-In functions
  */

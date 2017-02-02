@@ -11,6 +11,7 @@
 #include "False.h"
 #include "True.h"
 #include "Nil.h"
+#include "Parser.h"
 
 BuildInPlus::BuildInPlus() {
     name = "+";
@@ -225,11 +226,13 @@ DataType* BuildInEqual::eval(Environment *e) {
         Variable *p2 = e->getVariable(Environment::varNameAt(i));
         if (valueType != p2->value->dataType()
                 || valueString.compare(p2->value->toString()) != 0) {
-            cout << "== false" << endl;
+            if (Parser::PRINT)
+                cout << "== false" << endl;
             return new False();
         }
     }
-    cout << "== true" << endl;
+    if (Parser::PRINT)
+        cout << "== true" << endl;
     return new True();
 }
 
@@ -254,25 +257,29 @@ DataType* BuildInLower::eval(Environment *e) {
     }
     Variable *arg1 = e->getVariable(Environment::varNameAt(0));
     Variable *arg2 = e->getVariable(Environment::varNameAt(1));
-    if (arg1->dataType() == arg2->dataType()) {
-        if (arg1->dataType() == DataType::TYPE_NUMBER) {
+    if (arg1->value->dataType() == arg2->value->dataType()) {
+        if (arg1->value->dataType() == DataType::TYPE_NUMBER) {
             Number* arg1n = (Number*) arg1;
             Number* arg2n = (Number*) arg2;
             if (arg1n->value < arg2n->value) {
-                cout << "< true" << endl;
+                if (Parser::PRINT)
+                    cout << "< true" << endl;
                 return new True();
             } else {
-                cout << "< false" << endl;
+                if (Parser::PRINT)
+                    cout << "< false" << endl;
                 return new False();
             }
         } else {
             string arg1s = arg1->toString();
             string arg2s = arg2->toString();
             if (arg1s.compare(arg2s) < 0) {
-                cout << "< true" << endl;
+                if (Parser::PRINT)
+                    cout << "< true" << endl;
                 return new True();
             } else {
-             cout << "< false" << endl;
+                if (Parser::PRINT)
+                    cout << "< false" << endl;
                 return new False();
             }
         }
@@ -302,10 +309,10 @@ DataType* BuildInGreater::eval(Environment *e) {
     }
     Variable *arg1 = e->getVariable(Environment::varNameAt(0));
     Variable *arg2 = e->getVariable(Environment::varNameAt(1));
-    if (arg1->dataType() == arg2->dataType()) {
-        if (arg1->dataType() == DataType::TYPE_NUMBER) {
-            Number* arg1n = (Number*) arg1;
-            Number* arg2n = (Number*) arg2;
+    if (arg1->value->dataType() == arg2->value->dataType()) {
+        if (arg1->value->dataType() == DataType::TYPE_NUMBER) {
+            Number* arg1n = (Number*) arg1->value;
+            Number* arg2n = (Number*) arg2->value;
             if (arg1n->value > arg2n->value)
                 return new True();
             else return new False();
@@ -556,7 +563,8 @@ DataType* BuildInAt::eval(Environment *e) {
     if (newList->elements.size() <= position || position < 0) {
         return new Error("Wrong position at at");
     }
-    cout << "at " << newList->elements[position]->toString() << endl;
+    if (Parser::PRINT)
+        cout << "at " << newList->elements[position]->toString() << endl;
     return newList->elements[position]->eval(e);
 }
 
@@ -592,7 +600,8 @@ DataType* BuildInSet::eval(Environment *e) {
         return new Error("Wrong position at set");
     }
     newList->elements[position] = e->getVariable(Environment::varNameAt(2))->value;
-    cout << "set " << newList->toString() << endl;
+    if (Parser::PRINT)
+        cout << "set " << newList->toString() << endl;
     return newList;
 }
 

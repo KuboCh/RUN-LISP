@@ -36,7 +36,8 @@ void Function::addToBody(pair<Function*, list<Parameter*> > ribf) {
 
 DataType* Function::eval(Environment *e) {
     LispStack::getInstance().push(this); // vlozi sa na stack
-    cout << "Pushing " + this->name << endl;
+    if (Parser::PRINT)
+        cout << "Pushing " + this->name << endl;
     DataType* result = new Nil();
     // Ak ma funkcia body functions, treba ich vsetky vyhodnotit v jej environmente
     for (list<pair<Function*, list<Parameter*> > >::iterator it = body.begin(); it != body.end(); ++it) {
@@ -48,7 +49,8 @@ DataType* Function::eval(Environment *e) {
             break;
         }
     }
-    cout << "Poping " + this->name + " value is " << result->toString() << endl;
+    if (Parser::PRINT)
+        cout << "Poping " + this->name + " value is " << result->toString() << endl;
     LispStack::getInstance().pop(); // vyberie sa zo stacku
     return result;
 }
@@ -61,7 +63,8 @@ DataType* Function::evalFunctionInBody(list<pair<Function*, list<Parameter*> > >
     if (!((*functionData).first->checkArgCount((*functionData).second.size()))) {
         return new Error("Wrong number of arguments of " + (*functionData).first->name);
     }
-    cout << "Evaluating function " << (*functionData).first->name << endl;
+    if (Parser::PRINT)
+        cout << "Evaluating function " << (*functionData).first->name << endl;
     //eval of if
     if ((*functionData).first->name == "if") {
         list<Parameter*>::iterator paramOfIf = (*functionData).second.begin();
@@ -84,7 +87,8 @@ DataType* Function::evalFunctionInBody(list<pair<Function*, list<Parameter*> > >
         return result;
     }
     LispStack::getInstance().push((*functionData).first);
-    cout << "pushing " << (*functionData).first->name << endl;
+    if (Parser::PRINT)
+        cout << "pushing " << (*functionData).first->name << endl;
     (*functionData).first->functionEnvironment = Memory::getInstance().get();
     Environment *environment = (*functionData).first->functionEnvironment; //new Environment();
     int argPos = 0;

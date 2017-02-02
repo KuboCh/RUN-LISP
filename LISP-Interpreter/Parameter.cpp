@@ -41,7 +41,8 @@ DataType* Parameter::eval(Environment *e) {
                 return new Error("Variable " + parameterName + " not declared");
             }
         }
-        cout << "Parameter " << parameterName << " is " << v->value->toString() << endl;
+        if (Parser::PRINT)
+            cout << "Parameter " << parameterName << " is " << v->value->toString() << endl;
         return v->value;
     }
 
@@ -51,7 +52,8 @@ DataType* Parameter::eval(Environment *e) {
         if (!(function->checkArgCount(parametersOfFunction.size()))) {
             return new Error("Wrong number of arguments of " + function->name);
         }
-        cout << "Evaluating function " << function->name << endl;
+        if (Parser::PRINT)
+            cout << "Evaluating function " << function->name << endl;
         if (function->name == "if") {
             list<Parameter*>::iterator paramOfIf = parametersOfFunction.begin();
             if ((*paramOfIf)->eval(e)->eval(e)->dataType() == DataType::TYPE_TRUE) {
@@ -97,7 +99,8 @@ DataType* Parameter::eval(Environment *e) {
             return result;
         }
         LispStack::getInstance().push(function);
-        cout << "pushing " << function->name << endl;
+        if (Parser::PRINT)
+            cout << "pushing " << function->name << endl;
         Environment *environment = Memory::getInstance().get(); //new Environment();//
         function->functionEnvironment = environment;
         int argPos = 0;
