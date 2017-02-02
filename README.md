@@ -67,3 +67,76 @@ true (true)
 21. > (+ 1 2)
 Call to undefined function +
 ```
+
+# Zložitejšie príklady
+## Fibonacci
+```sh
+(def fib (n) 
+(defvar p1 1) 
+(defvar p2 1) 
+(for i from 1 to (- n 1) do 
+(defvar p3 (+ p1 p2)) 
+(defvar p1 p2) 
+(defvar p2 p3)
+)
+(return p2)
+)
+```
+### Použitie
+
+```sh
+Welcome to LISP interpreter
+1. > (def fib (n) 
+(defvar p1 1) 
+(defvar p2 1) 
+(for i from 1 to (- n 1) do 
+(defvar p3 (+ p1 p2)) 
+(defvar p1 p2) 
+(defvar p2 p3)
+)
+(return p2)
+)
+fib (symbol)
+2. > (fib 1)
+1 (number)
+3. > (fib 2)
+1 (number)
+4. > (fib 3)
+2 (number)
+5. > (fib 4)
+3 (number)
+6. > (fib 5)
+5 (number)
+7. > (fib 6)
+8 (number)
+```
+
+## Sort
+```sh
+(def bubblesort (x) 
+(for i from 0 to (length x) do 
+(for j from 0 to (length x) do 
+(if (> (at x j) (at x (+ j 1))) 
+(
+(defvar pom (at x j)) 
+(set x j (at x (+ j 1))) 
+(set x (+ j 1) pom)) x)
+)))
+```
+### Použitie
+
+```sh
+Welcome to LISP interpreter
+1. > (def bubblesort (x) 
+(for i from 0 to (length x) do 
+(for j from 0 to (length x) do 
+(if (> (at x j) (at x (+ j 1))) 
+(
+(defvar pom (at x j)) 
+(set x j (at x (+ j 1))) 
+(set x (+ j 1) pom)) x)
+)))
+bubblesort (symbol)
+2. > (bubblesort (list 21 5 85 21 5632 5 22 1 11 1))
+(1 1 5 5 11 21 21 22 85 5632) (list)
+```
