@@ -84,7 +84,7 @@ void EvalTests::testIf() {
     result = parser.parse("(if true true false)")->eval(mainEnvironment);
     CPPUNIT_ASSERT(result->toString().compare("true") == 0);
     CPPUNIT_ASSERT(result->dataType() == DataType::TYPE_TRUE);
-    
+
     result = parser.parse("(if (== 2 0) \"ok\" \"fail\")")->eval(mainEnvironment);
     cout << result->toString() << endl;
     CPPUNIT_ASSERT(result->toString().compare("\"fail\"") == 0);
@@ -111,4 +111,33 @@ void EvalTests::testList() {
     CPPUNIT_ASSERT(result->toString().compare("(1 2 3 4 5)") == 0);
     result = parser.parse("(length x)")->eval(mainEnvironment);
     CPPUNIT_ASSERT(result->toString().compare("5") == 0);
+}
+
+void EvalTests::testFibonacci() {
+    result = parser.parse("(def fib (n) (defvar p1 1) (defvar p2 1) (for i from 1 to (- n 1) do (defvar p3 (+ p1 p2)) (defvar p1 p2) (defvar p2 p3))(return p2))")->eval(mainEnvironment);
+    result = parser.parse("(fib 1)")->eval(mainEnvironment);
+    CPPUNIT_ASSERT(result->toString().compare("1") == 0);
+    result = parser.parse("(fib 2)")->eval(mainEnvironment);
+    CPPUNIT_ASSERT(result->toString().compare("1") == 0);
+    result = parser.parse("(fib 3)")->eval(mainEnvironment);
+    CPPUNIT_ASSERT(result->toString().compare("2") == 0);
+    result = parser.parse("(fib 4)")->eval(mainEnvironment);
+    CPPUNIT_ASSERT(result->toString().compare("3") == 0);
+    result = parser.parse("(fib 5)")->eval(mainEnvironment);
+    CPPUNIT_ASSERT(result->toString().compare("5") == 0);
+    result = parser.parse("(fib 6)")->eval(mainEnvironment);
+    CPPUNIT_ASSERT(result->toString().compare("8") == 0);
+    result = parser.parse("(fib 7)")->eval(mainEnvironment);
+    CPPUNIT_ASSERT(result->toString().compare("13") == 0);
+    result = parser.parse("(fib 8)")->eval(mainEnvironment);
+    CPPUNIT_ASSERT(result->toString().compare("21") == 0);
+    result = parser.parse("(fib 9)")->eval(mainEnvironment);
+    CPPUNIT_ASSERT(result->toString().compare("34") == 0);
+}
+
+void EvalTests::testSort() {
+    result = parser.parse("(def bubblesort (x) (for i from 0 to (length x) do (for j from 0 to (length x) do (if (> (at x j) (at x (+ j 1))) ((defvar pom (at x j)) (set x j (at x (+ j 1))) (set x (+ j 1) pom)) x))))")->eval(mainEnvironment);
+    result = parser.parse("(bubblesort (list 21 5 85 21 5632 5 22 1 11 1))")->eval(mainEnvironment);
+    cout << result->toString() << endl;
+    CPPUNIT_ASSERT(result->toString().compare("(1 1 5 5 11 21 21 22 85 5632)") == 0);
 }
