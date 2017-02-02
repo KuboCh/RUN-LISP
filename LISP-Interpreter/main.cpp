@@ -65,10 +65,10 @@ int main(int argc, char** argv) {
             }
         }
         // testing memory
-//        Environment *mainEnvironment2 = Memory::getInstance().get();
-//        Function *mainFunction2 = new Function(mainEnvironment2);
-//        mainFunction2->name = "main2";
-//        LispStack::getInstance().push(mainFunction2);
+        //        Environment *mainEnvironment2 = Memory::getInstance().get();
+        //        Function *mainFunction2 = new Function(mainEnvironment2);
+        //        mainFunction2->name = "main2";
+        //        LispStack::getInstance().push(mainFunction2);
 
         if (lineNo == 100) // proti zacykleniu
             break;

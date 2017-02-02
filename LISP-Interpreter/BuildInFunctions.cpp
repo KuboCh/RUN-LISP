@@ -20,11 +20,32 @@ BuildInPlus::BuildInPlus() {
 BuildInPlus::~BuildInPlus() {
 }
 
+int highestOneBitPosition(unsigned long int number) {
+    int bits = 0;
+    while (number != 0) {
+        ++bits;
+        number >>= 1;
+    };
+    return bits;
+}
+
+bool multiplication_is_safe(unsigned long int a, unsigned long int b) {
+    int a_bits = highestOneBitPosition(a), b_bits = highestOneBitPosition(b);
+    return (a_bits + b_bits <= 64);
+}
+
+bool addition_is_safe(unsigned long int a, unsigned long int b) {
+    int a_bits = highestOneBitPosition(a), b_bits = highestOneBitPosition(b);
+    return (a_bits < 64 && b_bits < 64);
+}
+
 DataType* BuildInPlus::sumNubers(Environment *e) {
-    int sum = 0;
+    unsigned long int sum = 0;
     for (int i = 0; i < e->getNumberOfVariables(); i++) {
         Variable *parameter = e->getVariable(Environment::varNameAt(i));
         if (parameter->value->dataType() == DataType::TYPE_NUMBER) {
+            if (!addition_is_safe(sum, ((Number*) parameter->value)->value))
+                return new Error("Number overflow.");
             sum += ((Number*) parameter->value)->value;
         } else {
             return sumStrings(e);
@@ -133,13 +154,15 @@ string BuildInMultiplication::getParameterNameAt(int position) {
 }
 
 DataType* BuildInMultiplication::eval(Environment *e) {
-    int sum = 0;
+    unsigned long int sum = 0;
     for (int i = 0; i < e->getNumberOfVariables(); i++) {
         Variable *parameter = e->getVariable(Environment::varNameAt(i));
         if (parameter->value->dataType() == DataType::TYPE_NUMBER) {
             if (i == 0) {
                 sum = ((Number*) parameter->value)->value;
             } else {
+                if (!multiplication_is_safe(sum, ((Number*) parameter->value)->value))
+                    return new Error("Number overflow.");
                 sum *= ((Number*) parameter->value)->value;
             }
         } else {
@@ -523,12 +546,12 @@ bool BuildInReturn::checkArgCount(int givenArgCount) {
  * 
  */
 DataType* BuildInReturn::eval(Environment *e) {
-//    if (e->getNumberOfVariables() != 1) {
-//        return new Error("Wrong number of arguments of out");
-//    }
-//    Variable *toPrint = e->getVariable(Environment::varNameAt(0));
-//    cout << toPrint->value->toString() << endl;
-//    return new Nil();
+    //    if (e->getNumberOfVariables() != 1) {
+    //        return new Error("Wrong number of arguments of out");
+    //    }
+    //    Variable *toPrint = e->getVariable(Environment::varNameAt(0));
+    //    cout << toPrint->value->toString() << endl;
+    //    return new Nil();
     throw "error eval of return function";
 }
 
@@ -551,11 +574,11 @@ bool BuildInAt::checkArgCount(int givenArgCount) {
  */
 DataType* BuildInAt::eval(Environment *e) {
     Variable *l = e->getVariable(Environment::varNameAt(0));
-    if (l->value->dataType() != DataType::TYPE_LIST){
+    if (l->value->dataType() != DataType::TYPE_LIST) {
         return new Error("Wrong parameter of at, expected list");
     }
     DataType *poz = e->getVariable(Environment::varNameAt(1))->eval(e);
-    if (poz->dataType() != DataType::TYPE_NUMBER){
+    if (poz->dataType() != DataType::TYPE_NUMBER) {
         return new Error("Wrong parameter of at, expected number");
     }
     List *newList = (List*) l->value;
@@ -587,11 +610,11 @@ bool BuildInSet::checkArgCount(int givenArgCount) {
  */
 DataType* BuildInSet::eval(Environment *e) {
     Variable *l = e->getVariable(Environment::varNameAt(0));
-    if (l->value->dataType() != DataType::TYPE_LIST){
+    if (l->value->dataType() != DataType::TYPE_LIST) {
         return new Error("Wrong parameter of set, expected list");
     }
     DataType *poz = e->getVariable(Environment::varNameAt(1))->eval(e);
-    if (poz->dataType() != DataType::TYPE_NUMBER){
+    if (poz->dataType() != DataType::TYPE_NUMBER) {
         return new Error("Wrong parameter of set, expected number");
     }
     List *newList = (List*) l->value;
@@ -604,7 +627,6 @@ DataType* BuildInSet::eval(Environment *e) {
         cout << "set " << newList->toString() << endl;
     return newList;
 }
-
 
 BuildInDelete::BuildInDelete() {
     name = "delete";
@@ -625,11 +647,11 @@ bool BuildInDelete::checkArgCount(int givenArgCount) {
  */
 DataType* BuildInDelete::eval(Environment *e) {
     Variable *l = e->getVariable(Environment::varNameAt(0));
-    if (l->value->dataType() != DataType::TYPE_LIST){
+    if (l->value->dataType() != DataType::TYPE_LIST) {
         return new Error("Wrong parameter of delete, expected list");
     }
     DataType *poz = e->getVariable(Environment::varNameAt(1))->eval(e);
-    if (poz->dataType() != DataType::TYPE_NUMBER){
+    if (poz->dataType() != DataType::TYPE_NUMBER) {
         return new Error("Wrong parameter of delete, expected number");
     }
     List *newList = (List*) l->value;
@@ -660,7 +682,7 @@ bool BuildInAdd::checkArgCount(int givenArgCount) {
  */
 DataType* BuildInAdd::eval(Environment *e) {
     Variable *l = e->getVariable(Environment::varNameAt(0));
-    if (l->value->dataType() != DataType::TYPE_LIST){
+    if (l->value->dataType() != DataType::TYPE_LIST) {
         return new Error("Wrong parameter of add, expected list");
     }
     DataType *value = e->getVariable(Environment::varNameAt(1))->eval(e);
@@ -688,7 +710,7 @@ bool BuildInLength::checkArgCount(int givenArgCount) {
  */
 DataType* BuildInLength::eval(Environment *e) {
     Variable *l = e->getVariable(Environment::varNameAt(0));
-    if (l->value->dataType() != DataType::TYPE_LIST){
+    if (l->value->dataType() != DataType::TYPE_LIST) {
         return new Error("Wrong parameter of lenght, expected list");
     }
     return new Number(((List*) l->value)->elements.size());
