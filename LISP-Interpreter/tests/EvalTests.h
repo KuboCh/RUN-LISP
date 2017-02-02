@@ -21,6 +21,7 @@ class EvalTests : public CPPUNIT_NS::TestFixture {
     CPPUNIT_TEST(testFunctions);
     CPPUNIT_TEST(testIf);
     CPPUNIT_TEST(testFor);
+    CPPUNIT_TEST(testList);
 
     CPPUNIT_TEST_SUITE_END();
 
@@ -37,6 +38,7 @@ private:
     void testFunctions();
     void testIf();
     void testFor();
+    void testList();
     Parser parser;
     DataType* result;
     string input;
