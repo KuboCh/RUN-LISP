@@ -258,15 +258,23 @@ DataType* BuildInLower::eval(Environment *e) {
         if (arg1->dataType() == DataType::TYPE_NUMBER) {
             Number* arg1n = (Number*) arg1;
             Number* arg2n = (Number*) arg2;
-            if (arg1n->value < arg2n->value)
+            if (arg1n->value < arg2n->value) {
+                cout << "< true" << endl;
                 return new True();
-            else return new False();
+            } else {
+                cout << "< false" << endl;
+                return new False();
+            }
         } else {
             string arg1s = arg1->toString();
             string arg2s = arg2->toString();
-            if (arg1s.compare(arg2s) < 0)
+            if (arg1s.compare(arg2s) < 0) {
+                cout << "< true" << endl;
                 return new True();
-            else return new False();
+            } else {
+             cout << "< false" << endl;
+                return new False();
+            }
         }
     } else {
         return new Error("Arguments of < should be of the same type.");
@@ -548,6 +556,7 @@ DataType* BuildInAt::eval(Environment *e) {
     if (newList->elements.size() <= position || position < 0) {
         return new Error("Wrong position at at");
     }
+    cout << "at " << newList->elements[position]->toString() << endl;
     return newList->elements[position]->eval(e);
 }
 
@@ -583,6 +592,7 @@ DataType* BuildInSet::eval(Environment *e) {
         return new Error("Wrong position at set");
     }
     newList->elements[position] = e->getVariable(Environment::varNameAt(2))->value;
+    cout << "set " << newList->toString() << endl;
     return newList;
 }
 

@@ -1,3 +1,5 @@
+#include <functional>
+
 #include "Array.h"
 #include "Environment.h"
 #include "Function.h"
@@ -62,30 +64,37 @@ pair<Function*, list<Parameter*> > Array::getInBodyFunction(Environment* e) {
     if (function->name == "for") {
         return getInBodyFor(e, function);
     }
+    if (function->name == "if") {
+        return getInBodyIf(e, function);
+    }
     list<Parameter*> parameters;
-    Parameter* param;
+    //Parameter* param;
     for (int i = 1; i < a.size(); i++) {
-        param = new Parameter();
-        if (a[i]->isAtom()) {
-            param->value = (DataType*) a[i];
-            if (((DataType*) a[i])->dataType() == DataType::TYPE_SYMBOL) {
+        parameters.push_back(getParameter(function, e, i));
+    }
+    return pair<Function*, list<Parameter*> >(function, parameters);
+}
+
+Parameter* Array::getParameter(Function *function, Environment *e, int position) {
+    Parameter *param = new Parameter();
+        if (a[position]->isAtom()) {
+            param->value = (DataType*) a[position];
+            if (((DataType*) a[position])->dataType() == DataType::TYPE_SYMBOL) {
                 //ak je funkcia defvar, defconst symbol sa zameni za string
-                if ((function->name == "defvar" || function->name == "defconst") && i == 1) {
-                    param->value = new String((*this)[i]);
+                if ((function->name == "defvar" || function->name == "defconst") && position == 1) {
+                    param->value = new String((*this)[position]);
                 } else {
-                    param->parameterName = (*this)[i]; // string of this param
+                    param->parameterName = (*this)[position]; // string of this param
                 }
             }
             param->function = NULL;
         } else {
-            pair<Function*, list<Parameter*> > ibf = a[i]->getInBodyFunction(e);
+            pair<Function*, list<Parameter*> > ibf = a[position]->getInBodyFunction(e);
             param->function = ibf.first;
             param->parametersOfFunction = ibf.second;
             param->value == NULL;
         }
-        parameters.push_back(param);
-    }
-    return pair<Function*, list<Parameter*> >(function, parameters);
+    return param;
 }
 
 /*
@@ -134,9 +143,29 @@ DataType* Array::processIf(Environment* e) {
         condResult = a[1]->eval(e);
     }
     if (condResult->dataType() == DataType::TYPE_TRUE) {
-        return a[2]->eval(e);
+        if (a[2]->isAtom()) {
+            return a[2]->eval(e);
+        }
+        DataType* result = new Nil();
+        for (int i = 0; i < a[2]->a.size(); i++) {
+            if (a[2]->a[i]->isAtom()){
+                return a[2]->eval(e);
+            }
+            result = a[2]->a[i]->eval(e);
+        }
+        return result;
     } else if (condResult->dataType() == DataType::TYPE_FALSE) {
-        return a[3]->eval(e);
+        if (a[3]->isAtom()) {
+            return a[3]->eval(e);
+        }
+        DataType* result = new Nil();
+        for (int i = 0; i < a[3]->a.size(); i++) {
+            if (a[3]->a[i]->isAtom()){
+                return a[3]->eval(e);
+            }
+            result = a[3]->a[i]->eval(e);
+        }
+        return result;
     } else
         throw "Conditional result should be true or false, is " + condResult->typeToString();
     return new Nil();
@@ -285,6 +314,36 @@ pair<Function*, list<Parameter*> > Array::getInBodyFor(Environment* e, Function*
             param->parametersOfFunction = ibf.second;
         }
         params.push_back(param);
+    }
+    return pair<Function*, list<Parameter*> >(function, params);
+}
+
+pair<Function*, list<Parameter*> > Array::getInBodyIf(Environment *e, Function* function) {
+    list<Parameter*> params;
+    params.push_back(getParameter(function, e, 1)); // 1. parameter je podmienka
+    if (a[2]->isAtom() || a[2]->a[0]->isAtom()) {
+        params.push_back(getParameter(function, e, 2));
+    } else {
+        Function *newF = new Function();
+        newF->name = "ifTrue";
+        for (int i = 0; i < a[2]->a.size(); i++) {
+            newF->addToBody(a[2]->a[i]->getInBodyFunction(e));
+        }
+        Parameter *p = new Parameter();
+        p->function = newF;
+        params.push_back(p);
+    }
+    if (a[3]->isAtom() || a[3]->a[0]->isAtom()) {
+        params.push_back(getParameter(function, e, 3));
+    } else {
+        Function *newF = new Function();
+        newF->name = "ifFalse";
+        for (int i = 0; i < a[3]->a.size(); i++) {
+            newF->addToBody(a[3]->a[i]->getInBodyFunction(e));
+        }
+        Parameter *p = new Parameter();
+        p->function = newF;
+        params.push_back(p);
     }
     return pair<Function*, list<Parameter*> >(function, params);
 }

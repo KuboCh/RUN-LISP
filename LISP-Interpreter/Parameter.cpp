@@ -75,12 +75,13 @@ DataType* Parameter::eval(Environment *e) {
             if (toDataType->dataType() != DataType::TYPE_NUMBER) {
                 return new Error("Loop bounds should be of type number.");
             }
-            e->addVariable(itName, fromDataType, false);
+            //e->addVariable(itName, fromDataType, false);
             int from = ((Number*) fromDataType)->value;
             int to = ((Number*) toDataType)->value;
             DataType* result = NULL;
             paramOfFor++;
             for (int i = from; i < to; ++i) {
+                e->addVariable(itName, new Number(i), false);
                 for (list<Parameter*>::iterator it = paramOfFor; it != parametersOfFunction.end(); ++it) {
                     result = (*it)->eval(e)->eval(e);
                     if (result->dataType() == DataType::TYPE_ERROR) {

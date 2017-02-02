@@ -3,6 +3,9 @@
 #include <iostream>
 #include <string>
 
+#include "Parameter.h"
+#include "Environment.h"
+
 using namespace std;
 
 #ifndef ARRAY_H
@@ -22,6 +25,8 @@ public:
     DataType* undefFunction(Environment* e);
     pair<Function*, list<Parameter*> > getInBodyFunction(Environment* e);
     pair<Function*, list<Parameter*> > getInBodyFor(Environment* e, Function* function);
+    pair<Function*, list<Parameter*> > getInBodyIf(Environment *e, Function* function);
+    Parameter* getParameter(Function *function, Environment *e, int position);
     DataType* callFunction(Environment* e);
     DataType* processIf(Environment* e);
     DataType* processLoop(Environment* e);

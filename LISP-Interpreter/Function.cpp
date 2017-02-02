@@ -127,12 +127,13 @@ DataType* Function::evalForCycle(list<pair<Function*, list<Parameter*> > >::iter
     if (toDataType->dataType() != DataType::TYPE_NUMBER) {
         return new Error("Loop bounds should be of type number.");
     }
-    functionEnvironment->addVariable(itName, fromDataType, false);
+    //functionEnvironment->addVariable(itName, fromDataType, false);
     int from = ((Number*) fromDataType)->value;
     int to = ((Number*) toDataType)->value;
     DataType* result = new Nil();
     paramOfFor++;
     for (int i = from; i < to; ++i) {
+        functionEnvironment->addVariable(itName, new Number(i), false);
         for (list<Parameter*>::iterator it = paramOfFor; it != (*functionData).second.end(); ++it) {
             result = (*it)->eval(functionEnvironment)->eval(functionEnvironment);
             if (result->dataType() == DataType::TYPE_ERROR) {
