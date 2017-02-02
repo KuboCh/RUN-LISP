@@ -125,7 +125,7 @@ Number* readNumber(const string& word) {
             throw "E: Cannot create number from token " + word;
         }
     }
-    return new Number(atoi(word.c_str()));
+    return new Number(atol(word.c_str()));
 }
 
 Symbol* readSymbol(string name) {

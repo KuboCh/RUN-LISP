@@ -4,7 +4,7 @@
 Number::Number() {
 }
 
-Number::Number(int val) {
+Number::Number(unsigned long int val) {
     value = val;
 }
 

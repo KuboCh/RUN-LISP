@@ -12,7 +12,7 @@ class Environment;
 class Number : public DataType {
 public:
     Number();
-    Number(int val);
+    Number(unsigned long int val);
     Number(const Number& orig);
     virtual ~Number();
     virtual DataType* eval(Environment* e);
@@ -23,7 +23,7 @@ public:
         return TYPE_NUMBER;
     }
     
-    int value;
+    unsigned long int value;
 private:
 };
 
